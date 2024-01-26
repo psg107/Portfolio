@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>포트폴리오</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        h2 {
+            color: #000;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        .main {
+            padding: 20px;
+        }
+        .section {
+            margin-bottom: 50px;
+        }
+        .section h2 {
+            border-left: 6px solid green;
+            padding-left: 5px;
+            height: 36px;
+        }
+        .name {
+            margin: 0;
+            display: inline-block;
+        }
+        .date {
+            font-weight: bold;
+            display: inline-block;
+            color: #333;
+            margin: 0;
+            margin-top: 8px;
+        }
+        .skills {
+            font-style: italic;
+            margin: 0;
+            margin-top: 8px;
+            font-size: 15px;
+            max-width: 1000px;
+        }
+        .description {
+            margin: 0;
+            margin-top: 12px;
+            line-height: 20px;
+        }
+        .project:nth-child(n+2) {
+            margin-top: 40px;
+        }
+        .section-contact p {
+            margin: 0;
+        }
+        .section-contact p:nth-child(n+3) {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>포트폴리오</h1>
+    </header>
+    <div class="container">
+        <div class="main">
+            <!-- 프로필 -->
+            <div class="section section-profile">
+                <h2>프로필</h2>
+                <p>개발자 박상곤입니다.</p>
+            </div>
+
+            <!-- 프로젝트 -->
+            <div class="section section-project">
+                <h2>프로젝트</h2>
+                <div class="projects"></div>
+            </div>
+
+            <!-- 연락처 -->
+            <div class="section section-contact">
+                <h2>연락처</h2>
+                <p>Email: psg107@naver.com</p>
+                <p>GitHub: <a href="https://github.com/psg107">https://github.com/psg107</a></p>
+                <p>LinkedIn: <a href="https://www.linkedin.com/in/상곤-박-843b8522b/">https://www.linkedin.com/in/상곤-박-843b8522b/</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let projects = [{
+                "name": "패키지 신규 개발",
+                "type": [
+                    "Company"
+                ],
+                "description": "신규 여행 패키지 시스템을 개발하는 프로젝트입니다.\n코틀린+스프링부트+몽고db 환경의 프로젝트로 현재 상품 및 예약 서비스를 개발하고 있습니다.",
+                "date": "2023.08 ~ ",
+                "sourceUrl": "",
+                "skills": [
+                    "Kotlin",
+                    "SpringBoot",
+                    "MongoDB",
+                    "Amazon SQS",
+                    "AWS",
+                    "Terraform",
+                    "Github Enterprise",
+                    "Github Actions",
+                    "CI/CD"
+                ]
+            },
+            {
+                "name": "카카오톡 이모티콘 추출기",
+                "type": [
+                    "Private"
+                ],
+                "description": "윈도우 PC 버전의 카카오톡 프로그램의 메모리에서 webp 이미지를 추출하는 프로그램입니다.\ngithub에 공개되어 있는 c++ 소스를 참고하여 C# 버전으로 제작했습니다.",
+                "date": "2023",
+                "sourceUrl": "https://github.com/psg107/KEmojiExtractorDotnet/tree/master",
+                "skills": [
+                    "C#",
+                    "Windows Console",
+                    "C++",
+                    "WinAPI"
+                ]
+            },
+            {
+                "name": "Youtube Short Time Controller",
+                "type": [
+                    "Private"
+                ],
+                "description": "변경할 수 없는 유튜브 쇼츠 영상의 현재 시간을 변경할 수 있도록 만든 크롬 확장프로그램입니다.",
+                "date": "2023",
+                "sourceUrl": "https://github.com/psg107/YoutubeShortTimeController",
+                "skills": [
+                    "Html",
+                    "Javascript"
+                ]
+            },
+            {
+                "name": "SRT 기차 자동 예매",
+                "type": [
+                    "Private"
+                ],
+                "description": "SRT 기차 티켓을 자동으로 구매하는 프로그램입니다.\n아이디, 패스워드, 예매 날짜, 기차 시간, 출발역, 도착역을 입력하면 자동으로 해당 티켓을 구매합니다.",
+                "date": "2022",
+                "sourceUrl": "https://github.com/psg107/SRT_Ticketing",
+                "skills": [
+                    "C#",
+                    "Windows Console",
+                    "RestAPI"
+                ]
+            },
+            {
+                "name": "호스트 관리 프로그램",
+                "type": [
+                    "Company"
+                ],
+                "description": "호스트 변경을 도와주는 프로그램입니다.\n개발/스테이징/운영 서버의 호스트 세팅을 편하게 전환할 수 있도록 프리셋을 등록하고 관리하는 기능을 제공합니다.",
+                "date": "2022",
+                "sourceUrl": null,
+                "skills": [
+                    "C#",
+                    "WPF",
+                    "MSSQL"
+                ]
+            },
+            {
+                "name": "인터파크 패키지 상품 메인 개편",
+                "type": [
+                    "Company"
+                ],
+                "description": "패키지 상품 메인 페이지 개편 프로젝트입니다.",
+                "date": "2023",
+                "sourceUrl": "",
+                "skills": [
+                    "C#",
+                    "RestAPI",
+                    "ASP.NET WebAPI",
+                    "Java",
+                    "SpringBoot",
+                    "Github Actions"
+                ]
+            },
+            {
+                "name": "인터파크 - 현대카드 PLCC 연동",
+                "type": [
+                    "Company"
+                ],
+                "description": "현대카드 제휴 카드인 NOL 카드 및 포인트 연동 프로젝트입니다.",
+                "date": 2023,
+                "sourceUrl": "",
+                "skills": [
+                    "C#",
+                    "ASP.NET MVC",
+                    "RestAPI",
+                    "ASP.NET WebAPI",
+                    "MSSQL"
+                ]
+            },
+            {
+                "name": "인터파크 - 모두투어 상품 연동",
+                "type": [
+                    "Company"
+                ],
+                "description": "인터파크 - 모두투어 상품 연동 프로젝트입니다.",
+                "date": 2023,
+                "sourceUrl": "",
+                "skills": [
+                    "C#",
+                    "ASP.NET MVC",
+                    "RestAPI",
+                    "ASP.NET WebAPI",
+                    "MSSQL",
+                    "Windows Batch"
+                ]
+            },
+            {
+                "name": "인터파크 - 네이버 상품 연동",
+                "type": [
+                    "Company"
+                ],
+                "description": "인터파크 - 네이버 상품 연동 프로젝트입니다.",
+                "date": "2022",
+                "sourceUrl": null,
+                "skills": [
+                    "C#",
+                    "RestAPI",
+                    "MSSQL"
+                ]
+            },
+            {
+                "name": "인터파크 - 야놀자 상품 연동",
+                "type": [
+                    "Company",
+                    "Incomplete"
+                ],
+                "description": "인터파크 - 야놀자 상품 연동 프로젝트입니다.",
+                "date": "2022",
+                "sourceUrl": null,
+                "skills": [
+                    "C#",
+                    "RestAPI",
+                    "MSSQL"
+                ]
+            },
+            {
+                "name": "인터파크 여행 패키지 운영",
+                "type": [
+                    "Company"
+                ],
+                "description": "여행 패키지 서비스 운영을 위해 프론트, 어드민, API, DB, 배치 등 여러 시스템을 관리하는 업무입니다.",
+                "date": "2021.06 ~ 2023.08",
+                "sourceUrl": null,
+                "skills": [
+                    "C#",
+                    "Windows Console",
+                    "Windows Batch",
+                    "RestAPI",
+                    "WCF Rest",
+                    "IIS",
+                    "ASP.NET",
+                    "ASP.NET MVC",
+                    "ASP.NET WebAPI",
+                    "ClassicASP",
+                    "Html",
+                    "Css",
+                    "Javascript",
+                    "JQuery",
+                    "MSSQL",
+                    "MSSQL Job",
+                    "OpenAPI",
+                    "Gitlab",
+                    "Jenkins",
+                    "Github Enterprise",
+                    "Github Actions",
+                    "Jira",
+                    "Slack"
+                ]
+            },
+            {
+                "name": "웃긴대학 자동 어시스트 프로그램",
+                "type": [
+                    "Private"
+                ],
+                "description": "인터넷 커뮤니티 웃긴대학 게시글을 자동으로 추천하는 프로그램입니다.\n해당 커뮤니티는 40번의 추천을 받은 게시글은 베스트 게시글로 지정되고 40번째 추천을 누른 사람은 어시스트라는 이름으로 기록되는 시스템을 가지고 있는데 이 프로그램은 커뮤니티 게시판에서 39번 추천을 받은 글을 조회하여 자동으로 추천을 합니다.",
+                "date": "2021",
+                "sourceUrl": "https://github.com/psg107/HumorUnivAutoAssist",
+                "skills": [
+                    "C#",
+                    "Windows Console",
+                    "Regex",
+                    "XPath"
+                ]
+            },
+            {
+                "name": "스위치봇 제어 어플리케이션",
+                "type": [
+                    "Private",
+                    "Incomplete"
+                ],
+                "description": "IOT 기기 스위치봇을 제어하는 모바일 어플리케이션입니다.\n안드로이드 위젯을 활용하여 스위치봇을 제어하기 위해서는 스위치봇허브라는 제품을 구매해야 하는데 이 제품을 구매하지 않고도 스위치봇을 제어할 수 있습니다.",
+                "date": "2021",
+                "sourceUrl": "https://github.com/psg107/XamarinSwitchBot",
+                "skills": [
+                    "C#",
+                    "Xamarin",
+                    "BLE",
+                    "Android",
+                    "IOS"
+                ]
+            },
+            {
+                "name": "스크립트 로더",
+                "type": [
+                    "Private"
+                ],
+                "description": "여러 오토핫키 스크립트를 하나의 응용 프로그램으로 관리하기 위한 윈도우 어플리케이션입니다.\n스크립트가 포함된 폴더를 선택하여 여러 스크립트 중 원하는 스크립트를 편하게 실행하는 기능을 제공합니다.\n또한 일부 온라인게임의 매크로 감지를 우회할 수 있습니다.",
+                "date": "2021",
+                "sourceUrl": "https://github.com/psg107/ScriptLoader",
+                "skills": [
+                    "C#",
+                    "WPF",
+                    "AutoHotkey",
+                    "Sqlite"
+                ]
+            },
+            {
+                "name": "온라인 게임 멀티 클라이언트 도우미",
+                "type": [
+                    "Private"
+                ],
+                "description": "온라인 게임의 멀티 클라이언트를 쉽게 관리할 수 있도록 도와주는 프로그램입니다.\n메인/서브 클라이언트를 지정한 후 서브 클라이언트의 CPU 점유율을 조절하여 낮은 사양의 컴퓨터에서도 멀티 클라이언트를 사용할 수 있도록 도와줍니다.",
+                "date": "2021",
+                "sourceUrl": "https://github.com/psg107/MabiMultiClientHelper",
+                "skills": [
+                    "C#",
+                    "WPF"
+                ]
+            },
+            {
+                "name": "뽐뿌 모니터링 텔레그램 봇",
+                "type": [
+                    "Private"
+                ],
+                "description": "핫딜을 공유하는 사이트인 뽐뿌의 게시판을 모니터링하는 봇입니다.\n봇에 특정 키워드를 등록하면 해당 키워드가 포함된 새로운 글이 올라올 때 알림을 받을 수 있습니다.",
+                "date": "2020",
+                "sourceUrl": "https://github.com/psg107/TelegramMonitorServer",
+                "skills": [
+                    "C#",
+                    "EntityFramework",
+                    "Crawling",
+                    "XPath",
+                    "TelegramAPI"
+                ]
+            },
+            {
+                "name": "인터파크 자동 티켓팅 (PC API 활용)",
+                "type": [
+                    "Private"
+                ],
+                "description": "인터파크에서 자동으로 티켓을 구매하는 프로그램입니다.\n아이디, 패스워드, 상품url, 공연 날짜, 시간을 입력하면 무통장결제 방식으로 자동으로 자동으로 구매합니다.\n캡챠(매크로 방지)가 나타나면 OpenCV 라이브러리를 활용하여 자동으로 이미지를 인식하여 코드를 입력합니다.\n사람이 몰릴 때 PC API 가 응답하지 않는 문제로 인해 모바일 API를 활용하도록 변경했습니다.",
+                "date": "2020",
+                "sourceUrl": "https://github.com/psg107/InterparkTicketing",
+                "skills": [
+                    "C#",
+                    "WPF",
+                    "Crawling",
+                    "XPath",
+                    "Regex",
+                    "OpenCV",
+                    "Tesseract"
+                ]
+            },
+            {
+                "name": "인터파크 자동 티켓팅 (모바일 API 활용)",
+                "type": [
+                    "Private",
+                    "Incomplete"
+                ],
+                "description": "인터파크에서 자동으로 티켓을 구매하는 프로그램입니다.\n아이디, 패스워드, 상품url, 공연 날짜, 시간을 입력하면 무통장결제 방식으로 자동으로 자동으로 구매합니다.\n캡챠(매크로 방지)가 나타나면 OpenCV 라이브러리를 활용하여 자동으로 이미지를 인식하여 코드를 입력합니다.",
+                "date": "2020",
+                "sourceUrl": "https://github.com/psg107/InterparkTicketingM",
+                "skills": [
+                    "C#",
+                    "WPF",
+                    "Crawling",
+                    "XPath",
+                    "Regex",
+                    "OpenCV",
+                    "Tesseract"
+                ]
+            },
+            {
+                "name": "쿠팡 자동 결제 dll",
+                "type": [
+                    "Private"
+                ],
+                "description": "쿠팡에서 판매하는 물건을 자동으로 구매하는 기능을 제공하는 dll 파일입니다.\n아이디, 패스워드, 상품url을 입력하면 자동으로 구매가 이루어집니다.",
+                "date": "2020",
+                "sourceUrl": "https://github.com/psg107/CoupangPaymentLib",
+                "skills": [
+                    "C#",
+                    "Dll",
+                    "Crawling",
+                    "XPath",
+                    "Regex"
+                ]
+            },
+            {
+                "name": "경북 교육행정포털 일정관리 윈도우 프로그램",
+                "type": [
+                    "Private"
+                ],
+                "description": "일정관리를 위한 윈도우 응용 프로그램의 고도화 프로젝트입니다.",
+                "date": "2020",
+                "sourceUrl": null,
+                "skills": [
+                    "C#",
+                    "WPF",
+                    "RestAPI",
+                    "Sqlite"
+                ]
+            },
+            {
+                "name": "온라인 보드 게임 이미지 인식 프로그램",
+                "type": [
+                    "Private"
+                ],
+                "description": "OpenCV 라이브러리를 활용하여 만든 이미지 인식 프로그램으로 휴대폰으로 촬영한 보드 게임 사진을 입력받으면 자동으로 색깔을 인식하고 데이터화를 하는 프로그램입니다.",
+                "date": "2020",
+                "sourceUrl": "https://github.com/psg107/BaccaratHelper",
+                "skills": [
+                    "C#",
+                    "Dll",
+                    "OpenCV",
+                    "Regex"
+                ]
+            },
+            {
+                "name": "온라인 보드 게임 도우미 프로그램",
+                "type": [
+                    "Private"
+                ],
+                "description": "보드 게임의 사진을 인식해서 쌓은 데이터를 기반으로 여러 통계를 보여주는 프로그램입니다.",
+                "date": "2020",
+                "sourceUrl": "https://github.com/psg107/BaccaratHelper",
+                "skills": [
+                    "C#",
+                    "WPF",
+                    "Dll",
+                    "Regex",
+                    "RestAPI"
+                ]
+            },
+            {
+                "name": "온라인 보드 게임 도우미 인증 서버",
+                "type": [
+                    "Private"
+                ],
+                "description": "온라인 보드 게임 도우미 프로그램을 사용하기 위한 로그인 인증 서버입니다.\n로그인 인증, 사용자 차단 기능, 로그인 히스토리 관리 기능을 제공합니다.",
+                "date": "2020",
+                "sourceUrl": "https://github.com/psg107/BaccaratHelper",
+                "skills": [
+                    "C#",
+                    "ASP.NET",
+                    "ASP.NET WebAPI",
+                    "RestAPI",
+                    "EntityFramework",
+                    "JWT",
+                    "CentOS",
+                    "Mysql",
+                    "NaverCloudPlatform"
+                ]
+            },
+            {
+                "name": "온라인 보드 게임 도우미 관리자 프로그램",
+                "type": [
+                    "Private"
+                ],
+                "description": "온라인 보드 게임 도우미 프로그램이 허용된 사용자만 사용할 수 있도록 하기 위해 제작한 관리자 프로그램입니다.\n사용자 인증 허용, 사용자 차단 관리, 로그인 히스토리 등 기능이 포함되어 있습니다.",
+                "date": "2020",
+                "sourceUrl": "https://github.com/psg107/BaccaratHelper",
+                "skills": [
+                    "C#",
+                    "WPF",
+                    "JWT",
+                    "ASP.NET WebAPI"
+                ]
+            },
+            {
+                "name": "AutoCMS",
+                "type": [
+                    "Company"
+                ],
+                "description": "고객의 계좌로부터 렌탈비, 학원비, 기부금 등 각종 요금을 자동으로 출금하는 프로그램입니다.\n매일 출금 대상을 조회하고 CMS 밴사에서 제공하는 라이브러리를 활용하여 자동 이체를 처리합니다.",
+                "date": "2019 ~ 2021",
+                "sourceUrl": null,
+                "skills": [
+                    "C#",
+                    "Windows Console",
+                    "MSSQL",
+                    "Dll"
+                ]
+            },
+            {
+                "name": "CRM",
+                "type": [
+                    "Company"
+                ],
+                "description": "고객 관리를 위한 윈도우 응용 프로그램으로 WPF + DevExpress 컴포넌트를 활용하여 제작되었습니다.\n서버 API를 활용한 데이터 처리, 실시간 전화 및 팩스 알림 수신, 메일 전송, 프린팅, 엑셀, PDF 생성 등 여러 편의 기능이 포함되었습니다.",
+                "date": "2018 ~ 2021",
+                "sourceUrl": null,
+                "skills": [
+                    "C#",
+                    "WPF",
+                    "DevExpressWPF",
+                    "SignalR",
+                    "Crawling",
+                    "XPath",
+                    "Regex",
+                    "MSSQL"
+                ]
+            },
+            {
+                "name": "CMS Mobile",
+                "type": [
+                    "Company"
+                ],
+                "description": "윈도우 응용 프로그램 솔루션의 모바일 어플리케이션입니다.",
+                "date": "2018 ~ 2021",
+                "sourceUrl": null,
+                "skills": [
+                    "C#",
+                    "Xamarin",
+                    "Android",
+                    "IOS",
+                    "Firebase",
+                    "FirebaseNotification",
+                    "FirebaseRemoteConfig",
+                    "Sqlite"
+                ]
+            },
+            {
+                "name": "ASP.NET MVC 웹페이지 운영",
+                "type": [
+                    "Company"
+                ],
+                "description": "ASP.NET MVC로 작성된 웹사이트를 운영했습니다.",
+                "date": "2018 ~ 2021",
+                "sourceUrl": null,
+                "skills": [
+                    "C#",
+                    "ASP.NET MVC"
+                ]
+            },
+            {
+                "name": "Classic ASP 웹페이지 운영",
+                "type": [
+                    "Company"
+                ],
+                "description": "Classic ASP로 작성된 웹사이트를 운영했습니다.",
+                "date": "2018 ~ 2021",
+                "sourceUrl": null,
+                "skills": [
+                    "C#",
+                    "ClassicASP",
+                    "Html",
+                    "Css",
+                    "Javascript"
+                ]
+            },
+            {
+                "name": "MSSQL DB 운영",
+                "type": [
+                    "Company"
+                ],
+                "description": "회사에서 사용하던 MSSQL DB 운영 작업으로 각종 쿼리 및 프로시저를 작성했습니다.",
+                "date": "2018 ~ 2021",
+                "sourceUrl": null,
+                "skills": [
+                    "MSSQL"
+                ]
+            },
+            {
+                "name": "모바일게임 매크로",
+                "type": [
+                    "Private",
+                    "Incomplete"
+                ],
+                "description": "모바일 게임 매크로 프로그램입니다.\n약 2년 정도 매주 게임이 업데이트가 될 때 대응 패치를 했으며 현재는 더 이상 관리하고 있지 않습니다.",
+                "date": "2017 ~ 2019",
+                "sourceUrl": "https://github.com/psg107/SKMacro",
+                "skills": [
+                    "AutoHotkey",
+                    "AutoHotkeyGUI",
+                    "AndroidEmulator"
+                ]
+            },
+            {
+                "name": "대학교 원격출석 프로그램",
+                "type": [
+                    "Private"
+                ],
+                "description": "대학교 원격 출석 프로그램으로 학교 계정 정보를 미리 입력한 후 출석 요청 버튼을 누르면 LMS 시간표에서 불러온 강의실과 DB에 저장된 강의실 고유 키를 조합하여 자동으로 출석을 합니다.",
+                "date": "2017",
+                "sourceUrl": null,
+                "skills": [
+                    "Html",
+                    "Css",
+                    "Javascript",
+                    "Mysql",
+                    "Php",
+                    "Android"
+                ]
+            },
+            {
+                "name": "카풀 안드로이드 어플리케이션",
+                "type": [
+                    "Private"
+                ],
+                "description": "대학 과제로 제작했던 카풀 어플리케이션으로 운전자/동승자를 선택하면 상대방을 매칭해줍니다.",
+                "date": "2017",
+                "sourceUrl": null,
+                "skills": [
+                    "Android",
+                    "AndroidWebView",
+                    "Jsp",
+                    "Mysql",
+                    "OpenAPI"
+                ]
+            },
+            {
+                "name": "자동화 프로그램",
+                "type": [
+                    "Private"
+                ],
+                "description": "스크립트 언어로 각종 자동화 프로그램을 제작했습니다.",
+                "date": "2009 ~ ",
+                "sourceUrl": null,
+                "skills": [
+                    "AutoHotkey"
+                ]
+            }
+        ]
+        // [...new Set(projects.flatMap(x => x.skills))].sort()
+
+        let projectSection = document.querySelector('.section > .projects');
+
+        projects.forEach(project => {
+            projectSection.innerHTML += `
+                <div class="project">
+                    <h3 class="name">${project.name}</h3>
+                    <p class="date">(${project.date})</p>
+                    <p class="skills">${project.skills.join(', ')}</p>
+                    <p class="description">${project.description.replaceAll("\n", "<br/>")}</p>
+                </div>
+            `
+        })
+    </script>
+</body>
+
+</html>
