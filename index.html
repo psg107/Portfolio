@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./style.css" rel="stylesheet">
+    <title>포트폴리오</title>
+</head>
+
+<body>
+    <header>
+        <h1>포트폴리오</h1>
+    </header>
+    <div class="container">
+        <div class="main">
+            <div class="modal-overlay" id="modalOverlay">
+                <div class="modal-content">
+                    <img src="" alt="image" id="modalImage">
+                </div>
+            </div>
+
+            <!-- 프로필 -->
+            <div class="section section-profile">
+                <h2>프로필</h2>
+                <p>개발자 박상곤입니다.</p>
+            </div>
+
+            <!-- 연락처 -->
+            <div class="section section-contact">
+                <h2>연락처</h2>
+                <p>Email: psg107@naver.com</p>
+                <p>GitHub: <a href="https://github.com/psg107">https://github.com/psg107</a></p>
+                <p>LinkedIn: <a
+                        href="https://www.linkedin.com/in/상곤-박-843b8522b/">https://www.linkedin.com/in/상곤-박-843b8522b/</a>
+                </p>
+            </div>
+
+            <!-- 프로젝트 -->
+            <div class="section section-project">
+                <h2>프로젝트</h2>
+                <div class="projects"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let projects = [
+            {
+                "name": "여행 패키지 검색 API",
+                "type": [
+                    "Company"
+                ],
+                "description": "신규 여행 패키지 시스템의 검색 서비스로 코틀린+스프링부트 환경에서 개발했습니다.\n기존 패키지 상품, 신규 패키지 상품을 통합하여 상품을 검색할 수 있습니다.",
+                "date": "2024.06 ~ ",
+                "link": "https://travel.interpark.com/package-search",
+                "repositoryType": "Private",
+                "skills": [
+                    "Kotlin",
+                    "SpringBoot",
+                    "MongoDB",
+                    "AWS",
+                    "AWS ECS",
+                    "AWS Scheduled Task",
+                    "Amazon SQS",
+                    "Terraform",
+                    "Github Enterprise",
+                    "Github Actions",
+                    "CI/CD",
+                    "Redis",
+                    "ES",
+                ]
+            },
+            {
+                "name": "여행 패키지 전시 API",
+                "type": [
+                    "Company"
+                ],
+                "description": "신규 여행 패키지 시스템의 전시 서비스로 코틀린+스프링부트 환경에서 개발했습니다.\n기존 패키지 상품, 신규 패키지 상품을 통합하여 상품을 전시할 수 있습니다.",
+                "date": "2024.06 ~ ",
+                "link": "https://travel.interpark.com/tour/package/main",
+                "repositoryType": "Private",
+                "skills": [
+                    "Kotlin",
+                    "SpringBoot",
+                    "MongoDB",
+                    "AWS",
+                    "AWS ECS",
+                    "AWS Scheduled Task",
+                    "Amazon SQS",
+                    "Terraform",
+                    "Github Enterprise",
+                    "Github Actions",
+                    "CI/CD",
+                    "Redis",
+                    "ES",
+                ]
+            },
+            {
+                "name": "여행 패키지 예약 API",
+                "type": [
+                    "Company"
+                ],
+                "description": "신규 여행 패키지 시스템의 예약 서비스로 코틀린+스프링부트 환경에서 개발했습니다.",
+                "date": "2023.08 ~ ",
+                "skills": [
+                    "Kotlin",
+                    "SpringBoot",
+                    "MongoDB",
+                    "AWS",
+                    "AWS ECS",
+                    "AWS Scheduled Task",
+                    "Amazon SQS",
+                    "Amazon Kinesis",
+                    "Terraform",
+                    "Github Enterprise",
+                    "Github Actions",
+                    "CI/CD",
+                    "Redis"
+                ]
+            },
+            {
+                "name": "여행 패키지 상품 API",
+                "type": [
+                    "Company"
+                ],
+                "description": "신규 여행 패키지 시스템의 상품 서비스로 코틀린+스프링부트 환경에서 개발했습니다.",
+                "date": "2023.08 ~ ",
+                "skills": [
+                    "Kotlin",
+                    "SpringBoot",
+                    "MongoDB",
+                    "AWS",
+                    "AWS ECS",
+                    "AWS Scheduled Task",
+                    "Amazon SQS",
+                    "Amazon Kinesis",
+                    "Terraform",
+                    "Github Enterprise",
+                    "Github Actions",
+                    "CI/CD",
+                    "Redis"
+                ]
+            },
+            {
+                "name": "여행 패키지 어드민",
+                "type": [
+                    "Company"
+                ],
+                "description": "신규 여행 패키지 시스템을 관리할 있는 어드민 페이지로 리액트+Next.js 환경에서 개발했습니다.",
+                "date": "2023.08 ~ ",
+                "skills": [
+                    "React",
+                    "Next.js",
+                    "AWS",
+                    "AWS ECS",
+                    "Terraform",
+                    "Github Enterprise",
+                    "Github Actions",
+                    "CI/CD"
+                ]
+            },
+            {
+                "name": "카카오톡 이모티콘 추출기",
+                "type": [
+                    "Private"
+                ],
+                "description": "윈도우 PC 버전의 카카오톡 프로그램의 메모리에서 webp 이미지를 추출하는 프로그램입니다.\ngithub에 공개되어 있는 c++ 소스를 참고하여 C# 버전으로 제작했습니다.",
+                "date": "2023",
+                "repositoryUrl": "https://github.com/psg107/KEmojiExtractorDotnet",
+                "repositoryType": "Private",
+                "skills": [
+                    "C#",
+                    "Windows Console",
+                    "C++",
+                    "WinAPI"
+                ]
+            },
+            {
+                "name": "Youtube Short Time Controller",
+                "image": "ystc.png",
+                "type": [
+                    "Private"
+                ],
+                "description": "유튜브 쇼츠를 편하게 볼 수 있도록 제작한 크롬 확장프로그램입니다.",
+                "date": "2023",
+                "repositoryUrl": "https://github.com/psg107/YoutubeShortTimeController",
+                "repositoryType": "Private",
+                "skills": [
+                    "Html",
+                    "Javascript"
+                ]
+            },
+            {
+                "name": "SRT 기차 자동 예매",
+                "type": [
+                    "Private"
+                ],
+                "description": "SRT 기차 티켓을 자동으로 구매하는 프로그램입니다.\n아이디, 패스워드, 예매 날짜, 기차 시간, 출발역, 도착역을 입력하면 자동으로 해당 티켓을 구매합니다.",
+                "date": "2022",
+                "repositoryUrl": "https://github.com/psg107/SRT_Ticketing",
+                "repositoryType": "Private",
+                "skills": [
+                    "C#",
+                    "Windows Console",
+                    "RestAPI"
+                ]
+            },
+            {
+                "name": "호스트 관리 프로그램",
+                "type": [
+                    "Company"
+                ],
+                "description": "호스트 변경을 도와주는 프로그램입니다.\n개발/스테이징/운영 서버의 호스트 세팅을 편하게 전환할 수 있도록 프리셋을 등록하고 관리하는 기능을 제공합니다.",
+                "date": "2022",
+                "skills": [
+                    "C#",
+                    "WPF",
+                    "MSSQL"
+                ]
+            },
+            {
+                "name": "인터파크 여행 패키지 상품 메인 개편",
+                "type": [
+                    "Company"
+                ],
+                "description": "여행 패키지 상품 메인 페이지 개편 프로젝트입니다.",
+                "date": "2023",
+                "skills": [
+                    "C#",
+                    "RestAPI",
+                    "ASP.NET WebAPI",
+                    "Java",
+                    "SpringBoot",
+                    "Github Actions"
+                ]
+            },
+            {
+                "name": "인터파크 - 현대카드 PLCC 연동",
+                "type": [
+                    "Company"
+                ],
+                "description": "현대카드 제휴 카드인 NOL 카드 및 포인트 연동 프로젝트입니다.",
+                "date": 2023,
+                "skills": [
+                    "C#",
+                    "ASP.NET MVC",
+                    "RestAPI",
+                    "ASP.NET WebAPI",
+                    "MSSQL"
+                ]
+            },
+            {
+                "name": "인터파크 - 모두투어 상품 연동",
+                "type": [
+                    "Company"
+                ],
+                "description": "인터파크 - 모두투어 여행 패키지 상품 연동 프로젝트입니다.",
+                "date": 2023,
+                "skills": [
+                    "C#",
+                    "ASP.NET MVC",
+                    "RestAPI",
+                    "ASP.NET WebAPI",
+                    "MSSQL",
+                    "Windows Batch"
+                ]
+            },
+            {
+                "name": "인터파크 - 네이버 상품 연동",
+                "type": [
+                    "Company"
+                ],
+                "description": "인터파크 - 네이버 여행 패키지 상품 연동 프로젝트입니다.",
+                "date": "2022",
+                "skills": [
+                    "C#",
+                    "RestAPI",
+                    "MSSQL"
+                ]
+            },
+            {
+                "name": "인터파크 - 야놀자 여행 패키지 상품 연동",
+                "type": [
+                    "Company",
+                    "Incomplete"
+                ],
+                "description": "인터파크 - 야놀자 여행 패키지 상품 연동 프로젝트입니다.",
+                "date": "2022",
+                "skills": [
+                    "C#",
+                    "RestAPI",
+                    "MSSQL"
+                ]
+            },
+            {
+                "name": "인터파크 여행 패키지 운영",
+                "type": [
+                    "Company"
+                ],
+                "description": "여행 패키지 서비스 운영을 위해 프론트, 어드민, API, DB, 배치 등 여러 시스템을 관리하는 업무입니다.",
+                "date": "2021.06 ~ 2023.08",
+                "skills": [
+                    "C#",
+                    "Windows Console",
+                    "Windows Batch",
+                    "RestAPI",
+                    "WCF Rest",
+                    "IIS",
+                    "ASP.NET",
+                    "ASP.NET MVC",
+                    "ASP.NET WebAPI",
+                    "ClassicASP",
+                    "Html",
+                    "Css",
+                    "Javascript",
+                    "JQuery",
+                    "MSSQL",
+                    "MSSQL Job",
+                    "OpenAPI",
+                    "Gitlab",
+                    "Jenkins",
+                    "Github Enterprise",
+                    "Github Actions",
+                    "Jira",
+                    "Slack"
+                ]
+            },
+            {
+                "name": "게시글 자동 추천 프로그램",
+                "image": "hu.png",
+                "type": [
+                    "Private"
+                ],
+                "description": "인터넷 커뮤니티 웃긴대학 게시글을 자동으로 추천하는 프로그램입니다.\n추천수가 베스트 기준보다 1개 미달인 게시글을 찾은 후 추천합니다.",
+                "date": "2021",
+                "repositoryUrl": "https://github.com/psg107/HumorUnivAutoAssist",
+                "repositoryType": "Private",
+                "skills": [
+                    "C#",
+                    "Windows Console",
+                    "Regex",
+                    "XPath"
+                ]
+            },
+            {
+                "name": "스위치봇 제어 어플리케이션",
+                "type": [
+                    "Private",
+                    "Incomplete"
+                ],
+                "description": "IOT 기기 스위치봇을 제어하는 모바일 어플리케이션입니다.\n블루투스로 기기를 찾고 온/오프 명령을 내릴 수 있습니다.",
+                "date": "2021",
+                "repositoryUrl": "https://github.com/psg107/XamarinSwitchBot",
+                "repositoryType": "Private",
+                "skills": [
+                    "C#",
+                    "Xamarin",
+                    "BLE",
+                    "Android",
+                    "IOS",
+                    "Android Widget"
+                ]
+            },
+            {
+                "name": "스크립트 로더",
+                "image": "sl.png",
+                "type": [
+                    "Private"
+                ],
+                "description": "여러 오토핫키 스크립트를 하나의 응용 프로그램으로 관리하기 위한 윈도우 어플리케이션입니다.\n스크립트가 포함된 폴더를 선택하여 여러 스크립트 중 원하는 스크립트를 편하게 실행하는 기능을 제공합니다.\n또한 일부 온라인게임의 매크로 감지를 우회할 수 있습니다.",
+                "date": "2021",
+                "repositoryUrl": "https://github.com/psg107/ScriptLoader",
+                "repositoryType": "Private",
+                "skills": [
+                    "C#",
+                    "WPF",
+                    "AutoHotkey",
+                    "Sqlite"
+                ]
+            },
+            {
+                "name": "온라인 게임 멀티 클라이언트 도우미",
+                "image": "mmch.png",
+                "type": [
+                    "Private"
+                ],
+                "description": "온라인 게임의 멀티 클라이언트를 제어하는 프로그램입니다.\n메인/서브 클라이언트 지정 기능, 클라이언트별 CPU 점유율 조절 기능, 단축키를 통한 클라이언트 스위칭 기능을 통해 여러 클라이언트를 편하게 제어할 수 있습니다.",
+                "date": "2021",
+                "repositoryUrl": "https://github.com/psg107/MabiMultiClientHelper",
+                "repositoryType": "Private",
+                "skills": [
+                    "C#",
+                    "WPF"
+                ]
+            },
+            {
+                "name": "뽐뿌 알림봇",
+                "image": "bbmonitor.png",
+                "type": [
+                    "Private"
+                ],
+                "description": "핫딜을 공유하는 사이트인 뽐뿌의 게시판의 키워드 알림봇입니다.\n등록된 키워드가 포함된 글을 발견하면 휴대폰으로 알림을 받을 수 있습니다.",
+                "date": "2020",
+                "repositoryUrl": "https://github.com/psg107/TelegramMonitorServer",
+                "repositoryType": "Private",
+                "skills": [
+                    "C#",
+                    "EntityFramework",
+                    "Crawling",
+                    "XPath",
+                    "TelegramAPI"
+                ]
+            },
+            {
+                "name": "인터파크 자동 티켓팅",
+                "image": "it.png",
+                "type": [
+                    "Private"
+                ],
+                "description": "인터파크에서 자동으로 티켓을 구매하는 프로그램입니다.\n아이디, 패스워드, 상품url, 공연 날짜, 시간을 입력하면 무통장결제 방식으로 자동으로 자동으로 구매합니다.\nOpenCV 라이브러리를 활용하여 자동으로 캡챠(매크로 방지)를 인식합니다.",
+                "date": "2020",
+                "repositoryUrl": "https://github.com/psg107/InterparkTicketing",
+                "repositoryType": "Private",
+                "skills": [
+                    "C#",
+                    "WPF",
+                    "Crawling",
+                    "XPath",
+                    "Regex",
+                    "OpenCV",
+                    "Tesseract"
+                ]
+            },
+            {
+                "name": "쿠팡 자동 결제 dll",
+                "image": "cp.png",
+                "type": [
+                    "Private"
+                ],
+                "description": "쿠팡에서 판매하는 물건을 자동으로 구매하는 기능을 제공하는 dll 파일입니다.\n아이디, 패스워드, 상품url을 입력하면 상품을 자동으로 구매합니다.",
+                "date": "2020",
+                "repositoryUrl": "https://github.com/psg107/CoupangPaymentLib",
+                "repositoryType": "Private",
+                "skills": [
+                    "C#",
+                    "Dll",
+                    "Crawling",
+                    "XPath",
+                    "Regex"
+                ]
+            },
+            {
+                "name": "경북 교육행정포털 일정관리 윈도우 프로그램",
+                "image": "info.jpg",
+                "type": [
+                    "Private"
+                ],
+                "description": "일정관리를 위한 윈도우 응용 프로그램입니다.",
+                "date": "2020",
+                "skills": [
+                    "C#",
+                    "WPF",
+                    "RestAPI",
+                    "Sqlite"
+                ]
+            },
+            {
+                "name": "AutoCMS",
+                "type": [
+                    "Company"
+                ],
+                "description": "렌탈비, 학원비, 기부금 등 각종 요금을 자동으로 출금할 수 있도록 관리하는 프로그램입니다.\n밴사 라이브러리를 활용하여 계좌 자동 이체를 처리합니다.",
+                "date": "2019 ~ 2021",
+                "skills": [
+                    "C#",
+                    "Windows Console",
+                    "MSSQL",
+                    "Dll"
+                ]
+            },
+            {
+                "name": "CRM",
+                "type": [
+                    "Company"
+                ],
+                "description": "고객 관리를 위한 윈도우 응용 프로그램으로 WPF + DevExpress 컴포넌트를 활용하여 제작되었습니다.\n서버 API를 활용한 데이터 처리, 실시간 전화 및 팩스 알림 수신, 메일 전송, 프린팅, 엑셀, PDF 생성 등 여러 편의 기능이 포함되었습니다.",
+                "date": "2018 ~ 2021",
+                "skills": [
+                    "C#",
+                    "WPF",
+                    "DevExpressWPF",
+                    "SignalR",
+                    "Crawling",
+                    "XPath",
+                    "Regex",
+                    "MSSQL"
+                ]
+            },
+            {
+                "name": "CMS Mobile",
+                "type": [
+                    "Company"
+                ],
+                "description": "윈도우 응용 프로그램 솔루션의 모바일 어플리케이션입니다.",
+                "date": "2018 ~ 2021",
+                "skills": [
+                    "C#",
+                    "Xamarin",
+                    "Android",
+                    "IOS",
+                    "Firebase",
+                    "FirebaseNotification",
+                    "FirebaseRemoteConfig",
+                    "Sqlite"
+                ]
+            },
+            {
+                "name": "ASP.NET MVC 웹페이지 관리",
+                "type": [
+                    "Company"
+                ],
+                "description": "ASP.NET MVC로 작성된 웹사이트를 관리했습니다.",
+                "date": "2018 ~ 2021",
+                "skills": [
+                    "C#",
+                    "ASP.NET MVC"
+                ]
+            },
+            {
+                "name": "Classic ASP 웹페이지 관리",
+                "type": [
+                    "Company"
+                ],
+                "description": "Classic ASP로 작성된 웹사이트를 관리했습니다.",
+                "date": "2018 ~ 2021",
+                "skills": [
+                    "C#",
+                    "ClassicASP",
+                    "Html",
+                    "Css",
+                    "Javascript"
+                ]
+            },
+            {
+                "name": "MSSQL DB 관리",
+                "type": [
+                    "Company"
+                ],
+                "description": "MSSQL 쿼리를 작성하고 DB를 관리했습니다.",
+                "date": "2018 ~ 2021",
+                "skills": [
+                    "MSSQL"
+                ]
+            },
+            {
+                "name": "모바일게임 매크로",
+                "image": "skmacro.png",
+                "type": [
+                    "Private",
+                    "Incomplete"
+                ],
+                "description": "모바일 게임 매크로 프로그램입니다.",
+                "date": "2017 ~ 2019",
+                "skills": [
+                    "AutoHotkey",
+                    "AutoHotkeyGUI",
+                    "AndroidEmulator"
+                ]
+            },
+            {
+                "name": "대학교 원격출석 프로그램",
+                "image": "remoteattend.png",
+                "type": [
+                    "Private"
+                ],
+                "description": "대학교 원격 출석 프로그램입니다.\n로그인 후 출석 요청 버튼을 누르면 현재 시간, 학과 시간표에서 불러온 강의실, DB에 저장된 강의실키를 조합하여 자동으로 출석합니다.",
+                "date": "2017",
+                "skills": [
+                    "Html",
+                    "Css",
+                    "Javascript",
+                    "Mysql",
+                    "Php",
+                    "Android"
+                ]
+            },
+            {
+                "name": "카풀 안드로이드 어플리케이션",
+                "type": [
+                    "Private"
+                ],
+                "description": "카풀 어플리케이션으로 운전자,동승자를 매칭할 수 있습니다.",
+                "date": "2017",
+                "skills": [
+                    "Android",
+                    "AndroidWebView",
+                    "Jsp",
+                    "Mysql",
+                    "OpenAPI"
+                ]
+            },
+            {
+                "name": "자동화 프로그램",
+                "type": [
+                    "Private"
+                ],
+                "description": "오토핫키 스크립트로 각종 자동화 프로그램을 제작했습니다.",
+                "date": "2009 ~ ",
+                "skills": [
+                    "AutoHotkey"
+                ]
+            }
+        ]
+
+        let projectSection = document.querySelector('.section > .projects');
+
+        projects.forEach(project => {
+            var projectUrl = project.repositoryType != "Private" ? project.repositoryUrl : null;
+            var url = projectUrl ?? project.link;
+
+            projectSection.innerHTML += `
+                <div class="project">
+                    <div class="project-header">
+                        <h3 class="name">${project.name}</h3>
+                        <div class="date-btn-container">
+                            <p class="date">(${project.date})</p>
+                            ${project.image != null ? `<button class="show-image-btn" data-image-url="${project.image}">🖼️</button>` : ""}
+                        </div>
+                    </div>
+
+                    <p class="skills">${project.skills.join(', ')}</p>
+                    <p class="description">${project.description.replaceAll("\n", "<br/>")}</p>
+                    
+                    ${url != null ? `
+                    <a class="link" target="_blank" href='${url}'>${url}</a>
+                    ` : ""}
+                </div>
+            `
+        })
+
+        const showImageButtons = document.querySelectorAll('.show-image-btn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalImage = document.getElementById('modalImage');
+
+        showImageButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const imageUrl = button.getAttribute('data-image-url');
+                if (imageUrl) {
+                    modalImage.src = './images/' + imageUrl;
+                    modalOverlay.style.display = 'flex';
+                }
+            });
+        });
+
+        modalOverlay.addEventListener('click', () => {
+            modalOverlay.style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>
