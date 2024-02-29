@@ -13,35 +13,43 @@
             background-color: #f4f4f4;
             color: #333;
         }
+
         header {
             background-color: #333;
             color: #fff;
             padding: 20px;
             text-align: center;
         }
+
         h2 {
             color: #000;
         }
+
         .container {
             width: 80%;
             margin: auto;
             overflow: hidden;
         }
+
         .main {
             padding: 20px;
         }
+
         .section {
             margin-bottom: 50px;
         }
+
         .section h2 {
             border-left: 6px solid green;
             padding-left: 5px;
             height: 36px;
         }
+
         .name {
             margin: 0;
             display: inline-block;
         }
+
         .date {
             font-weight: bold;
             display: inline-block;
@@ -49,6 +57,7 @@
             margin: 0;
             margin-top: 8px;
         }
+
         .skills {
             font-style: italic;
             margin: 0;
@@ -56,17 +65,25 @@
             font-size: 15px;
             max-width: 1000px;
         }
+
         .description {
             margin: 0;
             margin-top: 12px;
             line-height: 20px;
         }
-        .project:nth-child(n+2) {
-            margin-top: 40px;
+
+        .project-image {
+            height: 200px;
         }
+
+        .project:nth-child(n+2) {
+            margin-top: 60px;
+        }
+
         .section-contact p {
             margin: 0;
         }
+
         .section-contact p:nth-child(n+3) {
             margin-top: 5px;
         }
@@ -96,7 +113,9 @@
                 <h2>연락처</h2>
                 <p>Email: psg107@naver.com</p>
                 <p>GitHub: <a href="https://github.com/psg107">https://github.com/psg107</a></p>
-                <p>LinkedIn: <a href="https://www.linkedin.com/in/상곤-박-843b8522b/">https://www.linkedin.com/in/상곤-박-843b8522b/</a></p>
+                <p>LinkedIn: <a
+                        href="https://www.linkedin.com/in/상곤-박-843b8522b/">https://www.linkedin.com/in/상곤-박-843b8522b/</a>
+                </p>
             </div>
         </div>
     </div>
@@ -104,6 +123,7 @@
     <script>
         let projects = [{
                 "name": "패키지 신규 개발",
+                "image": "",
                 "type": [
                     "Company"
                 ],
@@ -124,6 +144,7 @@
             },
             {
                 "name": "카카오톡 이모티콘 추출기",
+                "image": "",
                 "type": [
                     "Private"
                 ],
@@ -139,6 +160,7 @@
             },
             {
                 "name": "Youtube Short Time Controller",
+                "image": "ystc.png",
                 "type": [
                     "Private"
                 ],
@@ -152,6 +174,7 @@
             },
             {
                 "name": "SRT 기차 자동 예매",
+                "image": "",
                 "type": [
                     "Private"
                 ],
@@ -166,6 +189,7 @@
             },
             {
                 "name": "호스트 관리 프로그램",
+                "image": "",
                 "type": [
                     "Company"
                 ],
@@ -180,6 +204,7 @@
             },
             {
                 "name": "인터파크 패키지 상품 메인 개편",
+                "image": "",
                 "type": [
                     "Company"
                 ],
@@ -197,6 +222,7 @@
             },
             {
                 "name": "인터파크 - 현대카드 PLCC 연동",
+                "image": "",
                 "type": [
                     "Company"
                 ],
@@ -213,6 +239,7 @@
             },
             {
                 "name": "인터파크 - 모두투어 상품 연동",
+                "image": "",
                 "type": [
                     "Company"
                 ],
@@ -230,6 +257,7 @@
             },
             {
                 "name": "인터파크 - 네이버 상품 연동",
+                "image": "",
                 "type": [
                     "Company"
                 ],
@@ -244,6 +272,7 @@
             },
             {
                 "name": "인터파크 - 야놀자 상품 연동",
+                "image": "",
                 "type": [
                     "Company",
                     "Incomplete"
@@ -259,6 +288,7 @@
             },
             {
                 "name": "인터파크 여행 패키지 운영",
+                "image": "",
                 "type": [
                     "Company"
                 ],
@@ -293,6 +323,7 @@
             },
             {
                 "name": "웃긴대학 자동 어시스트 프로그램",
+                "image": "hu.png",
                 "type": [
                     "Private"
                 ],
@@ -308,6 +339,7 @@
             },
             {
                 "name": "스위치봇 제어 어플리케이션",
+                "image": "",
                 "type": [
                     "Private",
                     "Incomplete"
@@ -325,6 +357,7 @@
             },
             {
                 "name": "스크립트 로더",
+                "image": "sl.png",
                 "type": [
                     "Private"
                 ],
@@ -340,6 +373,7 @@
             },
             {
                 "name": "온라인 게임 멀티 클라이언트 도우미",
+                "image": "mmch.png",
                 "type": [
                     "Private"
                 ],
@@ -353,6 +387,7 @@
             },
             {
                 "name": "뽐뿌 모니터링 텔레그램 봇",
+                "image": "bbmonitor.png",
                 "type": [
                     "Private"
                 ],
@@ -369,6 +404,7 @@
             },
             {
                 "name": "인터파크 자동 티켓팅 (PC API 활용)",
+                "image": "it.png",
                 "type": [
                     "Private"
                 ],
@@ -387,6 +423,7 @@
             },
             {
                 "name": "인터파크 자동 티켓팅 (모바일 API 활용)",
+                "image": "itm.png",
                 "type": [
                     "Private",
                     "Incomplete"
@@ -406,6 +443,7 @@
             },
             {
                 "name": "쿠팡 자동 결제 dll",
+                "image": "cp.png",
                 "type": [
                     "Private"
                 ],
@@ -422,6 +460,7 @@
             },
             {
                 "name": "경북 교육행정포털 일정관리 윈도우 프로그램",
+                "image": "info.jpg",
                 "type": [
                     "Private"
                 ],
@@ -437,6 +476,7 @@
             },
             {
                 "name": "온라인 보드 게임 이미지 인식 프로그램",
+                "image": "bhd.png",
                 "type": [
                     "Private"
                 ],
@@ -452,6 +492,7 @@
             },
             {
                 "name": "온라인 보드 게임 도우미 프로그램",
+                "image": "bh.png",
                 "type": [
                     "Private"
                 ],
@@ -468,6 +509,7 @@
             },
             {
                 "name": "온라인 보드 게임 도우미 인증 서버",
+                "image": "bc.png",
                 "type": [
                     "Private"
                 ],
@@ -488,6 +530,7 @@
             },
             {
                 "name": "온라인 보드 게임 도우미 관리자 프로그램",
+                "image": "bm.png",
                 "type": [
                     "Private"
                 ],
@@ -503,6 +546,7 @@
             },
             {
                 "name": "AutoCMS",
+                "image": "",
                 "type": [
                     "Company"
                 ],
@@ -518,6 +562,7 @@
             },
             {
                 "name": "CRM",
+                "image": "",
                 "type": [
                     "Company"
                 ],
@@ -537,6 +582,7 @@
             },
             {
                 "name": "CMS Mobile",
+                "image": "",
                 "type": [
                     "Company"
                 ],
@@ -556,6 +602,7 @@
             },
             {
                 "name": "ASP.NET MVC 웹페이지 운영",
+                "image": "",
                 "type": [
                     "Company"
                 ],
@@ -569,6 +616,7 @@
             },
             {
                 "name": "Classic ASP 웹페이지 운영",
+                "image": "",
                 "type": [
                     "Company"
                 ],
@@ -585,6 +633,7 @@
             },
             {
                 "name": "MSSQL DB 운영",
+                "image": "",
                 "type": [
                     "Company"
                 ],
@@ -597,6 +646,7 @@
             },
             {
                 "name": "모바일게임 매크로",
+                "image": "skmacro.png",
                 "type": [
                     "Private",
                     "Incomplete"
@@ -612,6 +662,7 @@
             },
             {
                 "name": "대학교 원격출석 프로그램",
+                "image": "remoteattend.png",
                 "type": [
                     "Private"
                 ],
@@ -629,6 +680,7 @@
             },
             {
                 "name": "카풀 안드로이드 어플리케이션",
+                "image": "",
                 "type": [
                     "Private"
                 ],
@@ -645,6 +697,7 @@
             },
             {
                 "name": "자동화 프로그램",
+                "image": "",
                 "type": [
                     "Private"
                 ],
@@ -663,10 +716,17 @@
         projects.forEach(project => {
             projectSection.innerHTML += `
                 <div class="project">
-                    <h3 class="name">${project.name}</h3>
-                    <p class="date">(${project.date})</p>
-                    <p class="skills">${project.skills.join(', ')}</p>
-                    <p class="description">${project.description.replaceAll("\n", "<br/>")}</p>
+                    ${project.image != "" ? `
+                    <a href="images/${project.image}" target="_blank">
+                        <img class="project-image" src="images/${project.image}" />
+                    </a>
+                    ` : ""}
+                    <div>
+                        <h3 class="name">${project.name}</h3>
+                        <p class="date">(${project.date})</p>
+                        <p class="skills">${project.skills.join(', ')}</p>
+                        <p class="description">${project.description.replaceAll("\n", "<br/>")}</p>
+                    </div>
                 </div>
             `
         })
