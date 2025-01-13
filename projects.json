@@ -4,7 +4,7 @@
         "type": [
             "Company"
         ],
-        "description": "신규 여행 패키지 시스템의 검색 서비스로 코틀린+스프링부트 환경에서 개발했습니다.\n기존 패키지 상품, 신규 패키지 상품을 통합하여 상품을 검색할 수 있습니다.",
+        "description": "신규 여행 패키지 시스템의 검색 서비스로 코틀린+스프링부트 환경에서 개발되었습니다.\n기존 패키지 상품과 신규 패키지 상품을 통합하여 사용자들이 다양한 패키지 상품을 쉽게 검색하고 필터링할 수 있는 기능을 제공합니다.",
         "date": "2024.06 ~ 2024.09",
         "link": "https://travel.interpark.com/package-search",
         "repositoryType": "Private",
@@ -29,7 +29,7 @@
         "type": [
             "Company"
         ],
-        "description": "신규 여행 패키지 시스템의 전시 서비스로 코틀린+스프링부트 환경에서 개발했습니다.\n기존 패키지 상품, 신규 패키지 상품을 통합하여 상품을 전시할 수 있습니다.",
+        "description": "신규 여행 패키지 시스템의 전시 서비스로 코틀린+스프링부트 환경에서 개발되었습니다.\n기존과 신규 여행 패키지 상품들을 하나의 통합된 플랫폼에서 전시하고 사용자에게 다양한 상품을 효과적으로 제공합니다.",
         "date": "2024.10 ~ 2024.11",
         "link": "https://travel.interpark.com/tour/package/main",
         "repositoryType": "Private",
@@ -54,7 +54,7 @@
         "type": [
             "Company"
         ],
-        "description": "신규 여행 패키지 시스템의 예약 서비스로 코틀린+스프링부트 환경에서 개발했습니다.",
+        "description": "신규 여행 패키지 시스템의 예약 서비스로 코틀린+스프링부트 환경에서 개발되었습니다.\n사용자가 여행 패키지를 선택하고 손쉽게 예약을 진행할 수 있도록 지원하는 기능을 구현했습니다.",
         "date": "2023.10 ~ 2024.05",
         "skills": [
             "Kotlin",
@@ -77,7 +77,7 @@
         "type": [
             "Company"
         ],
-        "description": "신규 여행 패키지 시스템의 상품 서비스로 코틀린+스프링부트 환경에서 개발했습니다.",
+        "description": "신규 여행 패키지 시스템의 상품 서비스로 코틀린+스프링부트 환경에서 개발되었습니다.\n여행 상품의 데이터를 관리하고 다양한 조건에 맞는 상품을 사용자에게 제공하는 기능을 구현했습니다.",
         "date": "2023.08 ~ 2024.05",
         "skills": [
             "Kotlin",
@@ -100,7 +100,7 @@
         "type": [
             "Company"
         ],
-        "description": "신규 여행 패키지 시스템을 관리할 있는 어드민 페이지로 리액트+Next.js 환경에서 개발했습니다.",
+        "description": "신규 여행 패키지 시스템을 관리할 수 있는 어드민 페이지로 리액트+Next.js 환경에서 개발되었습니다.\n어드민 페이지에서 여행 패키지의 관리 및 운영을 효율적으로 할 수 있는 다양한 기능을 제공합니다.",
         "date": "2023.09 ~ 2024.05",
         "skills": [
             "React",
@@ -118,7 +118,7 @@
         "type": [
             "Private"
         ],
-        "description": "윈도우 PC 버전의 카카오톡 프로그램의 메모리에서 webp 이미지를 추출하는 프로그램입니다.\ngithub에 공개되어 있는 c++ 소스를 참고하여 C# 버전으로 제작했습니다.",
+        "description": "윈도우 PC 버전의 카카오톡 프로그램에서 webp 이미지를 추출하는 프로그램입니다.\nGitHub에 공개된 C++ 소스를 기반으로 C#으로 이모티콘을 추출하는 기능을 개발했습니다.",
         "date": "2023",
         "repositoryUrl": "https://github.com/psg107/KEmojiExtractorDotnet",
         "repositoryType": "Private",
@@ -135,7 +135,7 @@
         "type": [
             "Private"
         ],
-        "description": "유튜브 쇼츠를 편하게 볼 수 있도록 제작한 크롬 확장프로그램입니다.",
+        "description": "유튜브 쇼츠를 편리하게 시청할 수 있도록 만든 크롬 확장 프로그램입니다.\n사용자가 쇼츠 콘텐츠를 더 효율적으로 소비할 수 있도록 시간을 관리하는 기능을 제공합니다.",
         "date": "2023",
         "repositoryUrl": "https://github.com/psg107/YoutubeShortTimeController",
         "repositoryType": "Private",
@@ -149,7 +149,7 @@
         "type": [
             "Private"
         ],
-        "description": "SRT 기차 티켓을 자동으로 구매하는 프로그램입니다.\n아이디, 패스워드, 예매 날짜, 기차 시간, 출발역, 도착역을 입력하면 자동으로 해당 티켓을 구매합니다.",
+        "description": "SRT 기차 티켓을 자동으로 구매하는 프로그램입니다.\n아이디, 패스워드, 예매 날짜, 기차 시간, 출발역, 도착역 등의 정보를 입력하면 자동으로 해당 티켓을 구매할 수 있는 기능을 구현했습니다.",
         "date": "2022",
         "repositoryUrl": "https://github.com/psg107/SRT_Ticketing",
         "repositoryType": "Private",
@@ -164,7 +164,7 @@
         "type": [
             "Company"
         ],
-        "description": "호스트 변경을 도와주는 프로그램입니다.\n개발/스테이징/운영 서버의 호스트 세팅을 편하게 전환할 수 있도록 프리셋을 등록하고 관리하는 기능을 제공합니다.",
+        "description": "호스트 변경을 도와주는 프로그램으로, 개발/스테이징/운영 서버의 호스트 세팅을 쉽게 전환하고 관리할 수 있는 기능을 제공합니다.",
         "date": "2022",
         "skills": [
             "C#",
@@ -177,7 +177,7 @@
         "type": [
             "Company"
         ],
-        "description": "여행 패키지 상품 메인 페이지 개편 프로젝트입니다.",
+        "description": "인터파크 여행 패키지 상품 메인 페이지 개편 프로젝트로, 상품 전시 방식을 최적화하여 사용자 경험을 향상시켰습니다.",
         "date": "2023.01 ~ 2023.02",
         "skills": [
             "C#",
@@ -193,7 +193,7 @@
         "type": [
             "Company"
         ],
-        "description": "현대카드 제휴 카드인 NOL 카드 및 포인트 연동 프로젝트입니다.",
+        "description": "현대카드 제휴 카드인 NOL 카드 및 포인트 연동 프로젝트로, 인터파크와 현대카드 API를 연동하여 결제 서비스를 개선했습니다.",
         "date": "2023.05 ~ 2023.06",
         "skills": [
             "C#",
@@ -208,7 +208,7 @@
         "type": [
             "Company"
         ],
-        "description": "인터파크 - 모두투어 여행 패키지 상품 연동 프로젝트입니다.",
+        "description": "인터파크와 모두투어의 여행 패키지 상품을 연동하는 프로젝트로, 두 시스템 간의 데이터 전송 및 상품 정보 동기화 기능을 구현했습니다.",
         "date": "2023.03 ~ 2023.04",
         "skills": [
             "C#",
@@ -224,7 +224,7 @@
         "type": [
             "Company"
         ],
-        "description": "인터파크 - 네이버 여행 패키지 상품 연동 프로젝트입니다.",
+        "description": "인터파크와 네이버의 여행 패키지 상품을 연동하는 프로젝트로, 네이버 API를 통해 상품 정보를 실시간으로 업데이트했습니다.",
         "date": "2021.11 ~ 2022.01",
         "skills": [
             "C#",
@@ -238,7 +238,7 @@
             "Company",
             "Incomplete"
         ],
-        "description": "인터파크 - 야놀자 여행 패키지 상품 연동 프로젝트입니다.",
+        "description": "인터파크와 야놀자의 여행 패키지 상품을 연동하는 프로젝트로, 실시간으로 상품 정보와 가격을 동기화하여 제공하는 서비스를 구현했습니다.",
         "date": "2022.03 ~ 2022.05",
         "skills": [
             "C#",
@@ -251,7 +251,7 @@
         "type": [
             "Company"
         ],
-        "description": "여행 패키지 서비스 운영을 위해 프론트, 어드민, API, DB, 배치 등 여러 시스템을 관리하는 업무입니다.",
+        "description": "여행 패키지 서비스 운영을 위해 프론트엔드, 어드민, API, DB, 배치 등 다양한 시스템을 관리하며 운영 효율성을 높였습니다.",
         "date": "2021.06 ~ 2023.08",
         "skills": [
             "C#",
@@ -285,7 +285,7 @@
         "type": [
             "Private"
         ],
-        "description": "인터넷 커뮤니티 웃긴대학 게시글을 자동으로 추천하는 프로그램입니다.\n추천수가 베스트 기준보다 1개 미달인 게시글을 찾은 후 추천합니다.",
+        "description": "인터넷 커뮤니티 웃긴대학 게시글을 자동으로 추천하는 프로그램입니다.\n추천수가 베스트 기준보다 1개 미달인 게시글을 찾아 자동으로 추천합니다.",
         "date": "2021",
         "repositoryUrl": "https://github.com/psg107/HumorUnivAutoAssist",
         "repositoryType": "Private",
@@ -302,7 +302,7 @@
             "Private",
             "Incomplete"
         ],
-        "description": "IOT 기기 스위치봇을 제어하는 모바일 어플리케이션입니다.\n블루투스로 기기를 찾고 온/오프 명령을 내릴 수 있습니다.",
+        "description": "IOT 기기인 스위치봇을 제어하는 모바일 어플리케이션입니다.\n블루투스를 이용해 기기를 검색하고 온/오프 명령을 내려 제어할 수 있는 기능을 제공합니다.",
         "date": "2021",
         "repositoryUrl": "https://github.com/psg107/XamarinSwitchBot",
         "repositoryType": "Private",
@@ -321,7 +321,7 @@
         "type": [
             "Private"
         ],
-        "description": "여러 오토핫키 스크립트를 하나의 응용 프로그램으로 관리하기 위한 윈도우 어플리케이션입니다.\n스크립트가 포함된 폴더를 선택하여 여러 스크립트 중 원하는 스크립트를 편하게 실행하는 기능을 제공합니다.\n또한 일부 온라인게임의 매크로 감지를 우회할 수 있습니다.",
+        "description": "여러 오토핫키 스크립트를 하나의 응용 프로그램으로 관리하기 위한 윈도우 어플리케이션입니다.\n스크립트가 포함된 폴더를 선택하여 여러 스크립트를 쉽게 실행할 수 있는 기능을 제공합니다.",
         "date": "2021",
         "repositoryUrl": "https://github.com/psg107/ScriptLoader",
         "repositoryType": "Private",
@@ -338,7 +338,7 @@
         "type": [
             "Private"
         ],
-        "description": "온라인 게임의 멀티 클라이언트를 제어하는 프로그램입니다.\n메인/서브 클라이언트 지정 기능, 클라이언트별 CPU 점유율 조절 기능, 단축키를 통한 클라이언트 스위칭 기능을 통해 여러 클라이언트를 편하게 제어할 수 있습니다.",
+        "description": "온라인 게임의 멀티 클라이언트 실행을 지원하는 프로그램으로, 여러 클라이언트를 동시에 실행하고 관리할 수 있는 기능을 제공합니다.",
         "date": "2021",
         "repositoryUrl": "https://github.com/psg107/MabiMultiClientHelper",
         "repositoryType": "Private",
@@ -353,7 +353,7 @@
         "type": [
             "Private"
         ],
-        "description": "핫딜을 공유하는 사이트인 뽐뿌의 게시판의 키워드 알림봇입니다.\n등록된 키워드가 포함된 글을 발견하면 휴대폰으로 알림을 받을 수 있습니다.",
+        "description": "핫딜을 공유하는 사이트인 뽐뿌의 게시판에서 키워드 알림 기능을 제공하는 봇입니다.\n등록된 키워드가 포함된 글을 발견하면 실시간으로 휴대폰 알림을 통해 사용자에게 해당 정보를 전달합니다.",
         "date": "2020",
         "repositoryUrl": "https://github.com/psg107/TelegramMonitorServer",
         "repositoryType": "Private",
@@ -371,7 +371,7 @@
         "type": [
             "Private"
         ],
-        "description": "인터파크에서 자동으로 티켓을 구매하는 프로그램입니다.\n아이디, 패스워드, 상품url, 공연 날짜, 시간을 입력하면 무통장결제 방식으로 자동으로 자동으로 구매합니다.\nOpenCV 라이브러리를 활용하여 자동으로 캡챠(매크로 방지)를 인식합니다.",
+        "description": "인터파크에서 공연 티켓을 자동으로 구매하는 프로그램입니다.\n사용자는 아이디, 패스워드, 상품 URL, 공연 날짜와 시간을 입력하면, 자동으로 티켓을 무통장 결제 방식으로 구매합니다.\nOpenCV를 사용하여 캡챠를 자동으로 인식하고, 매크로 방지를 우회합니다.",
         "date": "2020",
         "repositoryUrl": "https://github.com/psg107/InterparkTicketing",
         "repositoryType": "Private",
@@ -391,7 +391,7 @@
         "type": [
             "Private"
         ],
-        "description": "쿠팡에서 판매하는 물건을 자동으로 구매하는 기능을 제공하는 dll 파일입니다.\n아이디, 패스워드, 상품url을 입력하면 상품을 자동으로 구매합니다.",
+        "description": "쿠팡에서 판매하는 상품을 자동으로 구매하는 기능을 제공하는 DLL 파일입니다.\n사용자는 아이디, 패스워드, 상품 URL을 입력하면 상품을 자동으로 결제할 수 있습니다.",
         "date": "2020",
         "repositoryUrl": "https://github.com/psg107/CoupangPaymentLib",
         "repositoryType": "Private",
@@ -409,7 +409,7 @@
         "type": [
             "Private"
         ],
-        "description": "일정관리를 위한 윈도우 응용 프로그램입니다.",
+        "description": "경북 교육행정포털에서 일정 관리를 효율적으로 할 수 있는 윈도우 응용 프로그램입니다.",
         "date": "2020",
         "skills": [
             "C#",
@@ -423,7 +423,7 @@
         "type": [
             "Company"
         ],
-        "description": "렌탈비, 학원비, 기부금 등 각종 요금을 자동으로 출금할 수 있도록 관리하는 프로그램입니다.\n밴사 라이브러리를 활용하여 계좌 자동 이체를 처리합니다.",
+        "description": "렌탈비, 학원비, 기부금 등 다양한 요금을 자동으로 출금할 수 있도록 관리하는 프로그램입니다.\n밴사 라이브러리를 활용해 계좌 자동 이체를 처리합니다.",
         "date": "2019 ~ 2021",
         "skills": [
             "C#",
@@ -437,7 +437,7 @@
         "type": [
             "Company"
         ],
-        "description": "고객 관리를 위한 윈도우 응용 프로그램으로 WPF + DevExpress 컴포넌트를 활용하여 제작되었습니다.\n서버 API를 활용한 데이터 처리, 실시간 전화 및 팩스 알림 수신, 메일 전송, 프린팅, 엑셀, PDF 생성 등 여러 편의 기능이 포함되었습니다.",
+        "description": "고객 관리 및 다양한 업무 처리를 위한 윈도우 응용 프로그램입니다.\nWPF와 DevExpress 컴포넌트를 활용하여 실시간 전화 및 팩스 알림 수신, 메일 전송, 프린팅, 엑셀 및 PDF 생성 등 여러 가지 편의 기능을 제공합니다.",
         "date": "2018 ~ 2021",
         "skills": [
             "C#",
@@ -455,7 +455,7 @@
         "type": [
             "Company"
         ],
-        "description": "윈도우 응용 프로그램 솔루션의 모바일 어플리케이션입니다.",
+        "description": "윈도우 응용 프로그램 솔루션의 모바일 버전으로, Android 및 iOS에서 사용할 수 있는 모바일 어플리케이션입니다.",
         "date": "2018 ~ 2021",
         "skills": [
             "C#",
@@ -473,7 +473,7 @@
         "type": [
             "Company"
         ],
-        "description": "ASP.NET MVC로 작성된 웹사이트를 관리했습니다.",
+        "description": "ASP.NET MVC로 작성된 웹사이트의 관리와 유지보수를 담당했습니다.",
         "date": "2018 ~ 2021",
         "skills": [
             "C#",
@@ -485,7 +485,7 @@
         "type": [
             "Company"
         ],
-        "description": "Classic ASP로 작성된 웹사이트를 관리했습니다.",
+        "description": "Classic ASP로 작성된 웹사이트의 관리와 유지보수를 담당했습니다.",
         "date": "2018 ~ 2021",
         "skills": [
             "C#",
@@ -500,7 +500,7 @@
         "type": [
             "Company"
         ],
-        "description": "MSSQL 쿼리를 작성하고 DB를 관리했습니다.",
+        "description": "MSSQL 쿼리 작성과 DB 관리를 통해 데이터베이스를 효율적으로 관리했습니다.",
         "date": "2018 ~ 2021",
         "skills": [
             "MSSQL"
@@ -513,7 +513,7 @@
             "Private",
             "Incomplete"
         ],
-        "description": "모바일 게임 매크로 프로그램입니다.",
+        "description": "모바일 게임의 반복적인 작업을 자동화하기 위한 매크로 프로그램입니다.",
         "date": "2017 ~ 2019",
         "skills": [
             "AutoHotkey",
@@ -527,7 +527,7 @@
         "type": [
             "Private"
         ],
-        "description": "대학교 원격 출석 프로그램입니다.\n로그인 후 출석 요청 버튼을 누르면 현재 시간, 학과 시간표에서 불러온 강의실, DB에 저장된 강의실키를 조합하여 자동으로 출석합니다.",
+        "description": "대학교 강의에서 원격으로 출석을 자동으로 처리하는 프로그램입니다.\n로그인 후 출석 요청 버튼을 누르면 현재 시간과 강의실 정보 등을 기반으로 자동으로 출석 처리됩니다.",
         "date": "2017",
         "skills": [
             "Html",
@@ -543,7 +543,7 @@
         "type": [
             "Private"
         ],
-        "description": "카풀 어플리케이션으로 운전자,동승자를 매칭할 수 있습니다.",
+        "description": "운전자와 동승자를 매칭할 수 있는 카풀 Android 어플리케이션입니다.",
         "date": "2017",
         "skills": [
             "Android",
@@ -558,7 +558,7 @@
         "type": [
             "Private"
         ],
-        "description": "오토핫키 스크립트로 각종 자동화 프로그램을 제작했습니다.",
+        "description": "AutoHotkey 스크립트를 이용하여 다양한 자동화 작업을 처리하는 프로그램들을 제작했습니다.",
         "date": "2009 ~ ",
         "skills": [
             "AutoHotkey"
