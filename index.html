@@ -36,6 +36,12 @@
                 </p>
             </div>
 
+            <!-- 스킬 -->
+            <div class="section section-skills">
+                <h2>사용 기술</h2>
+                <div class="skill-list"></div>
+            </div>
+
             <!-- 프로젝트 -->
             <div class="section section-project">
                 <h2>프로젝트</h2>
@@ -48,6 +54,7 @@
         fetch('projects.json?' + new Date().getTime())
             .then(response => response.json())
             .then(projects => {
+                // 프로젝트
                 let projectSection = document.querySelector('.section > .projects');
 
                 projects.forEach(project => {
@@ -73,6 +80,16 @@
                         </div>
                     `;
                 });
+
+                // 스킬
+                const skillsElement = document.querySelector('.skill-list');
+                const skills = projects.flatMap(x => x.skills);
+                const sortedSkills = Array.from(
+                    skills.reduce((map, skill) => map.set(skill, (map.get(skill) || 0) + 1), new Map())
+                )
+                    .sort((a, b) => b[1] - a[1])
+                    .map(([skill]) => skill);
+                skillsElement.innerHTML = sortedSkills.join(", ");
 
                 // 모달
                 const showImageButtons = document.querySelectorAll('.show-image-btn');

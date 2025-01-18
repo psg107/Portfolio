@@ -113,6 +113,11 @@ a:visited {
     margin-top: 5px;
 }
 
+.section-skills .skill-list {
+    max-width: 1000px;
+    line-height: 25px;
+}
+
 .show-image-btn {
     font-size: 17px;
     background: none;
