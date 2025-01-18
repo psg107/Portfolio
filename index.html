@@ -51,67 +51,83 @@
     </div>
 
     <script>
-        fetch('projects.json?' + new Date().getTime())
-            .then(response => response.json())
-            .then(projects => {
-                // 프로젝트
-                let projectSection = document.querySelector('.section > .projects');
-
-                projects.forEach(project => {
-                    var projectUrl = project.repositoryType !== "Private" ? project.repositoryUrl : null;
-                    var url = projectUrl ?? project.link;
-
-                    projectSection.innerHTML += `
-                        <div class="project">
-                            <div class="project-header">
-                                <h3 class="name">${project.name}</h3>
-                                <div class="date-btn-container">
-                                    <p class="date">(${project.date})</p>
-                                    ${project.image != null ? `<button class="show-image-btn" data-image-url="${project.image}">🖼️</button>` : ""}
-                                </div>
-                            </div>
-
-                            <p class="skills">${project.skills.join(', ')}</p>
-                            <p class="description">${project.description.replaceAll("\n", "<br/>")}</p>
-                            
-                            ${url != null ? `
-                            <a class="link" target="_blank" href='${url}'>${url}</a>
-                            ` : ""}
-                        </div>
-                    `;
-                });
-
-                // 스킬
-                const skillsElement = document.querySelector('.skill-list');
-                const skills = projects.flatMap(x => x.skills);
-                const sortedSkills = Array.from(
-                    skills.reduce((map, skill) => map.set(skill, (map.get(skill) || 0) + 1), new Map())
-                )
-                    .sort((a, b) => b[1] - a[1])
-                    .map(([skill]) => skill);
-                skillsElement.innerHTML = sortedSkills.join(", ");
-
-                // 모달
-                const showImageButtons = document.querySelectorAll('.show-image-btn');
-                const modalOverlay = document.getElementById('modalOverlay');
-                const modalImage = document.getElementById('modalImage');
-
-                showImageButtons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const imageUrl = button.getAttribute('data-image-url');
-                        if (imageUrl) {
-                            modalImage.src = './images/' + imageUrl;
-                            modalOverlay.style.display = 'flex';
-                        }
-                    });
-                });
-                modalOverlay.addEventListener('click', () => {
-                    modalOverlay.style.display = 'none';
-                });
-            })
-            .catch(error => {
+        const fetchProjects = async () => {
+            try {
+                const response = await fetch('projects.json?' + new Date().getTime());
+                const projects = await response.json();
+                return projects;
+            } catch (error) {
                 console.error('프로젝트 데이터를 불러오는 데 실패했습니다:', error);
+                return [];
+            }
+        };
+
+        const createProjectSection = (projects) => {
+            let projectSection = document.querySelector('.section > .projects');
+            
+            projects.forEach(project => {
+                const projectUrl = project.repositoryType !== "Private" ? project.repositoryUrl : null;
+                const url = projectUrl ?? project.link;
+
+                projectSection.innerHTML += `
+                    <div class="project">
+                        <div class="project-header">
+                            <h3 class="name">${project.name}</h3>
+                            <div class="date-btn-container">
+                                <p class="date">(${project.date})</p>
+                                ${project.image != null ? `<button class="show-image-btn" data-image-url="${project.image}">🖼️</button>` : ""}
+                            </div>
+                        </div>
+
+                        <p class="skills">${project.skills.join(', ')}</p>
+                        <p class="description">${project.description.replaceAll("\n", "<br/>")}</p>
+                        
+                        ${url != null ? `<a class="link" target="_blank" href='${url}'>${url}</a>` : ""}
+                    </div>
+                `;
             });
+        };
+
+        const createSkillsSection = (projects) => {
+            const skillsElement = document.querySelector('.skill-list');
+            const skills = projects.flatMap(x => x.skills);
+            const sortedSkills = Array.from(
+                skills.reduce((map, skill) => map.set(skill, (map.get(skill) || 0) + 1), new Map())
+            )
+            .sort((a, b) => b[1] - a[1])
+            .map(([skill]) => skill);
+            skillsElement.innerHTML = sortedSkills.join(", ");
+        };
+
+        const initializeModal = () => {
+            const showImageButtons = document.querySelectorAll('.show-image-btn');
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalImage = document.getElementById('modalImage');
+
+            showImageButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const imageUrl = button.getAttribute('data-image-url');
+                    if (imageUrl) {
+                        modalImage.src = './images/' + imageUrl;
+                        modalOverlay.style.display = 'flex';
+                    }
+                });
+            });
+
+            modalOverlay.addEventListener('click', () => {
+                modalOverlay.style.display = 'none';
+            });
+        };
+
+        const main = async () => {
+            const projects = await fetchProjects();
+
+            createProjectSection(projects);
+            createSkillsSection(projects);
+            initializeModal();
+        };
+
+        window.addEventListener('DOMContentLoaded', main);
     </script>
 </body>
 
