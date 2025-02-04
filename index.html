@@ -1,43 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./style.css" rel="stylesheet">
-    <title>포트폴리오</title>
+    <link rel="stylesheet" href="style.css">
+    <title>박상곤의 포트폴리오</title>
 </head>
 
 <body>
-    <header>
-        <h1>포트폴리오</h1>
-    </header>
     <div class="container">
         <div class="main">
-            <div class="modal-overlay" id="modalOverlay">
-                <div class="modal-content">
-                    <img src="" alt="image" id="modalImage">
-                </div>
-            </div>
-
-            <!-- 프로필 -->
-            <div class="section section-profile">
-                <h2>프로필</h2>
-                <p>개발자 박상곤입니다.</p>
+            <!-- 자기소개 -->
+            <div class="section section-introduction">
+                <h2>자기소개</h2>
+                <p>안녕하세요! 저는 서버 개발을 전문으로 하는 박상곤입니다. Kotlin과 MongoDB 환경에서 개발하고 있으며, 초기에는 C#과 MSSQL을 사용했습니다.</p>
+                <p>백엔드 시스템 개발을 담당하며, API 설계와 성능 최적화에 집중합니다. 코드 품질과 효율성을 중요하게 생각하며, 유지보수하기 쉬운 시스템 구조를 지향합니다.</p>
             </div>
 
             <!-- 연락처 -->
             <div class="section section-contact">
                 <h2>연락처</h2>
-                <p>Email: psg107@naver.com</p>
-                <p>GitHub: <a href="https://github.com/psg107" target="_blank">https://github.com/psg107</a></p>
-                <p>Wanted: <a href="https://social.wanted.co.kr/community/profile/fF4YAhwmRNWyJMRxgtcTjo" target="_blank">https://social.wanted.co.kr/community/profile/fF4YAhwmRNWyJMRxgtcTjo</a></p>
-            </div>
-
-            <!-- 스킬 -->
-            <div class="section section-skills">
-                <h2>사용 기술</h2>
-                <div class="skill-list"></div>
+                <p>
+                    이메일: <span id="email" class="contact-btn">psg107@naver.com</span>
+                </p>
+                <p>
+                    GitHub: <a href="https://github.com/psg107" target="_blank"
+                        class="contact-btn">https://github.com/psg107</a>
+                </p>
             </div>
 
             <!-- 프로젝트 -->
@@ -48,85 +38,7 @@
         </div>
     </div>
 
-    <script>
-        const fetchProjects = async () => {
-            try {
-                const response = await fetch('projects.json?' + new Date().getTime());
-                const projects = await response.json();
-                return projects;
-            } catch (error) {
-                console.error('프로젝트 데이터를 불러오는 데 실패했습니다:', error);
-                return [];
-            }
-        };
-
-        const createProjectSection = (projects) => {
-            let projectSection = document.querySelector('.section > .projects');
-            
-            projects.forEach(project => {
-                const projectUrl = project.repositoryType !== "Private" ? project.repositoryUrl : null;
-                const url = projectUrl ?? project.link;
-
-                projectSection.innerHTML += `
-                    <div class="project">
-                        <div class="project-header">
-                            <h3 class="name">${project.name}</h3>
-                            <div class="date-btn-container">
-                                <p class="date">(${project.date})</p>
-                                ${project.image != null ? `<button class="show-image-btn" data-image-url="${project.image}">🖼️</button>` : ""}
-                            </div>
-                        </div>
-
-                        <p class="skills">${project.skills.join(', ')}</p>
-                        <p class="description">${project.description.replaceAll("\n", "<br/>")}</p>
-                        
-                        ${url != null ? `<a class="link" target="_blank" href='${url}'>${url}</a>` : ""}
-                    </div>
-                `;
-            });
-        };
-
-        const createSkillsSection = (projects) => {
-            const skillsElement = document.querySelector('.skill-list');
-            const skills = projects.flatMap(x => x.skills);
-            const sortedSkills = Array.from(
-                skills.reduce((map, skill) => map.set(skill, (map.get(skill) || 0) + 1), new Map())
-            )
-            .sort((a, b) => b[1] - a[1])
-            .map(([skill]) => skill);
-            skillsElement.innerHTML = sortedSkills.join(", ");
-        };
-
-        const initializeModal = () => {
-            const showImageButtons = document.querySelectorAll('.show-image-btn');
-            const modalOverlay = document.getElementById('modalOverlay');
-            const modalImage = document.getElementById('modalImage');
-
-            showImageButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const imageUrl = button.getAttribute('data-image-url');
-                    if (imageUrl) {
-                        modalImage.src = './images/' + imageUrl;
-                        modalOverlay.style.display = 'flex';
-                    }
-                });
-            });
-
-            modalOverlay.addEventListener('click', () => {
-                modalOverlay.style.display = 'none';
-            });
-        };
-
-        const main = async () => {
-            const projects = await fetchProjects();
-
-            createProjectSection(projects);
-            createSkillsSection(projects);
-            initializeModal();
-        };
-
-        window.addEventListener('DOMContentLoaded', main);
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
