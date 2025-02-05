@@ -1,7 +1,7 @@
 [
   {
     "name": "여행 패키지 검색 서비스",
-    "description": "신규 여행 패키지 시스템의 검색 서비스로 코틀린+스프링부트 환경에서 개발되었습니다.\n기존 패키지 상품과 신규 패키지 상품을 통합하여 사용자들이 다양한 패키지 상품을 쉽게 검색하고 필터링할 수 있는 기능을 제공합니다.",
+    "description": "기존과 신규 여행 패키지 상품을 통합하여 사용자가 다양한 패키지 상품을 쉽게 검색하고 필터링할 수 있는 검색 시스템을 개발한 프로젝트입니다.",
     "from": "2024.06",
     "to": "2024.09",
     "type": "company",
@@ -11,7 +11,7 @@
       "Kotlin",
       "SpringBoot",
       "MongoDB",
-      "AWS",
+      "Redis",
       "AWS ECS",
       "AWS Scheduled Task",
       "Amazon SQS",
@@ -19,13 +19,12 @@
       "Github Enterprise",
       "Github Actions",
       "CI/CD",
-      "Redis",
-      "ES"
+      "Elasticsearch"
     ]
   },
   {
     "name": "여행 패키지 전시 서비스",
-    "description": "신규 여행 패키지 시스템의 전시 서비스로 코틀린+스프링부트 환경에서 개발되었습니다.\n기존과 신규 여행 패키지 상품들을 하나의 통합된 플랫폼에서 전시하고 사용자에게 다양한 상품을 효과적으로 제공합니다.",
+    "description": "여행 패키지 상품을 하나의 플랫폼에서 전시하고 사용자에게 다양한 상품을 효과적으로 제공하는 전시 서비스를 개발한 프로젝트입니다.",
     "from": "2024.10",
     "to": "2024.11",
     "type": "company",
@@ -35,7 +34,7 @@
       "Kotlin",
       "SpringBoot",
       "MongoDB",
-      "AWS",
+      "Redis",
       "AWS ECS",
       "AWS Scheduled Task",
       "Amazon SQS",
@@ -43,13 +42,12 @@
       "Github Enterprise",
       "Github Actions",
       "CI/CD",
-      "Redis",
-      "ES"
+      "Elasticsearch"
     ]
   },
   {
     "name": "여행 패키지 예약 서비스",
-    "description": "신규 여행 패키지 시스템의 예약 서비스로 코틀린+스프링부트 환경에서 개발되었습니다.\n사용자가 여행 패키지를 선택하고 손쉽게 예약을 진행할 수 있도록 지원하는 기능을 구현했습니다.",
+    "description": "사용자가 패키지를 선택하고 예약할 수 있도록 자동화된 예약금 계산, 결제 프로세스, 실시간 알림 기능 등을 구현한 예약 시스템을 개발한 프로젝트입니다.",
     "from": "2023.10",
     "to": "2024.05",
     "type": "company",
@@ -59,7 +57,6 @@
       "Kotlin",
       "SpringBoot",
       "MongoDB",
-      "AWS",
       "AWS ECS",
       "AWS Scheduled Task",
       "Amazon SQS",
@@ -73,7 +70,7 @@
   },
   {
     "name": "여행 패키지 상품 서비스",
-    "description": "신규 여행 패키지 시스템의 상품 서비스로 코틀린+스프링부트 환경에서 개발되었습니다.\n여행 상품의 데이터를 관리하고 다양한 조건에 맞는 상품을 사용자에게 제공하는 기능을 구현했습니다.",
+    "description": "여행 상품 데이터를 관리하고, 사용자에게 다양한 조건에 맞는 상품을 제공하는 상품 서비스 시스템을 개발한 프로젝트입니다.",
     "from": "2023.08",
     "to": "2024.05",
     "type": "company",
@@ -83,7 +80,6 @@
       "Kotlin",
       "SpringBoot",
       "MongoDB",
-      "AWS",
       "AWS ECS",
       "AWS Scheduled Task",
       "Amazon SQS",
@@ -97,7 +93,7 @@
   },
   {
     "name": "여행 패키지 어드민",
-    "description": "신규 여행 패키지 시스템을 관리할 수 있는 어드민 페이지로 리액트+Next.js 환경에서 개발되었습니다.\n어드민 페이지에서 여행 패키지의 관리 및 운영을 효율적으로 할 수 있는 다양한 기능을 제공합니다.",
+    "description": "여행 패키지 상품을 관리하고 운영할 수 있는 어드민 페이지를 개발한 프로젝트로, 효율적인 관리 기능을 제공하는 시스템입니다.",
     "from": "2023.09",
     "to": "2024.05",
     "type": "company",
@@ -106,7 +102,6 @@
     "skills": [
       "React",
       "Next.js",
-      "AWS",
       "AWS ECS",
       "Terraform",
       "Github Enterprise",
@@ -116,7 +111,7 @@
   },
   {
     "name": "카카오톡 이모티콘 추출기",
-    "description": "윈도우 PC 버전의 카카오톡 프로그램에서 webp 이미지를 추출하는 프로그램입니다.\nGitHub에 공개된 C++ 소스를 기반으로 C#으로 이모티콘을 추출하는 기능을 개발했습니다.",
+    "description": "윈도우 PC 버전의 카카오톡에서 webp 이미지를 추출하는 프로그램을 개발한 프로젝트입니다. GitHub에 공개된 C++ 소스를 기반으로 C#으로 이모티콘 추출 기능을 구현했습니다.",
     "from": "2023",
     "to": null,
     "type": "private",
@@ -127,17 +122,17 @@
   {
     "name": "유튜브 쇼츠 크롬 확장 프로그램",
     "image": "ystc.png",
-    "description": "유튜브 쇼츠를 편리하게 시청할 수 있도록 만든 크롬 확장 프로그램입니다.\n사용자가 쇼츠 콘텐츠를 더 효율적으로 소비할 수 있도록 시간을 관리하는 기능을 제공합니다.",
+    "description": "유튜브 쇼츠 콘텐츠를 효율적으로 시청하고 시간을 관리할 수 있는 크롬 확장 프로그램을 개발한 프로젝트입니다.",
     "from": "2023",
     "to": null,
     "type": "private",
     "link": "https://github.com/psg107/YoutubeShortTimeController",
     "linkVisible": false,
-    "skills": ["Html", "Javascript"]
+    "skills": ["HTML", "JavaScript"]
   },
   {
     "name": "SRT 자동 예매",
-    "description": "SRT 티켓을 자동으로 구매하는 프로그램입니다.\n아이디, 패스워드, 예매 날짜, 기차 시간, 출발역, 도착역 등의 정보를 입력하면 자동으로 해당 티켓을 구매할 수 있는 기능을 구현했습니다.",
+    "description": "SRT 티켓을 자동으로 구매할 수 있는 프로그램을 개발한 프로젝트입니다. 사용자 정보와 예매 날짜를 입력하면 자동으로 티켓을 예매하는 기능을 구현했습니다.",
     "from": "2022",
     "to": null,
     "type": "private",
@@ -147,7 +142,7 @@
   },
   {
     "name": "호스트 관리 프로그램",
-    "description": "호스트 변경을 도와주는 프로그램으로, 개발/스테이징/운영 서버의 호스트 세팅을 쉽게 전환하고 관리할 수 있는 기능을 제공합니다.",
+    "description": "서버 환경에서 개발, 스테이징, 운영 서버의 호스트 설정을 효율적으로 전환하고 관리할 수 있도록 돕는 프로그램을 개발한 프로젝트입니다.",
     "from": "2022",
     "to": null,
     "type": "company",
@@ -157,24 +152,17 @@
   },
   {
     "name": "여행 패키지 상품 메인 개편",
-    "description": "여행 패키지 상품 메인 페이지 개편 프로젝트로, 상품 전시 방식을 최적화하여 사용자 경험을 향상시켰습니다.",
+    "description": "여행 패키지 상품 메인 페이지를 개편하여 상품 전시 방식을 최적화하고 사용자 경험을 향상시킨 프로젝트입니다.",
     "from": "2023.01",
     "to": "2023.02",
     "type": "company",
     "link": null,
     "linkVisible": false,
-    "skills": [
-      "C#",
-      "RestAPI",
-      "ASP.NET WebAPI",
-      "Java",
-      "SpringBoot",
-      "Github Actions"
-    ]
+    "skills": ["C#", "RestAPI", "ASP.NET WebAPI", "Java", "SpringBoot", "Github Actions"]
   },
   {
     "name": "현대카드 PLCC 연동",
-    "description": "현대카드 제휴 카드인 NOL 카드 및 포인트 연동 프로젝트로, 현대카드 API를 연동하여 결제 서비스를 개선했습니다.",
+    "description": "현대카드 제휴 카드 및 포인트 연동을 위한 API 연동 프로젝트로, 결제 서비스를 개선하고 사용자의 결제 경험을 향상시킨 프로젝트입니다.",
     "from": "2023.05",
     "to": "2023.06",
     "type": "company",
@@ -184,24 +172,17 @@
   },
   {
     "name": "모두투어 상품 연동",
-    "description": "모두투어의 여행 패키지 상품을 연동하는 프로젝트로, 상품 및 예약 연동 기능을 구현했습니다.",
+    "description": "모두투어의 여행 패키지 상품과 예약을 연동하는 기능을 구현한 프로젝트입니다.",
     "from": "2023.03",
     "to": "2023.04",
     "type": "company",
     "link": null,
     "linkVisible": false,
-    "skills": [
-      "C#",
-      "ASP.NET MVC",
-      "RestAPI",
-      "ASP.NET WebAPI",
-      "MSSQL",
-      "Windows Batch"
-    ]
+    "skills": ["C#", "ASP.NET MVC", "RestAPI", "ASP.NET WebAPI", "MSSQL", "Windows Batch"]
   },
   {
     "name": "네이버 상품 연동",
-    "description": "네이버의 여행 패키지 상품을 연동하는 프로젝트로, 상품 및 예약 연동 기능을 구현했습니다.",
+    "description": "네이버의 여행 패키지 상품과 예약 연동 기능을 구현한 프로젝트입니다.",
     "from": "2021.11",
     "to": "2022.01",
     "type": "company",
@@ -211,42 +192,23 @@
   },
   {
     "name": "여행 패키지 서비스 운영",
-    "description": "여행 패키지 서비스 운영을 위해 프론트엔드, 어드민, API, DB, 배치 등 다양한 시스템을 관리하며 운영 효율성을 높였습니다.",
+    "description": "여행 패키지 서비스의 프론트엔드, 어드민, API, DB, 배치 시스템을 운영하며 효율성을 향상시킨 프로젝트입니다.",
     "from": "2021.06",
     "to": "2023.08",
     "type": "company",
     "link": null,
     "linkVisible": false,
     "skills": [
-      "C#",
-      "Windows Console",
-      "Windows Batch",
-      "RestAPI",
-      "WCF Rest",
-      "IIS",
-      "ASP.NET",
-      "ASP.NET MVC",
-      "ASP.NET WebAPI",
-      "ClassicASP",
-      "Html",
-      "Css",
-      "Javascript",
-      "JQuery",
-      "MSSQL",
-      "MSSQL Job",
-      "OpenAPI",
-      "Gitlab",
-      "Jenkins",
-      "Github Enterprise",
-      "Github Actions",
-      "Jira",
-      "Slack"
+      "C#", "Windows Console", "Windows Batch", "RestAPI", "WCF Rest", "IIS", "ASP.NET",
+      "ASP.NET MVC", "ASP.NET WebAPI", "ClassicASP", "HTML", "CSS", "JavaScript", "JQuery",
+      "MSSQL", "MSSQL Job", "OpenAPI", "Gitlab", "Jenkins", "Github Enterprise", "Github Actions",
+      "Jira", "Slack"
     ]
   },
   {
     "name": "게시글 자동 추천 프로그램",
     "image": "hu.png",
-    "description": "인터넷 커뮤니티의 게시글을 자동으로 추천하는 프로그램입니다.\n추천수가 베스트 기준보다 1개 미달인 게시글을 찾아 자동으로 추천합니다.",
+    "description": "인터넷 커뮤니티 게시글을 자동으로 추천하는 프로그램으로, 추천수가 부족한 게시글을 찾아 자동 추천합니다.",
     "from": "2021",
     "to": null,
     "type": "private",
@@ -257,7 +219,7 @@
   {
     "name": "스크립트 로더",
     "image": "sl.png",
-    "description": "여러 오토핫키 스크립트를 하나의 응용 프로그램으로 관리하기 위한 윈도우 어플리케이션입니다.\n스크립트가 포함된 폴더를 선택하여 여러 스크립트를 쉽게 실행할 수 있는 기능을 제공합니다.",
+    "description": "여러 오토핫키 스크립트를 하나의 프로그램으로 관리하고 실행할 수 있는 윈도우 어플리케이션입니다.",
     "from": "2021",
     "to": null,
     "type": "private",
@@ -268,7 +230,7 @@
   {
     "name": "온라인 게임 멀티 클라이언트 도우미",
     "image": "mmch.png",
-    "description": "온라인 게임의 멀티 클라이언트 실행을 지원하는 프로그램으로, 여러 클라이언트를 동시에 실행하고 관리할 수 있는 기능을 제공합니다.",
+    "description": "온라인 게임에서 여러 클라이언트를 동시에 실행하고 관리할 수 있는 프로그램입니다.",
     "from": "2021",
     "to": null,
     "type": "private",
@@ -279,7 +241,7 @@
   {
     "name": "뽐뿌 알림봇",
     "image": "bbmonitor.png",
-    "description": "핫딜을 공유하는 사이트인 뽐뿌의 게시판에서 키워드 알림 기능을 제공하는 봇입니다.\n등록된 키워드가 포함된 글을 발견하면 실시간으로 휴대폰 알림을 통해 사용자에게 해당 정보를 전달합니다.",
+    "description": "핫딜을 공유하는 사이트인 뽐뿌의 게시판에서 키워드 알림 기능을 제공하는 봇입니다. 등록된 키워드가 포함된 글을 발견하면 실시간으로 휴대폰 알림을 통해 사용자에게 해당 정보를 전달합니다.",
     "from": "2020",
     "to": null,
     "type": "private",
@@ -288,9 +250,9 @@
     "skills": ["C#", "EntityFramework", "Crawling", "XPath", "TelegramAPI"]
   },
   {
-    "name": "인터파크 자동 티켓팅",
+    "name": "자동 티켓팅",
     "image": "it.png",
-    "description": "인터파크에서 공연 티켓을 자동으로 구매하는 프로그램입니다.\n사용자는 아이디, 패스워드, 상품 URL, 공연 날짜와 시간을 입력하면, 자동으로 티켓을 무통장 결제 방식으로 구매합니다.\nOpenCV를 사용하여 캡챠를 자동으로 인식하고, 매크로 방지를 우회합니다.",
+    "description": "공연 티켓을 자동으로 구매하는 프로그램입니다. 사용자는 아이디, 패스워드, 상품 URL, 공연 날짜와 시간을 입력하면, 자동으로 티켓을 무통장 결제 방식으로 구매합니다. OpenCV를 사용하여 캡챠를 자동으로 인식하고, 매크로 방지를 우회합니다.",
     "from": "2020",
     "to": null,
     "type": "private",
@@ -311,7 +273,7 @@
   },
   {
     "name": "AutoCMS",
-    "description": "렌탈비, 학원비, 기부금 등 다양한 요금을 자동으로 출금할 수 있도록 관리하는 프로그램입니다.\n밴사 라이브러리를 활용해 계좌 자동 이체를 처리합니다.",
+    "description": "렌탈비, 학원비, 기부금 등 다양한 요금을 자동으로 출금할 수 있도록 관리하는 프로그램입니다. 밴사 라이브러리를 활용해 계좌 자동 이체를 처리합니다.",
     "from": "2019",
     "to": "2021",
     "type": "company",
@@ -321,22 +283,13 @@
   },
   {
     "name": "CRM Desktop",
-    "description": "고객 관리 및 다양한 업무 처리를 위한 윈도우 응용 프로그램입니다.\nWPF와 DevExpress 컴포넌트를 활용하여 실시간 전화 및 팩스 알림 수신, 메일 전송, 프린팅, 엑셀 및 PDF 생성 등 여러 가지 편의 기능을 제공합니다.",
+    "description": "고객 관리 및 다양한 업무 처리를 위한 윈도우 응용 프로그램입니다. WPF와 DevExpress 컴포넌트를 활용하여 실시간 전화 및 팩스 알림 수신, 메일 전송, 프린팅, 엑셀 및 PDF 생성 등 여러 가지 편의 기능을 제공합니다.",
     "from": "2018",
     "to": "2021",
     "type": "company",
     "link": null,
     "linkVisible": false,
-    "skills": [
-      "C#",
-      "WPF",
-      "DevExpressWPF",
-      "SignalR",
-      "Crawling",
-      "XPath",
-      "Regex",
-      "MSSQL"
-    ]
+    "skills": ["C#", "WPF", "DevExpressWPF", "SignalR", "Crawling", "XPath", "Regex", "MSSQL"]
   },
   {
     "name": "CMS Mobile",
@@ -346,16 +299,7 @@
     "type": "company",
     "link": null,
     "linkVisible": false,
-    "skills": [
-      "C#",
-      "Xamarin",
-      "Android",
-      "IOS",
-      "Firebase",
-      "FirebaseNotification",
-      "FirebaseRemoteConfig",
-      "Sqlite"
-    ]
+    "skills": ["C#", "Xamarin", "Android", "IOS", "Firebase", "FirebaseNotification", "FirebaseRemoteConfig", "Sqlite"]
   },
   {
     "name": "CRM Web",
@@ -366,7 +310,7 @@
     "link": null,
     "linkVisible": false,
     "skills": ["C#", "ASP.NET MVC", "SignalR"]
-  },
+  },  
   {
     "name": "MSSQL DB 관리",
     "description": "MSSQL 쿼리 작성과 DB 관리를 통해 데이터베이스를 효율적으로 관리했습니다.",
@@ -396,5 +340,5 @@
     "link": null,
     "linkVisible": false,
     "skills": ["AutoHotkey"]
-  }
+  }  
 ]
