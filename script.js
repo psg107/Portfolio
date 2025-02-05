@@ -1,62 +1,67 @@
-document.addEventListener("DOMContentLoaded", async function () {
-  const projects = await fetchProjects();
-  createProjectSection(projects);
+document.addEventListener("DOMContentLoaded", function () {
+  const toggleSwitch = document.getElementById("toggle-personal-projects");
+  const toggleText = document.getElementById("project-toggle-text");
+  let allProjects = { main: [], personal: [] };
 
-  // 이메일 복사 이벤트 리스너
-  document
-    .getElementById("email")
-    .addEventListener("click", copyEmailToClipboard);
+  function updateProjects() {
+    const projectsContainer = document.getElementById("projects-container");
+    projectsContainer.innerHTML = "";
+
+    let projectsToShow = [...allProjects.main];
+    if (toggleSwitch.checked) {
+      projectsToShow = [...projectsToShow, ...allProjects.personal];
+      toggleText.textContent = "개인 프로젝트 포함";
+    } else {
+      toggleText.textContent = "개인 프로젝트 제외";
+    }
+
+    projectsToShow.sort((a, b) => b.from.localeCompare(a.from));
+
+    projectsToShow.forEach(project => {
+      const projectCard = document.createElement('div');
+      projectCard.classList.add('project-card');
+
+      const title = document.createElement('h3');
+      title.textContent = project.name;
+      projectCard.appendChild(title);
+
+      const date = document.createElement('p');
+      date.classList.add('date');
+      date.textContent = project.from + (project.to ? ` - ${project.to}` : '');
+      projectCard.appendChild(date);
+
+      const skills = document.createElement('p');
+      skills.classList.add('skills');
+      skills.textContent = project.skills.join(', ');
+      projectCard.appendChild(skills);
+
+      const description = document.createElement('p');
+      description.classList.add('description');
+      description.textContent = project.description;
+      projectCard.appendChild(description);
+
+      if (project.linkVisible) {
+        const projectLink = document.createElement('a');
+        projectLink.classList.add('project-link');
+        projectLink.href = project.link;
+        projectLink.textContent = '프로젝트 보기';
+        projectCard.appendChild(projectLink);
+      }
+
+      projectsContainer.appendChild(projectCard);
+    });
+  }
+
+  Promise.all([
+    fetch('projects.json').then(response => response.json()),
+    fetch('projects2.json').then(response => response.json())
+  ])
+    .then(([projects1, projects2]) => {
+      allProjects.main = projects1;
+      allProjects.personal = projects2;
+      updateProjects();
+    })
+    .catch(error => console.error('프로젝트 데이터를 불러오는 데 실패했습니다:', error));
+
+  toggleSwitch.addEventListener("change", updateProjects);
 });
-
-// 이메일 복사 기능
-function copyEmailToClipboard() {
-  const email = document.getElementById("email").innerText;
-  if (confirm("이메일을 클립보드에 복사할까요?")) {
-    navigator.clipboard
-      .writeText(email)
-      .then(() => alert("이메일이 클립보드에 복사되었습니다!"))
-      .catch((err) => alert("복사에 실패했습니다: " + err));
-  }
-}
-
-// 프로젝트 데이터 가져오기
-async function fetchProjects() {
-  try {
-    const response = await fetch("projects.json?", { cache: "no-cache" });
-    return await response.json();
-  } catch (error) {
-    console.error("프로젝트 데이터를 불러오는 데 실패했습니다:", error);
-    return [];
-  }
-}
-
-// 프로젝트 섹션 생성
-function createProjectSection(projects) {
-  const projectSection = document.querySelector(".section > .projects");
-
-  projects.forEach((project) => {
-    const link = project.linkVisible ? project.link : null;
-    const date = project.to ? `${project.from} ~ ${project.to}` : project.from;
-
-    projectSection.innerHTML += `
-          <div class="project">
-              <div class="project-header">
-                  <h3 class="name">${project.name}</h3>
-                  <p class="date">${date}</p>
-              </div>
-
-              <p class="skills">${project.skills.join(", ")}</p>
-              <p class="description">${project.description.replaceAll(
-                "\n",
-                "<br/>"
-              )}</p>
-              
-              ${
-                link
-                  ? `<a class="link btn-detail" target="_blank" href='${link}'>자세히 보기</a>`
-                  : ""
-              }
-          </div>
-      `;
-  });
-}

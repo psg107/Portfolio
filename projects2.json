@@ -1,0 +1,129 @@
+[
+  {
+    "name": "카카오톡 이모티콘 추출기",
+    "description": "윈도우 PC 버전의 카카오톡에서 webp 이미지를 추출하는 프로그램을 개발한 프로젝트입니다. GitHub에 공개된 C++ 소스를 기반으로 C#으로 이모티콘 추출 기능을 구현했습니다.",
+    "from": "2023",
+    "to": null,
+    "type": "private",
+    "link": "https://github.com/psg107/KEmojiExtractorDotnet",
+    "linkVisible": false,
+    "skills": ["C#", "Windows Console", "C++", "WinAPI"]
+  },
+  {
+    "name": "유튜브 쇼츠 크롬 확장 프로그램",
+    "image": "ystc.png",
+    "description": "유튜브 쇼츠 콘텐츠를 효율적으로 시청하고 시간을 관리할 수 있는 크롬 확장 프로그램을 개발한 프로젝트입니다.",
+    "from": "2023",
+    "to": null,
+    "type": "private",
+    "link": "https://github.com/psg107/YoutubeShortTimeController",
+    "linkVisible": false,
+    "skills": ["HTML", "JavaScript"]
+  },
+  {
+    "name": "SRT 자동 예매",
+    "description": "SRT 티켓을 자동으로 구매할 수 있는 프로그램을 개발한 프로젝트입니다. 사용자 정보와 예매 날짜를 입력하면 자동으로 티켓을 예매하는 기능을 구현했습니다.",
+    "from": "2022",
+    "to": null,
+    "type": "private",
+    "link": "https://github.com/psg107/SRT_Ticketing",
+    "linkVisible": false,
+    "skills": ["C#", "Windows Console", "RestAPI"]
+  },
+  {
+    "name": "호스트 관리 프로그램",
+    "description": "서버 환경에서 개발, 스테이징, 운영 서버의 호스트 설정을 효율적으로 전환하고 관리할 수 있도록 돕는 프로그램을 개발한 프로젝트입니다.",
+    "from": "2022",
+    "to": null,
+    "type": "company",
+    "link": null,
+    "linkVisible": false,
+    "skills": ["C#", "WPF", "MSSQL"]
+  },
+  {
+    "name": "게시글 자동 추천 프로그램",
+    "image": "hu.png",
+    "description": "인터넷 커뮤니티 게시글을 자동으로 추천하는 프로그램으로, 추천수가 부족한 게시글을 찾아 자동 추천합니다.",
+    "from": "2021",
+    "to": null,
+    "type": "private",
+    "link": "https://github.com/psg107/HumorUnivAutoAssist",
+    "linkVisible": false,
+    "skills": ["C#", "Windows Console", "Regex", "XPath"]
+  },
+  {
+    "name": "스크립트 로더",
+    "image": "sl.png",
+    "description": "여러 오토핫키 스크립트를 하나의 프로그램으로 관리하고 실행할 수 있는 윈도우 어플리케이션입니다.",
+    "from": "2021",
+    "to": null,
+    "type": "private",
+    "link": "https://github.com/psg107/ScriptLoader",
+    "linkVisible": false,
+    "skills": ["C#", "WPF", "AutoHotkey", "Sqlite"]
+  },
+  {
+    "name": "온라인 게임 멀티 클라이언트 도우미",
+    "image": "mmch.png",
+    "description": "온라인 게임에서 여러 클라이언트를 동시에 실행하고 관리할 수 있는 프로그램입니다.",
+    "from": "2021",
+    "to": null,
+    "type": "private",
+    "link": "https://github.com/psg107/MabiMultiClientHelper",
+    "linkVisible": false,
+    "skills": ["C#", "WPF"]
+  },
+  {
+    "name": "뽐뿌 알림봇",
+    "image": "bbmonitor.png",
+    "description": "핫딜을 공유하는 사이트인 뽐뿌의 게시판에서 키워드 알림 기능을 제공하는 봇입니다. 등록된 키워드가 포함된 글을 발견하면 실시간으로 휴대폰 알림을 통해 사용자에게 해당 정보를 전달합니다.",
+    "from": "2020",
+    "to": null,
+    "type": "private",
+    "link": "https://github.com/psg107/TelegramMonitorServer",
+    "linkVisible": false,
+    "skills": ["C#", "EntityFramework", "Crawling", "XPath", "TelegramAPI"]
+  },
+  {
+    "name": "자동 티켓팅",
+    "image": "it.png",
+    "description": "공연 티켓을 자동으로 구매하는 프로그램입니다. 사용자는 아이디, 패스워드, 상품 URL, 공연 날짜와 시간을 입력하면, 자동으로 티켓을 무통장 결제 방식으로 구매합니다. OpenCV를 사용하여 캡챠를 자동으로 인식하고, 매크로 방지를 우회합니다.",
+    "from": "2020",
+    "to": null,
+    "type": "private",
+    "link": "https://github.com/psg107/InterparkTicketing",
+    "linkVisible": false,
+    "skills": ["C#", "WPF", "Crawling", "XPath", "Regex", "OpenCV", "Tesseract"]
+  },
+  {
+    "name": "일정관리 윈도우 프로그램",
+    "image": "info.jpg",
+    "description": "경북 교육행정포털에서 일정 관리를 효율적으로 할 수 있는 윈도우 응용 프로그램입니다.",
+    "from": "2020",
+    "to": null,
+    "type": "private",
+    "link": "https://www.info.go.kr/teacher/schedule/intro/intro.do",
+    "linkVisible": true,
+    "skills": ["C#", "WPF", "RestAPI", "Sqlite"]
+  },
+  {
+    "name": "카풀 안드로이드 어플리케이션",
+    "description": "운전자와 동승자를 매칭할 수 있는 카풀 Android 어플리케이션입니다.",
+    "from": "2017",
+    "to": null,
+    "type": "private",
+    "link": null,
+    "linkVisible": false,
+    "skills": ["Android", "AndroidWebView", "Jsp", "Mysql", "OpenAPI"]
+  },
+  {
+    "name": "자동화 프로그램",
+    "description": "AutoHotkey 스크립트를 이용하여 다양한 자동화 작업을 처리하는 프로그램들을 제작했습니다.",
+    "from": "2009",
+    "to": null,
+    "type": "private",
+    "link": null,
+    "linkVisible": false,
+    "skills": ["AutoHotkey"]
+  }  
+]

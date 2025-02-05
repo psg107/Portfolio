@@ -1,9 +1,31 @@
 [
   {
+    "name": "여행 패키지 공급사 서비스",
+    "description": "외부 여행 패키지 공급사로부터 상품 및 예약 정보를 자동으로 연동하고 내부 시스템에 등록하는 서비스입니다. 일배치 및 실시간 데이터 연동을 통해 상품 및 예약 정보를 최신 상태로 유지하도록 개발하였습니다.",
+    "from": "2024.10",
+    "to": "2024.11",
+    "type": "company",
+    "link": null,
+    "linkVisible": false,
+    "skills": [
+      "Kotlin",
+      "SpringBoot",
+      "MongoDB",
+      "Redis",
+      "AWS ECS",
+      "AWS Scheduled Task",
+      "Amazon SQS",
+      "Terraform",
+      "Github Enterprise",
+      "Github Actions",
+      "CI/CD"
+    ]
+  },
+  {
     "name": "여행 패키지 검색 서비스",
-    "description": "기존과 신규 여행 패키지 상품을 통합하여 사용자가 다양한 패키지 상품을 쉽게 검색하고 필터링할 수 있는 검색 시스템을 개발한 프로젝트입니다.",
+    "description": "기존 및 신규 패키지 상품을 통합하여 검색할 수 있도록 검색 시스템을 개발하였습니다. MongoDB와 Elasticsearch를 연동하여 검색 성능을 최적화하고 추천순 정렬을 위한 점수 계산 로직을 구현했습니다.",
     "from": "2024.06",
-    "to": "2024.09",
+    "to": "2024.11",
     "type": "company",
     "link": "https://travel.interpark.com/package-search",
     "linkVisible": true,
@@ -16,20 +38,20 @@
       "AWS Scheduled Task",
       "Amazon SQS",
       "Terraform",
-      "Github Enterprise",
+      "Github",
       "Github Actions",
       "CI/CD",
       "Elasticsearch"
     ]
   },
   {
-    "name": "여행 패키지 전시 서비스",
-    "description": "여행 패키지 상품을 하나의 플랫폼에서 전시하고 사용자에게 다양한 상품을 효과적으로 제공하는 전시 서비스를 개발한 프로젝트입니다.",
-    "from": "2024.10",
-    "to": "2024.11",
+    "name": "여행 패키지 예약 서비스",
+    "description": "기존 패키지 수동 관리 방식에서 자동화된 예약 시스템을 구축하여 예약금 계산, 결제 프로세스 적용, 최소 출발 인원 체크 및 출발 확정 자동 변경 기능을 구현하였습니다.",
+    "from": "2024.06",
+    "to": "2024.09",
     "type": "company",
-    "link": "https://travel.interpark.com/tour/package/main",
-    "linkVisible": true,
+    "link": null,
+    "linkVisible": false,
     "skills": [
       "Kotlin",
       "SpringBoot",
@@ -38,39 +60,16 @@
       "AWS ECS",
       "AWS Scheduled Task",
       "Amazon SQS",
+      "AWS Kinesis",
       "Terraform",
       "Github Enterprise",
       "Github Actions",
-      "CI/CD",
-      "Elasticsearch"
-    ]
-  },
-  {
-    "name": "여행 패키지 예약 서비스",
-    "description": "사용자가 패키지를 선택하고 예약할 수 있도록 자동화된 예약금 계산, 결제 프로세스, 실시간 알림 기능 등을 구현한 예약 시스템을 개발한 프로젝트입니다.",
-    "from": "2023.10",
-    "to": "2024.05",
-    "type": "company",
-    "link": null,
-    "linkVisible": false,
-    "skills": [
-      "Kotlin",
-      "SpringBoot",
-      "MongoDB",
-      "AWS ECS",
-      "AWS Scheduled Task",
-      "Amazon SQS",
-      "Amazon Kinesis",
-      "Terraform",
-      "Github Enterprise",
-      "Github Actions",
-      "CI/CD",
-      "Redis"
+      "CI/CD"
     ]
   },
   {
     "name": "여행 패키지 상품 서비스",
-    "description": "여행 상품 데이터를 관리하고, 사용자에게 다양한 조건에 맞는 상품을 제공하는 상품 서비스 시스템을 개발한 프로젝트입니다.",
+    "description": "항공, 호텔, 투어 상품을 내부 시스템과 연동하여 패키지 상품을 구성할 수 있도록 개발하였습니다. 각 상품의 검수 및 등록 프로세스를 자동화하여 운영 효율성을 높였습니다.",
     "from": "2023.08",
     "to": "2024.05",
     "type": "company",
@@ -83,7 +82,7 @@
       "AWS ECS",
       "AWS Scheduled Task",
       "Amazon SQS",
-      "Amazon Kinesis",
+      "AWS Kinesis",
       "Terraform",
       "Github Enterprise",
       "Github Actions",
@@ -93,8 +92,8 @@
   },
   {
     "name": "여행 패키지 어드민",
-    "description": "여행 패키지 상품을 관리하고 운영할 수 있는 어드민 페이지를 개발한 프로젝트로, 효율적인 관리 기능을 제공하는 시스템입니다.",
-    "from": "2023.09",
+    "description": "여행 패키지 상품을 관리할 수 있는 어드민 시스템을 개발하였습니다. 상품 등록, 수정, 예약 관리 등 다양한 기능을 제공하는 관리 시스템입니다.",
+    "from": "2023.08",
     "to": "2024.05",
     "type": "company",
     "link": null,
@@ -110,45 +109,116 @@
     ]
   },
   {
-    "name": "카카오톡 이모티콘 추출기",
-    "description": "윈도우 PC 버전의 카카오톡에서 webp 이미지를 추출하는 프로그램을 개발한 프로젝트입니다. GitHub에 공개된 C++ 소스를 기반으로 C#으로 이모티콘 추출 기능을 구현했습니다.",
-    "from": "2023",
-    "to": null,
-    "type": "private",
-    "link": "https://github.com/psg107/KEmojiExtractorDotnet",
-    "linkVisible": false,
-    "skills": ["C#", "Windows Console", "C++", "WinAPI"]
-  },
-  {
-    "name": "유튜브 쇼츠 크롬 확장 프로그램",
-    "image": "ystc.png",
-    "description": "유튜브 쇼츠 콘텐츠를 효율적으로 시청하고 시간을 관리할 수 있는 크롬 확장 프로그램을 개발한 프로젝트입니다.",
-    "from": "2023",
-    "to": null,
-    "type": "private",
-    "link": "https://github.com/psg107/YoutubeShortTimeController",
-    "linkVisible": false,
-    "skills": ["HTML", "JavaScript"]
-  },
-  {
-    "name": "SRT 자동 예매",
-    "description": "SRT 티켓을 자동으로 구매할 수 있는 프로그램을 개발한 프로젝트입니다. 사용자 정보와 예매 날짜를 입력하면 자동으로 티켓을 예매하는 기능을 구현했습니다.",
-    "from": "2022",
-    "to": null,
-    "type": "private",
-    "link": "https://github.com/psg107/SRT_Ticketing",
-    "linkVisible": false,
-    "skills": ["C#", "Windows Console", "RestAPI"]
-  },
-  {
-    "name": "호스트 관리 프로그램",
-    "description": "서버 환경에서 개발, 스테이징, 운영 서버의 호스트 설정을 효율적으로 전환하고 관리할 수 있도록 돕는 프로그램을 개발한 프로젝트입니다.",
-    "from": "2022",
-    "to": null,
+    "name": "현대카드 PLCC 연동",
+    "description": "현대카드 제휴 카드(NOL 카드) 및 포인트 연동 API를 개발하고, 결제 프로세스를 개선하여 카드사 데이터를 연동하였습니다.",
+    "from": "2023.05",
+    "to": "2023.06",
     "type": "company",
     "link": null,
     "linkVisible": false,
-    "skills": ["C#", "WPF", "MSSQL"]
+    "skills": [
+      "C#",
+      "ASP.NET MVC",
+      "Rest API",
+      "MSSQL"
+    ]
+  },
+  {
+    "name": "모두투어 상품 연동",
+    "description": "모두투어 여행 패키지 상품을 연동하는 API를 개발하여 상품 및 예약 데이터를 실시간으로 동기화할 수 있도록 하였습니다.",
+    "from": "2023.03",
+    "to": "2023.04",
+    "type": "company",
+    "link": null,
+    "linkVisible": false,
+    "skills": [
+      "C#",
+      "ASP.NET MVC",
+      "Rest API",
+      "MSSQL",
+      "Windows Batch"
+    ]
+  },
+  {
+    "name": "네이버 상품 연동",
+    "description": "네이버 여행 패키지 상품 연동 API를 개발하고, 실시간 상품 조회 및 예약 기능을 구현하였습니다.",
+    "from": "2021.11",
+    "to": "2022.01",
+    "type": "company",
+    "link": null,
+    "linkVisible": false,
+    "skills": [
+      "C#",
+      "Rest API",
+      "MSSQL"
+    ]
+  },
+  {
+    "name": "여행 패키지 시스템 운영 및 개선",
+    "description": "기존 여행 패키지 관리 시스템의 운영 및 유지보수, 오류 수정, 기능 개선 및 데이터 보정 작업을 수행하였습니다.",
+    "from": "2021.06",
+    "to": "2023.06",
+    "type": "company",
+    "link": null,
+    "linkVisible": false,
+    "skills": [
+      "C#",
+      "ASP.NET",
+      "Vue.js",
+      "Java",
+      "MSSQL",
+      "IIS",
+      "Kafka",
+      "Batch"
+    ]
+  },
+  {
+    "name": "CMS Mobile",
+    "description": "자동 이체 및 고객 관리를 위한 모바일 어플리케이션을 개발하여 이체 내역 확인 및 고객 관리 기능을 제공하였습니다.",
+    "from": "2018.04",
+    "to": "2021.02",
+    "type": "company",
+    "link": null,
+    "linkVisible": false,
+    "skills": [
+      "C#",
+      "Xamarin",
+      "Android",
+      "iOS",
+      "Firebase",
+      "Sqlite"
+    ]
+  },
+  {
+    "name": "AutoCMS (자동 이체 시스템)",
+    "description": "렌탈비, 학원비, 기부금 등의 자동 이체 관리 시스템을 개발하고, 금융기관 API를 연동하여 자동 이체 기능을 구현하였습니다.",
+    "from": "2018.04",
+    "to": "2021.02",
+    "type": "company",
+    "link": null,
+    "linkVisible": false,
+    "skills": [
+      "C#",
+      "Windows Console",
+      "MSSQL"
+    ]
+  },
+  {
+    "name": "CRM 시스템",
+    "description": "고객 관리 및 업무 지원을 위한 데스크톱/웹 애플리케이션을 개발하고, 실시간 알림 및 메일 전송 기능을 구현하였습니다.",
+    "from": "2018.04",
+    "to": "2021.02",
+    "type": "company",
+    "link": null,
+    "linkVisible": false,
+    "skills": [
+      "C#",
+      "WPF",
+      "DevExpress",
+      "ASP.NET",
+      "SignalR",
+      "MSSQL"
+    ]
   },
   {
     "name": "여행 패키지 상품 메인 개편",
@@ -159,186 +229,5 @@
     "link": null,
     "linkVisible": false,
     "skills": ["C#", "RestAPI", "ASP.NET WebAPI", "Java", "SpringBoot", "Github Actions"]
-  },
-  {
-    "name": "현대카드 PLCC 연동",
-    "description": "현대카드 제휴 카드 및 포인트 연동을 위한 API 연동 프로젝트로, 결제 서비스를 개선하고 사용자의 결제 경험을 향상시킨 프로젝트입니다.",
-    "from": "2023.05",
-    "to": "2023.06",
-    "type": "company",
-    "link": null,
-    "linkVisible": false,
-    "skills": ["C#", "ASP.NET MVC", "RestAPI", "ASP.NET WebAPI", "MSSQL"]
-  },
-  {
-    "name": "모두투어 상품 연동",
-    "description": "모두투어의 여행 패키지 상품과 예약을 연동하는 기능을 구현한 프로젝트입니다.",
-    "from": "2023.03",
-    "to": "2023.04",
-    "type": "company",
-    "link": null,
-    "linkVisible": false,
-    "skills": ["C#", "ASP.NET MVC", "RestAPI", "ASP.NET WebAPI", "MSSQL", "Windows Batch"]
-  },
-  {
-    "name": "네이버 상품 연동",
-    "description": "네이버의 여행 패키지 상품과 예약 연동 기능을 구현한 프로젝트입니다.",
-    "from": "2021.11",
-    "to": "2022.01",
-    "type": "company",
-    "link": null,
-    "linkVisible": false,
-    "skills": ["C#", "RestAPI", "MSSQL"]
-  },
-  {
-    "name": "여행 패키지 서비스 운영",
-    "description": "여행 패키지 서비스의 프론트엔드, 어드민, API, DB, 배치 시스템을 운영하며 효율성을 향상시킨 프로젝트입니다.",
-    "from": "2021.06",
-    "to": "2023.08",
-    "type": "company",
-    "link": null,
-    "linkVisible": false,
-    "skills": [
-      "C#", "Windows Console", "Windows Batch", "RestAPI", "WCF Rest", "IIS", "ASP.NET",
-      "ASP.NET MVC", "ASP.NET WebAPI", "ClassicASP", "HTML", "CSS", "JavaScript", "JQuery",
-      "MSSQL", "MSSQL Job", "OpenAPI", "Gitlab", "Jenkins", "Github Enterprise", "Github Actions",
-      "Jira", "Slack"
-    ]
-  },
-  {
-    "name": "게시글 자동 추천 프로그램",
-    "image": "hu.png",
-    "description": "인터넷 커뮤니티 게시글을 자동으로 추천하는 프로그램으로, 추천수가 부족한 게시글을 찾아 자동 추천합니다.",
-    "from": "2021",
-    "to": null,
-    "type": "private",
-    "link": "https://github.com/psg107/HumorUnivAutoAssist",
-    "linkVisible": false,
-    "skills": ["C#", "Windows Console", "Regex", "XPath"]
-  },
-  {
-    "name": "스크립트 로더",
-    "image": "sl.png",
-    "description": "여러 오토핫키 스크립트를 하나의 프로그램으로 관리하고 실행할 수 있는 윈도우 어플리케이션입니다.",
-    "from": "2021",
-    "to": null,
-    "type": "private",
-    "link": "https://github.com/psg107/ScriptLoader",
-    "linkVisible": false,
-    "skills": ["C#", "WPF", "AutoHotkey", "Sqlite"]
-  },
-  {
-    "name": "온라인 게임 멀티 클라이언트 도우미",
-    "image": "mmch.png",
-    "description": "온라인 게임에서 여러 클라이언트를 동시에 실행하고 관리할 수 있는 프로그램입니다.",
-    "from": "2021",
-    "to": null,
-    "type": "private",
-    "link": "https://github.com/psg107/MabiMultiClientHelper",
-    "linkVisible": false,
-    "skills": ["C#", "WPF"]
-  },
-  {
-    "name": "뽐뿌 알림봇",
-    "image": "bbmonitor.png",
-    "description": "핫딜을 공유하는 사이트인 뽐뿌의 게시판에서 키워드 알림 기능을 제공하는 봇입니다. 등록된 키워드가 포함된 글을 발견하면 실시간으로 휴대폰 알림을 통해 사용자에게 해당 정보를 전달합니다.",
-    "from": "2020",
-    "to": null,
-    "type": "private",
-    "link": "https://github.com/psg107/TelegramMonitorServer",
-    "linkVisible": false,
-    "skills": ["C#", "EntityFramework", "Crawling", "XPath", "TelegramAPI"]
-  },
-  {
-    "name": "자동 티켓팅",
-    "image": "it.png",
-    "description": "공연 티켓을 자동으로 구매하는 프로그램입니다. 사용자는 아이디, 패스워드, 상품 URL, 공연 날짜와 시간을 입력하면, 자동으로 티켓을 무통장 결제 방식으로 구매합니다. OpenCV를 사용하여 캡챠를 자동으로 인식하고, 매크로 방지를 우회합니다.",
-    "from": "2020",
-    "to": null,
-    "type": "private",
-    "link": "https://github.com/psg107/InterparkTicketing",
-    "linkVisible": false,
-    "skills": ["C#", "WPF", "Crawling", "XPath", "Regex", "OpenCV", "Tesseract"]
-  },
-  {
-    "name": "일정관리 윈도우 프로그램",
-    "image": "info.jpg",
-    "description": "경북 교육행정포털에서 일정 관리를 효율적으로 할 수 있는 윈도우 응용 프로그램입니다.",
-    "from": "2020",
-    "to": null,
-    "type": "private",
-    "link": "https://www.info.go.kr/teacher/schedule/intro/intro.do",
-    "linkVisible": true,
-    "skills": ["C#", "WPF", "RestAPI", "Sqlite"]
-  },
-  {
-    "name": "AutoCMS",
-    "description": "렌탈비, 학원비, 기부금 등 다양한 요금을 자동으로 출금할 수 있도록 관리하는 프로그램입니다. 밴사 라이브러리를 활용해 계좌 자동 이체를 처리합니다.",
-    "from": "2019",
-    "to": "2021",
-    "type": "company",
-    "link": null,
-    "linkVisible": false,
-    "skills": ["C#", "Windows Console", "MSSQL", "Dll"]
-  },
-  {
-    "name": "CRM Desktop",
-    "description": "고객 관리 및 다양한 업무 처리를 위한 윈도우 응용 프로그램입니다. WPF와 DevExpress 컴포넌트를 활용하여 실시간 전화 및 팩스 알림 수신, 메일 전송, 프린팅, 엑셀 및 PDF 생성 등 여러 가지 편의 기능을 제공합니다.",
-    "from": "2018",
-    "to": "2021",
-    "type": "company",
-    "link": null,
-    "linkVisible": false,
-    "skills": ["C#", "WPF", "DevExpressWPF", "SignalR", "Crawling", "XPath", "Regex", "MSSQL"]
-  },
-  {
-    "name": "CMS Mobile",
-    "description": "윈도우 응용 프로그램 솔루션의 모바일 버전으로, Android 및 iOS에서 사용할 수 있는 모바일 어플리케이션입니다.",
-    "from": "2018",
-    "to": "2021",
-    "type": "company",
-    "link": null,
-    "linkVisible": false,
-    "skills": ["C#", "Xamarin", "Android", "IOS", "Firebase", "FirebaseNotification", "FirebaseRemoteConfig", "Sqlite"]
-  },
-  {
-    "name": "CRM Web",
-    "description": "고객 관리 및 다양한 업무 처리를 위한 웹서비스입니다. 실시간 전화 및 팩스 알림 수신, 고객 정보 조회 기능 등 여러 가지 편의 기능을 제공합니다.",
-    "from": "2018",
-    "to": "2021",
-    "type": "company",
-    "link": null,
-    "linkVisible": false,
-    "skills": ["C#", "ASP.NET MVC", "SignalR"]
-  },  
-  {
-    "name": "MSSQL DB 관리",
-    "description": "MSSQL 쿼리 작성과 DB 관리를 통해 데이터베이스를 효율적으로 관리했습니다.",
-    "from": "2018",
-    "to": "2021",
-    "type": "company",
-    "link": null,
-    "linkVisible": false,
-    "skills": ["MSSQL"]
-  },
-  {
-    "name": "카풀 안드로이드 어플리케이션",
-    "description": "운전자와 동승자를 매칭할 수 있는 카풀 Android 어플리케이션입니다.",
-    "from": "2017",
-    "to": null,
-    "type": "private",
-    "link": null,
-    "linkVisible": false,
-    "skills": ["Android", "AndroidWebView", "Jsp", "Mysql", "OpenAPI"]
-  },
-  {
-    "name": "자동화 프로그램",
-    "description": "AutoHotkey 스크립트를 이용하여 다양한 자동화 작업을 처리하는 프로그램들을 제작했습니다.",
-    "from": "2009",
-    "to": null,
-    "type": "private",
-    "link": null,
-    "linkVisible": false,
-    "skills": ["AutoHotkey"]
-  }  
+  } 
 ]
