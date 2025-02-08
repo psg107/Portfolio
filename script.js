@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const projectLink = document.createElement('a');
         projectLink.classList.add('project-link');
         projectLink.href = project.link;
+        projectLink.target = '_blank';
         projectLink.textContent = '프로젝트 보기';
         projectCard.appendChild(projectLink);
       }
