@@ -16,7 +16,7 @@
       "AWS Scheduled Task",
       "Amazon SQS",
       "Terraform",
-      "Github Enterprise",
+      "Github",
       "Github Actions",
       "CI/CD"
     ]
@@ -62,7 +62,7 @@
       "Amazon SQS",
       "AWS Kinesis",
       "Terraform",
-      "Github Enterprise",
+      "Github",
       "Github Actions",
       "CI/CD"
     ]
@@ -79,15 +79,15 @@
       "Kotlin",
       "SpringBoot",
       "MongoDB",
+      "Redis",
       "AWS ECS",
       "AWS Scheduled Task",
       "Amazon SQS",
       "AWS Kinesis",
       "Terraform",
-      "Github Enterprise",
+      "Github",
       "Github Actions",
-      "CI/CD",
-      "Redis"
+      "CI/CD"
     ]
   },
   {
@@ -103,7 +103,7 @@
       "Next.js",
       "AWS ECS",
       "Terraform",
-      "Github Enterprise",
+      "Github",
       "Github Actions",
       "CI/CD"
     ]
