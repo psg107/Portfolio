@@ -28,7 +28,7 @@
     "to": "2024.11",
     "type": "company",
     "link": "https://travel.interpark.com/package-search",
-    "linkVisible": true,
+    "linkVisible": false,
     "skills": [
       "Kotlin",
       "SpringBoot",

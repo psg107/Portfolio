@@ -17,6 +17,12 @@ section {
   padding: 20px;
 }
 
+section h2 {
+  border-left: 6px solid #007bff;
+  padding-left: 6px;
+  height: 35px;
+}
+
 /* 인사말 섹션 */
 #section-introduction h1 {
   font-size: 2rem;
@@ -43,6 +49,7 @@ section {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
+  border: 1px solid rgba(238, 238, 238, .7);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
   overflow: hidden;
@@ -140,6 +147,7 @@ section {
 .toggle-container {
   display: flex;
   align-items: center;
+  margin-right: 10px;
 }
 
 #section-project h2 {
