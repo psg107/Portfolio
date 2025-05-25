@@ -214,3 +214,80 @@ input:checked + .slider:before {
   font-weight: normal;
   cursor: pointer;
 }
+
+/* 구성도 섹션 스타일 */
+#section-architecture {
+  margin: 20px;
+  padding: 20px;
+}
+
+.architecture-container {
+  margin-top: 20px;
+}
+
+.architecture-container h3 {
+  color: #333;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  border-left: 4px solid #007bff;
+  padding-left: 10px;
+}
+
+.architecture-container h3:first-child {
+  margin-top: 0;
+}
+
+.mermaid {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 15px 0;
+  overflow-x: auto;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .mermaid {
+    padding: 10px;
+    font-size: 12px;
+  }
+}
+
+/* 회사 탭 스타일 */
+.company-tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #666;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+  color: #333;
+  background-color: #f8f9fa;
+}
+
+.tab-button.active {
+  color: #007bff;
+  border-bottom-color: #007bff;
+  font-weight: bold;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}

@@ -66,3 +66,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
   toggleSwitch.addEventListener("change", updateProjects);
 });
+
+function switchCompanyTab(tabName) {
+  const tabButtons = document.querySelectorAll('.tab-button');
+  tabButtons.forEach(button => button.classList.remove('active'));
+  
+  const tabContents = document.querySelectorAll('.tab-content');
+  tabContents.forEach(content => content.classList.remove('active'));
+  
+  event.target.classList.add('active');
+  
+  const targetTab = document.getElementById(tabName + '-tab');
+  if (targetTab) {
+    targetTab.classList.add('active');
+    
+    setTimeout(() => {
+      renderMermaidInTab(targetTab, tabName);
+    }, 100);
+  }
+}
+
+function renderMermaidInTab(tabElement, tabName) {
+  const mermaidElements = tabElement.querySelectorAll('.mermaid');
+  
+  mermaidElements.forEach((element, index) => {
+    if (element.querySelector('svg')) {
+      return;
+    }
+    
+    const mermaidCode = element.textContent.trim();
+    
+    const tempDiv = document.createElement('div');
+    tempDiv.style.display = 'none';
+    document.body.appendChild(tempDiv);
+    
+    try {
+      const uniqueId = `mermaid-${tabName}-${index}-${Date.now()}`;
+      
+      if (typeof mermaid !== 'undefined') {
+        mermaid.render(uniqueId, mermaidCode).then(({ svg }) => {
+          element.innerHTML = svg;
+          document.body.removeChild(tempDiv);
+        }).catch(error => {
+          console.error('Mermaid rendering error:', error);
+          document.body.removeChild(tempDiv);
+        });
+      }
+    } catch (error) {
+      console.error('Mermaid error:', error);
+      document.body.removeChild(tempDiv);
+    }
+  });
+}

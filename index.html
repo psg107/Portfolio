@@ -6,13 +6,180 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>박상곤의 포트폴리오</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 </head>
 
 <body>
   <div class="container">
     <section id="section-introduction">
       <h1>안녕하세요! 박상곤입니다.</h1>
-      <p>저는 백엔드 개발을 전문으로 하는 개발자입니다. 다양한 기술을 통해 서비스의 안정성과 효율성을 높이고, 성과를 내는 것을 목표로 하고 있습니다.</p>
+      <p>저는 백엔드 개발자로, 대용량 트래픽을 처리하는 여행 서비스 개발에 전문성을 가지고 있습니다.</p>
+      <p>C#/.NET과 Kotlin/Spring Boot를 주력으로 하며, 모놀리식 아키텍처에서 마이크로서비스 아키텍처로의 전환 프로젝트를 성공적으로 수행한 경험이 있습니다.</p>
+      <p>클린 코드와 효율적인 시스템 설계를 통해 서비스의 안정성과 성능을 지속적으로 개선하고, 비즈니스 가치를 창출하는 것을 목표로 하고 있습니다.</p>
+      <p>AWS 클라우드 환경에서의 개발 및 운영 경험을 바탕으로, 확장 가능하고 유지보수가 용이한 시스템 구축에 집중하고 있습니다.</p>
+    </section>
+
+    <section id="section-architecture">
+      <h2>서비스 구성도</h2>
+      <div class="architecture-container">
+        <div class="company-tabs">
+          <button class="tab-button active" onclick="switchCompanyTab('noluniverse')">놀유니버스</button>
+          <button class="tab-button" onclick="switchCompanyTab('ksoft')">ksoft</button>
+        </div>
+        
+        <div id="noluniverse-tab" class="tab-content active">
+          <h3>구패키지 시스템 (C# 기반 모놀리식)</h3>
+          <div class="mermaid">
+            graph TD
+              subgraph "데이터베이스 & 캐시"
+                DB[("tour-db&#10;MSSQL")]
+                REDIS[("tour-cache&#10;Redis")]
+              end
+              
+              subgraph "서비스"
+                PWA["package-worldin-admin&#10;여행업무 백오피스"]
+                CTA["common-touradmin&#10;고객 알림/전시 관리"]
+                PB["package-batch&#10;배치 작업"]
+                PA["package-api&#10;API 서버"]
+                PT["package-tprm&#10;외부사 연동"]
+                PBS["pack.batch.search&#10;검색 인덱스"]
+                PAD["pack.api.display&#10;전시 API"]
+              end
+              
+              subgraph "외부 연동"
+                NAVER[네이버]
+                MT[모두투어]
+                SETTLE[사내 정산 API]
+                HMC[현대카드]
+              end
+              
+              DB --> PWA
+              DB --> CTA
+              DB --> PB
+              DB --> PA
+              DB --> PT
+              DB --> PBS
+              DB --> PAD
+
+              REDIS --> PWA
+              REDIS --> CTA
+              REDIS --> PB
+              REDIS --> PA
+              REDIS --> PT
+              REDIS --> PBS
+              REDIS --> PAD
+              
+              PA --> NAVER
+              PA --> MT
+              PT --> NAVER
+              PT --> MT
+              PA --> SETTLE
+              SETTLE --> HMC
+          </div>
+        
+          <h3>신규패키지 시스템 (Kotlin 기반 마이크로서비스)</h3>
+          <div class="mermaid">
+            graph TD
+              subgraph "데이터베이스 & 캐시"
+                MONGO_P[("product-db&#10;MongoDB")]
+                REDIS_P[("product-cache&#10;Redis")]
+                MONGO_R[("reservation-db&#10;MongoDB")]
+                REDIS_R[("reservation-cache&#10;Redis")]
+                MONGO_S[("supplier-db&#10;MongoDB")]
+                REDIS_S[("supplier-cache&#10;Redis")]
+                MONGO_H[("hub-db&#10;MongoDB")]
+                REDIS_H[("hub-cache&#10;Redis")]
+              end
+              
+              subgraph "서비스"
+                PP["package-product&#10;상품 관리"]
+                PR["package-reservation&#10;예약 관리"]
+                PS["package-supplier&#10;공급사 연동"]
+                PH["package-hub&#10;구/신 패키지 통합 검색/전시"]
+              end
+              
+              subgraph "외부 서비스"
+                GA["항공 관리 서비스"]
+                MC["호텔/투어 관리 서비스"]
+                PAY["결제 서비스"]
+                SETTLE["정산 서비스"]
+                MT["모두투어 API"]
+                ANDOR["검색 서비스"]
+                ES["Elasticsearch&#10;검색 엔진"]
+              end
+
+              subgraph "이벤트"
+                KINESIS["AWS Kinesis&#10;이벤트 스트림"]
+                SQS["Amazon SQS&#10;메시지 큐"]
+              end
+
+              OVERSEAS["해외숙소"]
+              TOUR_TICKET["투어·티켓"]
+              TICKET["티켓"]
+              
+              MONGO_P --> PP
+              REDIS_P --> PP
+              MONGO_R --> PR
+              REDIS_R --> PR
+              MONGO_S --> PS
+              REDIS_S --> PS
+              MONGO_H --> PH
+              REDIS_H --> PH
+              
+              PP --> KINESIS
+              KINESIS --> GA
+              KINESIS --> MC
+              PR --> PAY
+              PAY --> SETTLE
+              PS --> MT
+              PH --> ANDOR
+              OVERSEAS --> ANDOR
+              TOUR_TICKET --> ANDOR
+              TICKET --> ANDOR
+              ANDOR --> ES
+          </div>
+        </div>
+        
+        <div id="ksoft-tab" class="tab-content">
+          <h3>CMS/CRM 시스템</h3>
+          <div class="mermaid">
+            graph TD
+              subgraph "데이터베이스"
+                CMS_DB[("CMS-db&#10;MSSQL")]
+                CRM_DB[("CRM-db&#10;MSSQL")]
+              end
+              
+              subgraph "시스템 서비스"
+                CMS_MAIN["AutoCMS&#10;자동 이체 시스템"]
+                CMS_PLUS["CMSPlus&#10;계좌 관리 시스템"]
+                CRM_WEB["CRM 웹"]
+                CRM_DESKTOP["CRM 데스크톱"]
+                CMS_MOBILE["CMS Mobile&#10;Android/iOS"]
+              end
+              
+              subgraph "외부 연동"
+                KFTC["금융결제원"]
+                HYOSUNG["효성"]
+                NICEPAY["나이스페이먼츠"]
+                FIREBASE["Firebase&#10;푸시 알림"]
+              end
+              
+              CMS_DB --> CMS_MAIN
+              CMS_DB --> CMS_PLUS
+              CMS_DB --> CMS_MOBILE
+              CRM_DB --> CRM_WEB
+              CRM_DB --> CRM_DESKTOP
+              
+              CMS_MAIN --> KFTC
+              CMS_MAIN --> HYOSUNG
+              CMS_MAIN --> NICEPAY
+              CMS_PLUS --> KFTC
+              CMS_PLUS --> HYOSUNG
+              CMS_PLUS --> NICEPAY
+              CMS_MOBILE --> FIREBASE
+          </div>
+        </div>
+      </div>
     </section>
 
     <section id="section-project">
@@ -50,6 +217,26 @@
   </div>
 
   <script src="script.js"></script>
+  <script>
+    mermaid.initialize({ 
+      startOnLoad: false,
+      theme: 'default',
+      securityLevel: 'loose',
+      htmlLabels: true,
+      flowchart: {
+        htmlLabels: true
+      }
+    });
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(() => {
+        const activeTab = document.querySelector('.tab-content.active');
+        if (activeTab && activeTab.id === 'noluniverse-tab') {
+          renderMermaidInTab(activeTab, 'noluniverse');
+        }
+      }, 200);
+    });
+  </script>
 </body>
 
 </html>
