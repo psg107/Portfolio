@@ -7,43 +7,65 @@
   <title>박상곤의 포트폴리오</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+  <style>
+    .mermaid {
+      width: 100%;
+      overflow: hidden;
+      min-height: 600px;
+      position: relative;
+    }
+    .mermaid svg {
+      width: 100%;
+      min-height: 600px;
+      cursor: move;
+    }
+  </style>
 </head>
 
 <body>
   <div class="container">
+    <!-- 소개 -->
     <section id="section-introduction">
       <h1>안녕하세요! 박상곤입니다.</h1>
-      <p>저는 백엔드 개발자로, 대용량 트래픽을 처리하는 여행 서비스 개발에 전문성을 가지고 있습니다.</p>
-      <p>C#/.NET과 Kotlin/Spring Boot를 주력으로 하며, 모놀리식 아키텍처에서 마이크로서비스 아키텍처로의 전환 프로젝트를 성공적으로 수행한 경험이 있습니다.</p>
-      <p>클린 코드와 효율적인 시스템 설계를 통해 서비스의 안정성과 성능을 지속적으로 개선하고, 비즈니스 가치를 창출하는 것을 목표로 하고 있습니다.</p>
-      <p>AWS 클라우드 환경에서의 개발 및 운영 경험을 바탕으로, 확장 가능하고 유지보수가 용이한 시스템 구축에 집중하고 있습니다.</p>
+      <p>백엔드 개발자로 여행 서비스의 대용량 트래픽 처리와 시스템 설계, 운영을 담당해왔습니다.</p>
+      <p>C#/.NET, Kotlin/Spring Boot를 주로 사용하며, 모놀리식 아키텍처와 마이크로서비스 아키텍처 모두 경험했습니다.</p>
+      <p>클린 코드와 효율적인 시스템 구조에 관심이 많으며, AWS 환경에서 확장성과 유지보수성을 고려한 개발을 지향합니다.</p>
     </section>
 
-    <section id="section-architecture">
-      <h2>서비스 구성도</h2>
-      <div class="architecture-container">
+    <!-- 포트폴리오 -->
+    <section id="section-portfolio">
+      <h2>포트폴리오</h2>
+      <div class="portfolio-container">
+        <!-- 탭 -->
         <div class="company-tabs">
           <button class="tab-button active" onclick="switchCompanyTab('noluniverse')">놀유니버스</button>
           <button class="tab-button" onclick="switchCompanyTab('ksoft')">ksoft</button>
+          <button class="tab-button" onclick="switchCompanyTab('personal')">개인 프로젝트</button>
         </div>
-        
+          
+        <!-- 놀유니버스 -->
         <div id="noluniverse-tab" class="tab-content active">
-          <h3>구패키지 시스템 (C# 기반 모놀리식)</h3>
+          <h3>(구) 패키지 시스템 (C# 기반 모놀리식)</h3>
           <div class="mermaid">
             graph TD
-              subgraph "데이터베이스 & 캐시"
-                DB[("tour-db&#10;MSSQL")]
-                REDIS[("tour-cache&#10;Redis")]
+              classDef default fill:#f4f4f4,stroke:#666,stroke-width:1px;
+              classDef highlighted fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
+
+              subgraph "데이터베이스&캐시"
+                DB[("tour-db&#10;MSSQL")]:::highlighted
+                REDIS[("tour-cache&#10;Redis")]:::highlighted
               end
               
               subgraph "서비스"
-                PWA["package-worldin-admin&#10;여행업무 백오피스"]
-                CTA["common-touradmin&#10;고객 알림/전시 관리"]
-                PB["package-batch&#10;배치 작업"]
-                PA["package-api&#10;API 서버"]
-                PT["package-tprm&#10;외부사 연동"]
-                PBS["pack.batch.search&#10;검색 인덱스"]
-                PAD["pack.api.display&#10;전시 API"]
+                PWA["package-worldin-admin&#10;여행업무 백오피스&#10;상품/예약/결제/정산"]:::highlighted
+                CTA["common-touradmin&#10;여행업무 백오피스&#10;알림/전시/포인트"]:::highlighted
+                PB["package-batch&#10;배치 작업"]:::highlighted
+                PA["package-api&#10;API 서버"]:::highlighted
+                PT["package-tprm&#10;외부사 연동"]:::highlighted
+                PAD["pack.api.display&#10;전시 API"]:::highlighted
+                PBS["pack.batch.search&#10;검색 인덱스"]:::highlighted
+                PC_FRONT["PC프론트&#10;닷넷"]:::highlighted
               end
               
               subgraph "외부 연동"
@@ -52,22 +74,18 @@
                 SETTLE[사내 정산 API]
                 HMC[현대카드]
               end
-              
-              DB --> PWA
-              DB --> CTA
-              DB --> PB
-              DB --> PA
-              DB --> PT
-              DB --> PBS
-              DB --> PAD
 
-              REDIS --> PWA
-              REDIS --> CTA
-              REDIS --> PB
-              REDIS --> PA
-              REDIS --> PT
-              REDIS --> PBS
-              REDIS --> PAD
+              KAFKA["Kafka&#10;이벤트 스트림"]:::highlighted
+              KAFKA_CONSUMER["Kafka Consumer&#10;이벤트 처리"]
+              ELASTIC["Elasticsearch&#10;검색 엔진"]
+
+              DOMESTIC["국내숙소"]
+              OVERSEAS["해외숙소"]
+              TOUR_TICKET["투어·티켓"]
+
+              MOBILE_FRONT["모바일프론트&#10;리액트,뷰,바닐라,.."]
+              
+              데이터베이스&캐시 --> 서비스
               
               PA --> NAVER
               PA --> MT
@@ -75,27 +93,46 @@
               PT --> MT
               PA --> SETTLE
               SETTLE --> HMC
+              PBS --> KAFKA
+              KAFKA --> KAFKA_CONSUMER
+              KAFKA_CONSUMER --> ELASTIC
+              DOMESTIC --> KAFKA_CONSUMER
+              OVERSEAS --> KAFKA_CONSUMER
+              TOUR_TICKET --> KAFKA_CONSUMER
+              PA --> MOBILE_FRONT
           </div>
-        
-          <h3>신규패키지 시스템 (Kotlin 기반 마이크로서비스)</h3>
+
+          <h3>(신) 패키지 시스템 (Kotlin 기반 마이크로서비스)</h3>
           <div class="mermaid">
             graph TD
-              subgraph "데이터베이스 & 캐시"
-                MONGO_P[("product-db&#10;MongoDB")]
-                REDIS_P[("product-cache&#10;Redis")]
-                MONGO_R[("reservation-db&#10;MongoDB")]
-                REDIS_R[("reservation-cache&#10;Redis")]
-                MONGO_S[("supplier-db&#10;MongoDB")]
-                REDIS_S[("supplier-cache&#10;Redis")]
-                MONGO_H[("hub-db&#10;MongoDB")]
-                REDIS_H[("hub-cache&#10;Redis")]
+              classDef default fill:#f4f4f4,stroke:#666,stroke-width:1px;
+              classDef highlighted fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
+              
+              subgraph "상품데이터베이스&캐시"
+                MONGO_P[("product-db&#10;MongoDB")]:::highlighted
+                REDIS_P[("product-cache&#10;Redis")]:::highlighted
+              end
+
+              subgraph "예약데이터베이스&캐시"
+                MONGO_R[("reservation-db&#10;MongoDB")]:::highlighted
+                REDIS_R[("reservation-cache&#10;Redis")]:::highlighted
+              end
+
+              subgraph "공급사데이터베이스&캐시"
+                MONGO_S[("supplier-db&#10;MongoDB")]:::highlighted
+                REDIS_S[("supplier-cache&#10;Redis")]:::highlighted
+              end
+
+              subgraph "허브데이터베이스&캐시"
+                MONGO_H[("hub-db&#10;MongoDB")]:::highlighted
+                REDIS_H[("hub-cache&#10;Redis")]:::highlighted
               end
               
               subgraph "서비스"
-                PP["package-product&#10;상품 관리"]
-                PR["package-reservation&#10;예약 관리"]
-                PS["package-supplier&#10;공급사 연동"]
-                PH["package-hub&#10;구/신 패키지 통합 검색/전시"]
+                PP["package-product&#10;상품 관리"]:::highlighted
+                PR["package-reservation&#10;예약 관리"]:::highlighted
+                PS["package-supplier&#10;공급사 연동"]:::highlighted
+                PH["package-hub&#10;구/신 패키지 통합 검색/전시"]:::highlighted
               end
               
               subgraph "외부 서비스"
@@ -104,31 +141,27 @@
                 PAY["결제 서비스"]
                 SETTLE["정산 서비스"]
                 MT["모두투어 API"]
-                ANDOR["검색 서비스"]
+                ANDOR["검색 서비스&#10;Andor"]
                 ES["Elasticsearch&#10;검색 엔진"]
-              end
-
-              subgraph "이벤트"
-                KINESIS["AWS Kinesis&#10;이벤트 스트림"]
-                SQS["Amazon SQS&#10;메시지 큐"]
               end
 
               OVERSEAS["해외숙소"]
               TOUR_TICKET["투어·티켓"]
               TICKET["티켓"]
               
-              MONGO_P --> PP
-              REDIS_P --> PP
-              MONGO_R --> PR
-              REDIS_R --> PR
-              MONGO_S --> PS
-              REDIS_S --> PS
-              MONGO_H --> PH
-              REDIS_H --> PH
+              상품데이터베이스&캐시 --> PP
+              예약데이터베이스&캐시 --> PR
+              공급사데이터베이스&캐시 --> PS
+              허브데이터베이스&캐시 --> PH
+
+              subgraph "이벤트"
+                KINESIS["AWS Kinesis&#10;이벤트 스트림"]:::highlighted
+                SQS["Amazon SQS&#10;메시지 큐"]:::highlighted
+              end
               
-              PP --> KINESIS
-              KINESIS --> GA
-              KINESIS --> MC
+              서비스 --> 이벤트
+              이벤트 --> GA
+              이벤트 --> MC
               PR --> PAY
               PAY --> SETTLE
               PS --> MT
@@ -139,22 +172,26 @@
               ANDOR --> ES
           </div>
         </div>
-        
+
+        <!-- 케이소프트 -->
         <div id="ksoft-tab" class="tab-content">
           <h3>CMS/CRM 시스템</h3>
           <div class="mermaid">
             graph TD
+              classDef default fill:#f4f4f4,stroke:#666,stroke-width:1px;
+              classDef highlighted fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
+              
               subgraph "데이터베이스"
-                CMS_DB[("CMS-db&#10;MSSQL")]
-                CRM_DB[("CRM-db&#10;MSSQL")]
+                CMS_DB[("CMS-db&#10;MSSQL")]:::highlighted
+                CRM_DB[("CRM-db&#10;MSSQL")]:::highlighted
               end
               
               subgraph "시스템 서비스"
-                CMS_MAIN["AutoCMS&#10;자동 이체 시스템"]
+                CMS_MAIN["AutoCMS&#10;자동 이체 시스템"]:::highlighted
                 CMS_PLUS["CMSPlus&#10;계좌 관리 시스템"]
-                CRM_WEB["CRM 웹"]
+                CRM_WEB["CRM 웹"]:::highlighted
                 CRM_DESKTOP["CRM 데스크톱"]
-                CMS_MOBILE["CMS Mobile&#10;Android/iOS"]
+                CMS_MOBILE["CMS Mobile&#10;Android/iOS"]:::highlighted
               end
               
               subgraph "외부 연동"
@@ -179,22 +216,13 @@
               CMS_MOBILE --> FIREBASE
           </div>
         </div>
+
+        <!-- 개인 프로젝트 -->
+        <div id="personal-tab" class="tab-content"></div>
       </div>
     </section>
-
-    <section id="section-project">
-      <h2>프로젝트
-        <div class="toggle-container">
-          <label class="switch">
-            <input type="checkbox" id="toggle-personal-projects">
-            <span class="slider round"></span>
-          </label>
-          <label for="toggle-personal-projects" id="project-toggle-text"></label>
-        </div>
-      </h2>
-      <div class="projects-container" id="projects-container"></div>
-    </section>
     
+    <!-- 기술 스택 -->
     <section id="section-tech-stack">
       <h2>기술 스택</h2>
       <ul>
@@ -209,6 +237,7 @@
       </ul>
     </section>
 
+    <!-- 연락처 -->
     <section id="section-contact">
       <h2>연락처</h2>
       <p>이메일: <a href="mailto:psg107@naver.com">psg107@naver.com</a></p>
@@ -217,24 +246,18 @@
   </div>
 
   <script src="script.js"></script>
-  <script>
-    mermaid.initialize({ 
+  <script>    mermaid.initialize({ 
       startOnLoad: false,
       theme: 'default',
       securityLevel: 'loose',
       htmlLabels: true,
       flowchart: {
-        htmlLabels: true
+        htmlLabels: true,
+        curve: 'basis',
+        nodeSpacing: 20,
+        rankSpacing: 40,
+        padding: 10
       }
-    });
-    
-    document.addEventListener('DOMContentLoaded', function() {
-      setTimeout(() => {
-        const activeTab = document.querySelector('.tab-content.active');
-        if (activeTab && activeTab.id === 'noluniverse-tab') {
-          renderMermaidInTab(activeTab, 'noluniverse');
-        }
-      }, 200);
     });
   </script>
 </body>
