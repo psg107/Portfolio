@@ -63,7 +63,7 @@ const updateProjects = (tabName) => {
   if (!projectsContainer) {
     projectsContainer = document.createElement('div');
     projectsContainer.className = 'projects-container';
-    tabContent.appendChild(projectsContainer);
+    tabContent.insertBefore(projectsContainer, tabContent.firstChild);
   }
 
   projectsContainer.innerHTML = "";
@@ -147,7 +147,7 @@ const renderMermaidInTab = async (tabElement, tabName) => {
 };
 
 // 초기화 함수
-const initializePortfolio = async () => {
+const initializeProjects = async () => {
   try {
     const [projects1, projects2] = await Promise.all([
       fetch('projects.json').then(response => response.json()),
@@ -162,4 +162,4 @@ const initializePortfolio = async () => {
 };
 
 // DOM 로드 시 초기화
-document.addEventListener('DOMContentLoaded', initializePortfolio);
+document.addEventListener('DOMContentLoaded', initializeProjects);
