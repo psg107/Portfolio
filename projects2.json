@@ -1,129 +1,283 @@
 [
   {
     "name": "카카오톡 이모티콘 추출기",
-    "description": "윈도우 PC 버전의 카카오톡에서 webp 이미지를 추출하는 프로그램을 개발한 프로젝트입니다. GitHub에 공개된 C++ 소스를 기반으로 C#으로 이모티콘 추출 기능을 구현했습니다.",
+    "description": {
+      "summary": "카카오톡 PC 버전의 이모티콘 이미지 추출 프로그램",
+      "impact": [
+        "웹 이미지 파일 접근성 향상",
+        "기존 C++ 기반 프로그램의 C# 포팅으로 사용성 개선"
+      ],
+      "features": [
+        "WebP 이미지 파일 추출",
+        "WinAPI 활용 프로세스 메모리 접근"
+      ]
+    },
     "from": "2023",
     "to": null,
     "type": "private",
     "link": "https://github.com/psg107/KEmojiExtractorDotnet",
     "linkVisible": false,
-    "skills": ["C#", "Windows Console", "C++", "WinAPI"]
-  },
-  {
-    "name": "유튜브 쇼츠 크롬 확장 프로그램",
-    "image": "ystc.png",
-    "description": "유튜브 쇼츠 콘텐츠를 효율적으로 시청하고 시간을 관리할 수 있는 크롬 확장 프로그램을 개발한 프로젝트입니다.",
-    "from": "2023",
-    "to": null,
-    "type": "private",
-    "link": "https://github.com/psg107/YoutubeShortTimeController",
-    "linkVisible": false,
-    "skills": ["HTML", "JavaScript"]
+    "skills": [
+      "C#",
+      "Windows Console",
+      "C++",
+      "WinAPI"
+    ]
   },
   {
     "name": "SRT 자동 예매",
-    "description": "SRT 티켓을 자동으로 구매할 수 있는 프로그램을 개발한 프로젝트입니다. 사용자 정보와 예매 날짜를 입력하면 자동으로 티켓을 예매하는 기능을 구현했습니다.",
+    "description": {
+      "summary": "SRT 티켓 자동 예매 프로그램",
+      "impact": [
+        "수동 예매 프로세스 자동화",
+        "원하는 좌석 신속한 예매 지원"
+      ],
+      "features": [
+        "사용자 정보 기반 자동 로그인",
+        "지정 날짜/시간 예매 자동화"
+      ]
+    },
     "from": "2022",
     "to": null,
     "type": "private",
     "link": "https://github.com/psg107/SRT_Ticketing",
     "linkVisible": false,
-    "skills": ["C#", "Windows Console", "RestAPI"]
+    "skills": [
+      "C#",
+      "Windows Console",
+      "RestAPI"
+    ]
   },
   {
     "name": "호스트 관리 프로그램",
-    "description": "서버 환경에서 개발, 스테이징, 운영 서버의 호스트 설정을 효율적으로 전환하고 관리할 수 있도록 돕는 프로그램을 개발한 프로젝트입니다.",
+    "description": {
+      "summary": "서버 환경별 호스트 설정 관리 프로그램",
+      "impact": [
+        "환경 전환 작업 효율화",
+        "설정 오류 가능성 최소화"
+      ],
+      "features": [
+        "개발/스테이징/운영 환경 설정 관리",
+        "원클릭 호스트 전환"
+      ]
+    },
     "from": "2022",
     "to": null,
     "type": "company",
     "link": null,
     "linkVisible": false,
-    "skills": ["C#", "WPF", "MSSQL"]
+    "skills": [
+      "C#",
+      "WPF",
+      "MSSQL"
+    ]
   },
   {
     "name": "게시글 자동 추천 프로그램",
     "image": "hu.png",
-    "description": "인터넷 커뮤니티 게시글을 자동으로 추천하는 프로그램으로, 추천수가 부족한 게시글을 찾아 자동 추천합니다.",
+    "description": {
+      "summary": "커뮤니티 게시글 자동 추천 프로그램",
+      "impact": [
+        "30번째 추천 타이밍 자동 포착",
+        "반복적인 커뮤니티 활동 자동화"
+      ],
+      "features": [
+        "추천수 기반 게시글 필터링",
+        "자동 추천 프로세스"
+      ]
+    },
     "from": "2021",
     "to": null,
     "type": "private",
     "link": "https://github.com/psg107/HumorUnivAutoAssist",
     "linkVisible": false,
-    "skills": ["C#", "Windows Console", "Regex", "XPath"]
+    "skills": [
+      "C#",
+      "Windows Console",
+      "Regex",
+      "XPath"
+    ]
   },
   {
     "name": "스크립트 로더",
     "image": "sl.png",
-    "description": "여러 오토핫키 스크립트를 하나의 프로그램으로 관리하고 실행할 수 있는 윈도우 어플리케이션입니다.",
+    "description": {
+      "summary": "오토핫키 스크립트 통합 관리 프로그램",
+      "impact": [
+        "스크립트 관리 효율화",
+        "실행 환경 일원화"
+      ],
+      "features": [
+        "스크립트 통합 관리 UI",
+        "스크립트 자동 실행"
+      ]
+    },
     "from": "2021",
     "to": null,
     "type": "private",
     "link": "https://github.com/psg107/ScriptLoader",
     "linkVisible": false,
-    "skills": ["C#", "WPF", "AutoHotkey", "Sqlite"]
+    "skills": [
+      "C#",
+      "WPF",
+      "AutoHotkey",
+      "Sqlite"
+    ]
   },
   {
     "name": "온라인 게임 멀티 클라이언트 도우미",
     "image": "mmch.png",
-    "description": "온라인 게임에서 여러 클라이언트를 동시에 실행하고 관리할 수 있는 프로그램입니다.",
+    "description": {
+      "summary": "온라인 게임 멀티 클라이언트 관리 프로그램",
+      "impact": [
+        "다중 클라이언트 운영 편의성 향상",
+        "게임 플레이 효율성 증대"
+      ],
+      "features": [
+        "다중 클라이언트 실행 관리",
+        "클라이언트별 환경 설정"
+      ]
+    },
     "from": "2021",
     "to": null,
     "type": "private",
     "link": "https://github.com/psg107/MabiMultiClientHelper",
     "linkVisible": false,
-    "skills": ["C#", "WPF"]
+    "skills": [
+      "C#",
+      "WPF"
+    ]
   },
   {
     "name": "뽐뿌 알림봇",
     "image": "bbmonitor.png",
-    "description": "핫딜을 공유하는 사이트인 뽐뿌의 게시판에서 키워드 알림 기능을 제공하는 봇입니다. 등록된 키워드가 포함된 글을 발견하면 실시간으로 휴대폰 알림을 통해 사용자에게 해당 정보를 전달합니다.",
+    "description": {
+      "summary": "커뮤니티 핫딜 정보 실시간 알림 봇",
+      "impact": [
+        "관심 정보 실시간 수신으로 사용자 편의성 향상",
+        "키워드 기반 맞춤 알림 제공"
+      ],
+      "features": [
+        "키워드 기반 게시글 모니터링",
+        "텔레그램 봇 실시간 알림",
+        "크롤링 기반 데이터 수집"
+      ]
+    },
     "from": "2020",
     "to": null,
     "type": "private",
     "link": "https://github.com/psg107/TelegramMonitorServer",
     "linkVisible": false,
-    "skills": ["C#", "EntityFramework", "Crawling", "XPath", "TelegramAPI"]
+    "skills": [
+      "C#",
+      "EntityFramework",
+      "Crawling",
+      "XPath",
+      "TelegramAPI"
+    ]
   },
   {
     "name": "자동 티켓팅",
     "image": "it.png",
-    "description": "공연 티켓을 자동으로 구매하는 프로그램입니다. 사용자는 아이디, 패스워드, 상품 URL, 공연 날짜와 시간을 입력하면, 자동으로 티켓을 무통장 결제 방식으로 구매합니다. OpenCV를 사용하여 캡챠를 자동으로 인식하고, 매크로 방지를 우회합니다.",
+    "description": {
+      "summary": "공연 티켓 자동 예매 프로그램",
+      "impact": [
+        "티켓 예매 프로세스 자동화",
+        "빠른 예매로 티켓 확보율 향상"
+      ],
+      "features": [
+        "OpenCV 기반 캡챠 자동 인식",
+        "무통장 결제 자동화",
+        "예매 정보 자동 입력"
+      ]
+    },
     "from": "2020",
     "to": null,
     "type": "private",
     "link": "https://github.com/psg107/InterparkTicketing",
     "linkVisible": false,
-    "skills": ["C#", "WPF", "Crawling", "XPath", "Regex", "OpenCV", "Tesseract"]
+    "skills": [
+      "C#",
+      "WPF",
+      "Crawling",
+      "XPath",
+      "Regex",
+      "OpenCV",
+      "Tesseract"
+    ]
   },
   {
     "name": "일정관리 윈도우 프로그램",
     "image": "info.jpg",
-    "description": "경북 교육행정포털에서 일정 관리를 효율적으로 할 수 있는 윈도우 응용 프로그램입니다.",
+    "description": {
+      "summary": "교육행정포털 일정 관리 프로그램",
+      "impact": [
+        "일정 관리 효율성 향상",
+        "사용자 인터페이스 개선"
+      ],
+      "features": [
+        "일정 등록/수정/삭제",
+        "로컬 데이터 동기화"
+      ]
+    },
     "from": "2020",
     "to": null,
     "type": "private",
-    "link": "https://www.info.go.kr/teacher/schedule/intro/intro.do",
-    "linkVisible": true,
-    "skills": ["C#", "WPF", "RestAPI", "Sqlite"]
+    "link": null,
+    "linkVisible": false,
+    "skills": [
+      "C#",
+      "WPF",
+      "RestAPI",
+      "Sqlite"
+    ]
   },
   {
     "name": "카풀 안드로이드 어플리케이션",
-    "description": "운전자와 동승자를 매칭할 수 있는 카풀 Android 어플리케이션입니다.",
+    "description": {
+      "summary": "운전자-동승자 매칭 카풀 앱",
+      "impact": [
+        "카풀 매칭 프로세스 간소화",
+        "실시간 위치 기반 서비스 제공"
+      ],
+      "features": [
+        "위치 기반 매칭 시스템",
+        "WebView 기반 하이브리드 앱"
+      ]
+    },
     "from": "2017",
     "to": null,
     "type": "private",
     "link": null,
     "linkVisible": false,
-    "skills": ["Android", "AndroidWebView", "Jsp", "Mysql", "OpenAPI"]
+    "skills": [
+      "Android",
+      "AndroidWebView",
+      "Jsp",
+      "Mysql",
+      "OpenAPI"
+    ]
   },
   {
     "name": "자동화 프로그램",
-    "description": "AutoHotkey 스크립트를 이용하여 다양한 자동화 작업을 처리하는 프로그램들을 제작했습니다.",
+    "description": {
+      "summary": "AutoHotkey 기반 작업 자동화 프로그램",
+      "impact": [
+        "반복 작업 자동화",
+        "업무 효율성 향상"
+      ],
+      "features": [
+        "키보드/마우스 매크로",
+        "작업 스크립트 자동화"
+      ]
+    },
     "from": "2009",
     "to": null,
     "type": "private",
     "link": null,
     "linkVisible": false,
-    "skills": ["AutoHotkey"]
-  }  
+    "skills": [
+      "AutoHotkey"
+    ]
+  }
 ]

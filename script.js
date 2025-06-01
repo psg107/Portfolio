@@ -87,22 +87,30 @@ const updateProjects = (tabName) => {
     const skills = document.createElement('p');
     skills.classList.add('skills');
     skills.textContent = project.skills.join(', ');
-    projectCard.appendChild(skills);
-
-    const description = document.createElement('p');
-    description.classList.add('description');
-    description.textContent = project.description;
-    projectCard.appendChild(description);
-
-    if (project.linkVisible) {
-      const projectLink = document.createElement('a');
-      projectLink.classList.add('project-link');
-      projectLink.href = project.link;
-      projectLink.target = '_blank';
-      projectLink.textContent = '프로젝트 보기';
-      projectCard.appendChild(projectLink);
+    projectCard.appendChild(skills);    if (project.description.summary) {
+      const summary = document.createElement('p');
+      summary.classList.add('summary');
+      summary.textContent = project.description.summary;
+      projectCard.appendChild(summary);
+    }    if (project.description.impact) {
+      const impact = document.createElement('ul');
+      impact.classList.add('impact');
+      project.description.impact.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        impact.appendChild(li);
+      });
+      projectCard.appendChild(impact);
+    }    if (project.description.features) {
+      const features = document.createElement('ul');
+      features.classList.add('features');
+      project.description.features.forEach(feature => {
+        const li = document.createElement('li');
+        li.textContent = feature;
+        features.appendChild(li);
+      });
+      projectCard.appendChild(features);
     }
-
     projectsContainer.appendChild(projectCard);
   });
 }
