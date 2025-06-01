@@ -31,7 +31,8 @@
       "React",
       "Terraform",
       "Github Actions",
-      "CI/CD"
+      "CI/CD",
+      "Datadog"
     ]
   },
   {
@@ -70,7 +71,8 @@
       "Kakao API",
       "Terraform",
       "Github Actions",
-      "CI/CD"
+      "CI/CD",
+      "Datadog"
     ]
   },
   {
@@ -107,7 +109,7 @@
       "Terraform",
       "Github Actions",
       "CI/CD",
-      "LayeredArchitecture"
+      "Datadog"
     ]
   },
   {
@@ -143,7 +145,7 @@
       "Terraform",
       "Github Actions",
       "CI/CD",
-      "LayeredArchitecture"
+      "Datadog"
     ]
   },
   {
@@ -180,7 +182,7 @@
       "Terraform",
       "Github Actions",
       "CI/CD",
-      "LayeredArchitecture"
+      "Datadog"
     ]
   },
   {
@@ -217,7 +219,7 @@
       "Terraform",
       "Github Actions",
       "CI/CD",
-      "LayeredArchitecture"
+      "Datadog"
     ]
   },
   {
@@ -251,7 +253,8 @@
       "AWS ECS",
       "Terraform",
       "Github Actions",
-      "CI/CD"
+      "CI/CD",
+      "Datadog"
     ]
   },
   {
@@ -311,7 +314,9 @@
       "C#",
       "ASP.NET MVC",
       "RestAPI",
-      "MSSQL"
+      "MSSQL",
+      "Jenkins",
+      "ELK Stack"
     ]
   },
   {
@@ -341,7 +346,9 @@
       "ASP.NET MVC",
       "RestAPI",
       "MSSQL",
-      "Windows Batch"
+      "Windows Batch",
+      "Jenkins",
+      "ELK Stack"
     ]
   },
   {
@@ -373,7 +380,9 @@
       "SpringBoot",
       "RestAPI",
       "Github Actions",
-      "CI/CD"
+      "CI/CD",
+      "Jenkins",
+      "ELK Stack"
     ]
   },
   {
@@ -401,7 +410,9 @@
     "skills": [
       "C#",
       "RestAPI",
-      "MSSQL"
+      "MSSQL",
+      "Jenkins",
+      "ELK Stack"
     ]
   },
   {
@@ -434,7 +445,12 @@
       "IIS",
       "Kafka",
       "Batch",
-      "Stored Procedure"
+      "Stored Procedure",
+      "Jenkins",
+      "Filebeat",
+      "Logstash",
+      "Elasticsearch",
+      "Kibana"
     ]
   },
   {
