@@ -28,9 +28,7 @@ export const switchCompanyTab = (tabName, options = { scroll: true }) => {
       sectionProject.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    setTimeout(() => {
-      renderMermaidInTab(targetTab, tabName);
-    }, UI_CONFIG.ANIMATION.MERMAID_RENDER_DELAY);
+    renderMermaidInTab(targetTab, tabName);
   }
 };
 

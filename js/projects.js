@@ -21,10 +21,10 @@ export const updateProjects = (tabName) => {
     const projectCard = createProjectCard(project, tabName);
     projectsContainer.appendChild(projectCard);
   });
-}
+};
 
 // 프로젝트 카드 생성
-const createProjectCard = (project, tabName) => {
+export const createProjectCard = (project, tabName) => {
   const projectCard = document.createElement('div');
   projectCard.classList.add('project-card');
   projectCard.setAttribute('role', 'article');

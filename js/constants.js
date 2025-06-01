@@ -11,8 +11,5 @@ export const UI_CONFIG = {
     MIN: 1.0,
     MAX: 2.0,
     INITIAL: 1.0
-  },
-  ANIMATION: {
-    MERMAID_RENDER_DELAY: 100
   }
 };
