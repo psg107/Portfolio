@@ -37,11 +37,17 @@ const ui = {
 // 프로젝트 데이터 관리
 const projectManager = {
   getAllProjectsSorted() {
+    const companyOrder = ['noluniverse', 'ksoft', 'personal'];
     let allProjects = [];
-    Object.values(projectState.data).forEach(projects => {
-      allProjects = allProjects.concat(projects);
+
+    companyOrder.forEach(company => {
+      if (projectState.data[company]) {
+        const projects = projectState.data[company].sort((a, b) => b.from.localeCompare(a.from));
+        allProjects = allProjects.concat(projects);
+      }
     });
-    return allProjects.sort((a, b) => b.from.localeCompare(a.from));
+
+    return allProjects;
   },
 
   createProjectContainer() {
