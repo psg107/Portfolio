@@ -23,6 +23,9 @@ export const switchCompanyTab = (tabName) => {
   if (targetTab) {
     targetTab.classList.add('active');
 
+    const sectionProject = document.getElementById('section-project');
+    sectionProject.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
     setTimeout(() => {
       renderMermaidInTab(targetTab, tabName);
     }, UI_CONFIG.ANIMATION.MERMAID_RENDER_DELAY);
