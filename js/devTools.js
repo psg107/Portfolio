@@ -37,7 +37,7 @@ const ui = {
 // 프로젝트 데이터 관리
 const projectManager = {
   getAllProjectsSorted() {
-    const companyOrder = ['noluniverse', 'ksoft', 'personal'];
+    const companyOrder = ['noluniverse', 'ksoft'];
     let allProjects = [];
 
     companyOrder.forEach(company => {
