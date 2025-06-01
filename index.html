@@ -3,33 +3,23 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>박상곤의 포트폴리오</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/mermaid.css">
+  <link rel="stylesheet" href="css/modal.css">
   <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
-  <style>
-    .mermaid {
-      width: 100%;
-      overflow: hidden;
-      min-height: 450px;
-      position: relative;
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 25px 30px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-      margin: 25px 0;
-    }
-
-    .mermaid svg {
-      width: 100%;
-      min-height: 450px;
-      cursor: move;
-    }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom/dist/panzoom.min.js"></script>
+  <script type="module" src="js/main.js"></script>
 </head>
 
 <body>
+  <!-- 이미지 모달 -->
+  <div id="imageModal" class="modal">
+    <span class="modal-close">&times;</span>
+    <img class="modal-content" id="modalImage">
+  </div>
+
   <div class="container">
     <!-- 소개 -->
     <section id="section-introduction">
@@ -60,9 +50,9 @@
       <div class="project-container">
         <!-- 탭 -->
         <div class="company-tabs">
-          <button class="tab-button active" onclick="switchCompanyTab('noluniverse')">놀유니버스</button>
-          <button class="tab-button" onclick="switchCompanyTab('ksoft')">ksoft</button>
-          <button class="tab-button" onclick="switchCompanyTab('personal')">기타</button>
+          <button class="tab-button active" data-company="noluniverse">놀유니버스</button>
+          <button class="tab-button" data-company="ksoft">케이소프트</button>
+          <button class="tab-button" data-company="personal">기타</button>
         </div>
 
         <!-- 놀유니버스 -->
@@ -250,25 +240,6 @@
       <p>GitHub: <a href="https://github.com/psg107" target="_blank">https://github.com/psg107</a></p>
     </section>
   </div>
-
-  <script src="script.js"></script>
-  <script>
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: 'neutral',
-      securityLevel: 'loose',
-      htmlLabels: true,
-      flowchart: {
-        htmlLabels: true,
-        curve: 'basis',
-        nodeSpacing: 40,
-        rankSpacing: 60,
-        padding: 20,
-        defaultRenderer: 'dagre-d3',
-        useMaxWidth: true
-      }
-    });
-  </script>
 </body>
 
 </html>
