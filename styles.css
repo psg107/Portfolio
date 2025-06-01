@@ -350,6 +350,18 @@ input:checked+.slider:before {
   }
 }
 
+.swiper {
+  width: 100%;
+  margin: 0;
+  overflow: visible;
+}
+
+.swiper-slide {
+  width: auto !important;
+  height: auto;
+  flex-shrink: 0;
+}
+
 /* 이미지 갤러리 스타일 */
 .image-gallery {
   display: flex;
@@ -359,12 +371,13 @@ input:checked+.slider:before {
 }
 
 .gallery-item {
-  flex: 0 0 100px;
-  height: 100px;
+  width: 150px;
+  height: 112.5px;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .gallery-item:hover {
