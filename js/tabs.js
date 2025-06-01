@@ -3,7 +3,7 @@ import { updateProjects } from './projects.js';
 import { renderMermaidInTab } from './mermaid.js';
 
 // 회사별 탭 전환 처리
-export const switchCompanyTab = (tabName) => {
+export const switchCompanyTab = (tabName, options = { scroll: true }) => {
   const tabButtons = document.querySelectorAll('.tab-button');
   const targetButton = Array.from(tabButtons).find(button =>
     button.dataset.company === tabName
@@ -22,9 +22,11 @@ export const switchCompanyTab = (tabName) => {
   const targetTab = document.getElementById(tabName + '-tab');
   if (targetTab) {
     targetTab.classList.add('active');
-
-    const sectionProject = document.getElementById('section-project');
-    sectionProject.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    
+    if (options.scroll) {
+      const sectionProject = document.getElementById('section-project');
+      sectionProject.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
     setTimeout(() => {
       renderMermaidInTab(targetTab, tabName);
