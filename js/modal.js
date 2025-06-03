@@ -34,6 +34,15 @@ export const openImageModal = (imageSrc, galleryImages = []) => {
   // 이미지 카운터 업데이트
   updateImageCounter(modal);
 
+  // 이미지가 하나인 경우 화살표 숨기기
+  const prevButton = modal.querySelector('.modal-prev');
+  const nextButton = modal.querySelector('.modal-next');
+  if (prevButton && nextButton) {
+    const showNav = galleryImages.length > 1;
+    prevButton.style.display = showNav ? 'flex' : 'none';
+    nextButton.style.display = showNav ? 'flex' : 'none';
+  }
+
   // 포커스를 모달로 이동
   modal.focus();
 
@@ -101,7 +110,7 @@ export const initializeModal = () => {
     modalImg.src = currentGalleryImages[currentImageIndex];
     updateImageCounter(modal);
   };
-  
+
   // 이벤트 리스너 등록
   document.addEventListener('keydown', handleKeyDown);
   modal.addEventListener('click', handleClick);
