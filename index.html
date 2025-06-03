@@ -17,10 +17,12 @@
   <script type="module" src="js/devTools.js"></script>
 </head>
 
-<body>
-  <!-- 이미지 모달 -->
+<body> <!-- 이미지 모달 -->
   <div id="imageModal" class="modal">
     <span class="modal-close">&times;</span>
+    <div class="modal-counter"></div>
+    <button class="modal-nav modal-prev" aria-label="이전 이미지">&#10094;</button>
+    <button class="modal-nav modal-next" aria-label="다음 이미지">&#10095;</button>
     <img class="modal-content" id="modalImage">
   </div>
 

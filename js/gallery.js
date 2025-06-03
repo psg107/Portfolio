@@ -43,7 +43,9 @@ export const createImageGallery = (project) => {
       if (modal) {
         modal._lastFocusedElement = document.activeElement;
       }
-      openImageModal(image.src);
+      // 모든 프로젝트 이미지의 URL 배열 생성
+      const galleryImages = project.images.map(img => `images/${img}`);
+      openImageModal(image.src, galleryImages);
     });
 
     // 키보드 접근성
