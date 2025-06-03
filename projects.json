@@ -114,6 +114,7 @@
   },
   {
     "name": "패키지 여행 통합 검색/전시 서비스",
+    "images": ["1.png", "2.png"],
     "description": {
       "summary": "구/신규 패키지 상품 통합 검색 허브 시스템 구축",
       "impact": [
@@ -150,6 +151,7 @@
   },
   {
     "name": "패키지 여행 예약 서비스",
+    "images": ["4.png", "5.png"],
     "description": {
       "summary": "수동 관리에서 자동화된 예약 시스템으로 전환",
       "impact": [
@@ -187,6 +189,7 @@
   },
   {
     "name": "패키지 여행 상품 서비스",
+    "images": ["3.png"],
     "description": {
       "summary": "모듈화된 패키지 여행 상품 구성 시스템 개발",
       "impact": [
@@ -290,6 +293,7 @@
   },
   {
     "name": "현대카드 PLCC 연동",
+    "images": ["6.png"],
     "description": {
       "summary": "현대카드 제휴 카드 회원 관리 및 포인트 처리 시스템 구축",
       "impact": [
@@ -353,6 +357,7 @@
   },
   {
     "name": "패키지 여행 상품 메인 개편",
+    "images": ["7.png"],
     "description": {
       "summary": "패키지 여행 상품 메인 페이지 전시 구조 개선",
       "impact": [
@@ -387,6 +392,7 @@
   },
   {
     "name": "네이버 패키지 상품 연동",
+    "images": ["8.png"],
     "description": {
       "summary": "네이버 해외패키지 플랫폼 상품 연동 시스템 구축",
       "impact": [
@@ -455,6 +461,7 @@
   },
   {
     "name": "CMS Mobile",
+    "images": ["9.png", "10.png", "11.png", "12.png"],
     "description": {
       "summary": "자동 이체 및 고객 관리를 위한 크로스 플랫폼 모바일 앱 개발",
       "impact": [
@@ -486,6 +493,7 @@
   },
   {
     "name": "AutoCMS (자동 이체 시스템)",
+    "images": ["13.png"],
     "description": {
       "summary": "다양한 유형의 자동 이체 처리 시스템 개발",
       "impact": [

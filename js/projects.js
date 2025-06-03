@@ -31,6 +31,7 @@ export const createProjectCard = (project, tabName) => {
 
   // 제목 섹션
   const titleSection = document.createElement('header');
+  titleSection.classList.add('header-section');
   const title = document.createElement('h3');
   title.textContent = project.name;
   titleSection.appendChild(title);
