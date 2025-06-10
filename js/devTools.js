@@ -54,6 +54,11 @@ const ui = {
         box-shadow: none !important;
         border: 1px solid #ccc !important;
       }
+
+      /* PDF 모드에서 링크 섹션 숨기기 */
+      .project-card .link-section {
+        display: none !important;
+      }
     `;
     document.head.appendChild(style);
   }
@@ -62,7 +67,7 @@ const ui = {
 // 프로젝트 데이터 관리
 const projectManager = {
   getAllProjectsSorted() {
-    const companyOrder = ['noluniverse', 'ksoft'];
+    const companyOrder = ['noluniverse', 'ksoft', 'personal'];
     let allProjects = [];
 
     companyOrder.forEach(company => {
