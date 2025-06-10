@@ -1,5 +1,26 @@
 [
   {
+    "name": "깃허브 기여도 동기화 프로그램",
+    "description": {
+      "summary": "깃허브 기여도를 동기화하는 프로그램입니다. GitHub API를 활용하지 않고 html 페이지를 파싱하여 특정 사용자의 기여도를 가져온 후 커밋을 생성하여 기여도를 동기화합니다.",
+      "features": [
+        "Github, Github Enterprise 계정 지원",
+        "HTML 파싱을 통한 기여도 데이터 추출",
+        "커밋 생성 및 푸시 자동화",
+        "사용자 지정 날짜 범위 내 기여도 동기화",
+        "이미 동기화된 기여도는 건너뛰기"
+      ]
+    },
+    "from": "2025",
+    "to": null,
+    "type": "personal",
+    "link": "https://github.com/psg107/sync-github-contribution",
+    "linkVisible": true,
+    "skills": [
+      "Kotlin"
+    ]
+  },
+  {
     "name": "카카오톡 이모티콘 추출기",
     "description": {
       "summary": "카카오톡 PC 버전의 이모티콘을 WebP 이미지 파일로 추출하는 프로그램입니다. C++ 버전을 C#으로 재작성하여 사용성을 개선했으며, WinAPI를 사용해 프로세스 메모리에서 이모티콘을 추출하는 방식으로 구현했습니다.",
