@@ -47,7 +47,7 @@ section h2 {
 
 .project-card {
   background: #fff;
-  padding: 20px;
+  padding: 20px 20px 16px 20px;
   border-radius: 8px;
   border: 1px solid rgba(238, 238, 238, .7);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -136,6 +136,35 @@ section h2 {
   font-weight: normal;
   margin: 10px 0;
   color: #5a8fff;
+}
+
+/* 프로젝트 링크 스타일 */
+.project-card .link-section {
+  margin-top: 15px;
+  padding: 12px 0 4px 0;
+  border-top: 1px solid #e2e8f0;
+}
+
+.project-card .project-link {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #333;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.project-card .project-link:hover {
+  background-color: #000;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.project-card .project-link:active {
+  transform: translateY(0);
 }
 
 /* 기술 스택 섹션 */

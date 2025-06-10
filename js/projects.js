@@ -76,6 +76,22 @@ export const createProjectCard = (project, tabName) => {
   dateSection.appendChild(date);
   projectCard.appendChild(dateSection);
 
+  // 링크 섹션
+  const linkVisible = project.linkVisible !== undefined ? project.linkVisible : true;
+  if (project.link && linkVisible) {
+    const linkSection = document.createElement('div');
+    linkSection.classList.add('link-section');
+    const link = document.createElement('a');
+    link.href = project.link;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.classList.add('project-link');
+    link.textContent = '자세히 보기';
+    link.setAttribute('aria-label', `${project.name} 자세히 보기`);
+    linkSection.appendChild(link);
+    projectCard.appendChild(linkSection);
+  }
+
   // 프로젝트 카드 애니메이션
   requestAnimationFrame(() => {
     projectCard.classList.add('visible');
