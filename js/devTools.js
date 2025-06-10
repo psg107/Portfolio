@@ -1,6 +1,5 @@
 import { projectState } from './projectState.js';
 import { createProjectCard } from './projects.js';
-import { renderMermaidInTab } from './mermaid.js';
 
 // PDF 모드 관련 상수
 const PDF_MODE = {
@@ -31,6 +30,32 @@ const ui = {
       return firstTab;
     }
     return null;
+  },
+
+  addPdfModeStyles() {
+    // 기존 PDF 모드 스타일이 있다면 제거
+    const existingStyle = document.getElementById('pdf-mode-styles');
+    if (existingStyle) {
+      existingStyle.remove();
+    }
+
+    // PDF 모드용 스타일 생성
+    const style = document.createElement('style');
+    style.id = 'pdf-mode-styles';
+    style.textContent = `
+      /* PDF 모드에서 이미지 갤러리 숨기기 */
+      .gallery-section {
+        display: none !important;
+      }
+      
+      /* PDF 모드에서 프로젝트 카드 스타일 조정 */
+      .project-card {
+        margin-bottom: 20px;
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+      }
+    `;
+    document.head.appendChild(style);
   }
 };
 
@@ -65,48 +90,8 @@ const projectManager = {
   }
 };
 
-// 구성도 관리
-const architectureManager = {
-  createSection() {
-    const section = document.createElement('section');
-    section.id = 'section-architecture';
-    section.innerHTML = '<h2>서비스 구성도</h2>';
-    return section;
-  },
-
-  collectDiagrams() {
-    const diagrams = [];
-    document.querySelectorAll('.tab-content').forEach(tab => {
-      const elements = Array.from(tab.children).filter(el =>
-        el.classList.contains('mermaid') ||
-        (el.tagName === 'H3' && el.nextElementSibling?.classList.contains('mermaid'))
-      );
-      elements.forEach(element => {
-        diagrams.push(element.cloneNode(true));
-      });
-    });
-    return diagrams;
-  },
-
-  appendDiagrams(section, diagrams) {
-    diagrams.forEach(diagram => {
-      section.appendChild(diagram);
-    });
-  },
-
-  removeMermaidFullscreenButtons() {
-    document.querySelectorAll('.mermaid-controls').forEach(control => {
-      control.remove();
-    });
-  }
-};
-
 // PDF 모드로 전환
 const changeToPdfMode = () => {
-  // 구성도 섹션 생성
-  const architectureSection = architectureManager.createSection();
-  const diagrams = architectureManager.collectDiagrams();
-
   // UI 상태 변경
   ui.toggleTabVisibility(false);
   ui.hideAllTabContents();
@@ -118,22 +103,8 @@ const changeToPdfMode = () => {
   firstTab.appendChild(container);
   projectManager.displayAllProjects(container);
 
-  // 구성도 섹션 추가
-  architectureManager.appendDiagrams(architectureSection, diagrams);
-  const projectSection = document.getElementById('section-project');
-  if (projectSection) {
-    projectSection.parentNode.insertBefore(architectureSection, projectSection.nextSibling);
-  }
-
-  // Mermaid 다이어그램 렌더링
-  renderMermaidInTab(architectureSection, "architecture");
-
-  // Mermaid 전체화면 버튼 제거
-  setTimeout(() => {
-    if (typeof mermaid !== 'undefined') {
-      architectureManager.removeMermaidFullscreenButtons();
-    }
-  }, PDF_MODE.MERMAID_RENDER_DELAY);
+  // PDF 모드용 스타일 추가 - 이미지 숨기기
+  ui.addPdfModeStyles();
 };
 
 // 전역으로 함수 노출
