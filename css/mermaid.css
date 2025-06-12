@@ -1,22 +1,10 @@
 .mermaid-container {
   margin-top: 60px;
-  padding: 30px;
+  /* padding: 30px; */
   background: #fafbfc;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   position: relative;
-}
-
-.mermaid-container::before {
-  content: '';
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 4px;
-  background: #e2e8f0;
-  border-radius: 2px;
 }
 
 .mermaid-container h3 {

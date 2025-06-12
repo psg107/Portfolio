@@ -2,7 +2,7 @@ import { COMPANIES } from './constants.js';
 import { projectState } from './projectState.js';
 import { switchCompanyTab, initializeTabs } from './tabs.js';
 import { initializeModal } from './modal.js';
-import { initializeMermaid } from './mermaidConfig.js';
+import { initializeMermaid, renderMermaidInTab } from './mermaid.js';
 
 // 프로젝트 데이터 로드 및 초기화
 const initializeProjects = async () => {
@@ -25,8 +25,8 @@ const initializeProjects = async () => {
       }
     });
 
-    // 기본 탭으로 NOLUNIVERSE 선택
-    switchCompanyTab(COMPANIES.NOLUNIVERSE, { scroll: false });
+    // 기본 탭으로 ALL 선택
+    switchCompanyTab(COMPANIES.ALL, { scroll: false });
   } catch (error) {
     console.error('프로젝트 데이터를 불러오는 데 실패했습니다:', error);
   }
@@ -38,4 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeTabs();
   initializeProjects();
   initializeModal();
+  // 아키텍처 & 시스템 구성도의 Mermaid 다이어그램 렌더링
+  const architectureSection = document.getElementById('section-architecture');
+  if (architectureSection) {
+    renderMermaidInTab(architectureSection);
+  }
 });

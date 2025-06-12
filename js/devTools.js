@@ -23,7 +23,7 @@ const ui = {
   },
 
   showFirstTab() {
-    const firstTab = document.getElementById('noluniverse-tab');
+    const firstTab = document.getElementById('all-tab');
     if (firstTab) {
       firstTab.style.display = 'block';
       firstTab.innerHTML = '';

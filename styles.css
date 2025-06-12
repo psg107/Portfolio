@@ -299,8 +299,6 @@ input:checked+.slider:before {
   margin-top: 30px;
   margin-bottom: 15px;
   font-size: 1.2rem;
-  border-left: 4px solid #007bff;
-  padding-left: 10px;
 }
 
 .architecture-container h3:first-child {
@@ -500,4 +498,28 @@ input:checked+.slider:before {
 
 .tab-content.active {
   display: block;
+}
+
+/* 시스템 구성도 섹션 스타일 */
+#section-system-architecture {
+  margin: 40px 0;
+  padding: 20px;
+}
+
+#section-system-architecture h2 {
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.architecture-container {
+  margin-top: 20px;
+}
+
+.architecture-container .mermaid-container {
+  margin-bottom: 60px;
+}
+
+.architecture-container .mermaid-container:last-child {
+  margin-bottom: 0;
 }

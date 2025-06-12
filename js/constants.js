@@ -2,7 +2,8 @@
 export const COMPANIES = {
   NOLUNIVERSE: 'noluniverse',
   KSOFT: 'ksoft',
-  PERSONAL: 'personal'
+  PERSONAL: 'personal',
+  ALL: 'all'
 };
 
 // UI 관련 설정값
