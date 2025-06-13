@@ -5,19 +5,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>박상곤의 포트폴리오</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="css/mermaid.css">
   <link rel="stylesheet" href="css/modal.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-  <link rel="stylesheet" href="css/swiper-bundle.min.css">
-  <script src="js/mermaid.min.js"></script>
-  <script src="js/panzoom.min.js"></script>
-  <script src="js/swiper-bundle.min.js"></script>
+  <link rel="stylesheet" href="lib/css/swiper-bundle.min.css">
+  <script src="lib/js/mermaid.min.js"></script>
+  <script src="lib/js/panzoom.min.js"></script>
+  <script src="lib/js/swiper-bundle.min.js"></script>
   <script type="module" src="js/main.js"></script>
   <script type="module" src="js/devTools.js"></script>
 </head>
 
-<body> <!-- 이미지 모달 -->
+<body>
+  <!-- 이미지 모달 -->
   <div id="imageModal" class="modal">
     <span class="modal-close">&times;</span>
     <div class="modal-counter"></div>
@@ -26,29 +30,116 @@
     <img class="modal-content" id="modalImage">
   </div>
 
+  <!-- 네비게이션 바 -->
+  <nav class="navbar">
+    <div class="container">
+      <ul class="nav-links">
+        <li><a href="#section-introduction">소개</a></li>
+        <li><a href="#section-tech-stack">기술스택</a></li>
+        <li><a href="#section-tech-evolution">기술변화</a></li>
+        <li><a href="#section-project">프로젝트</a></li>
+        <li><a href="#section-architecture">아키텍처</a></li>
+        <li><a href="#section-contact">연락처</a></li>
+      </ul>
+    </div>
+  </nav>
+
   <div class="container">
     <!-- 소개 -->
     <section id="section-introduction">
       <h1>안녕하세요! 박상곤입니다.</h1>
-      <p>Kotlin/Spring Boot와 C#/.NET 기반의 서비스 개발 경험을 바탕으로, 여행 예약 시스템의 백엔드 개발과 운영을 담당해왔습니다.</p>
-      <p>모놀리식부터 MSA까지 다양한 아키텍처를 경험했고, 대용량 트래픽 처리, 실시간 검색·예약, 외부 연동 자동화 등 핵심 기능을 구현했습니다.</p>
-      <p>AWS ECS 환경에서의 배포 자동화와 안정성 있는 인프라 운영에 익숙하며, 팀과의 긴밀한 협업을 통해 서비스를 지속적으로 개선하고 있습니다.</p>
+      <p>Kotlin/Spring Boot와 C#/.NET 기반의 서비스 개발 경험을 바탕으로,<br>여행 예약 시스템의 백엔드 개발과 운영을 담당해왔습니다.</p>
+      <p>모놀리식부터 MSA까지 다양한 아키텍처를 경험했고,<br>대용량 트래픽 처리, 실시간 검색·예약, 외부 연동 자동화 등 핵심 기능을 구현했습니다.</p>
+      <p>AWS ECS 환경에서의 배포 자동화와 안정성 있는 인프라 운영에 익숙하며,<br>팀과의 긴밀한 협업을 통해 서비스를 지속적으로 개선하고 있습니다.</p>
+      <a href="#section-project" class="cta-button">프로젝트 보기</a>
     </section>
 
     <!-- 기술 스택 -->
     <section id="section-tech-stack">
       <h2>기술 스택</h2>
-      <ul>
-        <li>Kotlin</li>
-        <li>C#</li>
-        <li>SpringBoot</li>
-        <li>ASP.NET</li>
-        <li>MongoDB</li>
-        <li>MSSQL</li>
-        <li>AWS</li>
-        <li>IIS</li>
-      </ul>
+      <div class="tech-categories">
+        <div class="tech-category">
+          <h3>언어</h3>
+          <div class="tech-items">
+            <span class="tech-item kotlin">Kotlin</span>
+            <span class="tech-item csharp">C#</span>
+          </div>
+        </div>
+        <div class="tech-category">
+          <h3>프레임워크</h3>
+          <div class="tech-items">
+            <span class="tech-item spring">Spring Boot</span>
+            <span class="tech-item dotnet">ASP.NET</span>
+          </div>
+        </div>
+        <div class="tech-category">
+          <h3>데이터베이스</h3>
+          <div class="tech-items">
+            <span class="tech-item mongodb">MongoDB</span>
+            <span class="tech-item mssql">MSSQL</span>
+          </div>
+        </div>
+        <div class="tech-category">
+          <h3>인프라</h3>
+          <div class="tech-items">
+            <span class="tech-item aws">AWS</span>
+            <span class="tech-item iis">IIS</span>
+          </div>
+        </div>
+      </div>
     </section>
+
+    <!-- 기술 변화 -->
+    <section id="section-tech-evolution">
+      <h2>기술 변화</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">2018-2021</div>
+          <div class="timeline-content">
+            <h3>풀스택 개발 경험</h3>
+            <p>C#/.NET 기반 데스크톱/웹/모바일 애플리케이션 개발</p>
+            <div class="tech-badges">
+              <span class="tech-badge">C#</span>
+              <span class="tech-badge">ASP.NET</span>
+              <span class="tech-badge">WPF</span>
+              <span class="tech-badge">Xamarin</span>
+              <span class="tech-badge">MSSQL</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2021-2023</div>
+          <div class="timeline-content">
+            <h3>백엔드 전문화</h3>
+            <p>C# 기반 웹 서비스 백엔드 개발 및 대규모 시스템 운영</p>
+            <div class="tech-badges">
+              <span class="tech-badge">C#</span>
+              <span class="tech-badge">ASP.NET</span>
+              <span class="tech-badge">MSSQL</span>
+              <span class="tech-badge">Jenkins</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2023-현재</div>
+          <div class="timeline-content">
+            <h3>모던 백엔드 전환</h3>
+            <p>Kotlin/Spring Boot 기반 MSA 및 클라우드 네이티브 개발</p>
+            <div class="tech-badges">
+              <span class="tech-badge">Kotlin</span>
+              <span class="tech-badge">Spring Boot</span>
+              <span class="tech-badge">MongoDB</span>
+              <span class="tech-badge">Redis</span>
+              <span class="tech-badge">AWS ECS</span>
+              <span class="tech-badge">Terraform</span>
+              <span class="tech-badge">GitHub Actions</span>
+              <span class="tech-badge">Datadog</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 프로젝트 -->
     <section id="section-project">
       <h2>프로젝트</h2>
@@ -257,10 +348,29 @@
     <!-- 연락처 -->
     <section id="section-contact">
       <h2>연락처</h2>
-      <p>이메일: <a href="mailto:psg107@naver.com">psg107@naver.com</a></p>
-      <p>GitHub: <a href="https://github.com/psg107" target="_blank">https://github.com/psg107</a></p>
-      <p>Portfolio: <a href="https://psg107.github.io/Portfolio/"
-          target="_blank">https://psg107.github.io/Portfolio/</a></p>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div class="contact-info">
+            <h3>이메일</h3>
+            <a href="mailto:psg107@naver.com">psg107@naver.com</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">👨‍💻</div>
+          <div class="contact-info">
+            <h3>GitHub</h3>
+            <a href="https://github.com/psg107" target="_blank">github.com/psg107</a>
+          </div>
+        </div>
+        <div class="contact-item online-portfolio-item">
+          <div class="contact-icon">🌐</div>
+          <div class="contact-info">
+            <h3>Portfolio</h3>
+            <a href="https://psg107.github.io/Portfolio/" target="_blank">온라인 포트폴리오</a>
+          </div>
+        </div>
+      </div>
     </section>
   </div>
 </body>
