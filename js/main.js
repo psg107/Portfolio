@@ -31,7 +31,7 @@ const initializeProjects = async () => {
 };
 
 const initializeNavigation = () => {
-  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+  const navLinks = document.querySelectorAll('.nav-links a[href^="#"], .cta-button[href^="#"]');
   const navbar = document.querySelector(".navbar");
 
   navLinks.forEach((link) => {

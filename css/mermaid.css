@@ -68,7 +68,7 @@
   padding: 30px !important;
   border-radius: 12px !important;
   background: white !important;
-  overflow: auto !important;
+  overflow: hidden !important;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
   border: none !important;
   transform: none !important;

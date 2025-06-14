@@ -15,21 +15,36 @@
   display: block;
   max-width: 90%;
   max-height: 90vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
 .modal-close {
-  position: absolute;
-  right: 35px;
+  padding: 10px;
+  position: fixed;
+  right: 15px;
   top: 15px;
   color: #f1f1f1;
-  font-size: 40px;
+  font-size: 32px;
   font-weight: bold;
   cursor: pointer;
-  padding: 10px;
-  margin-right: 15px;
+  background: rgba(0, 0, 0, 0.5);
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
 }
 .modal-close:hover,
 .modal-close:focus {
   color: #bbb;
+  background: rgba(0, 0, 0, 0.7);
   text-decoration: none;
   cursor: pointer;
 }
@@ -61,7 +76,7 @@
   left: 20px;
 }
 .modal-next {
-  right: 60px;
+  right: 20px;
 }
 .modal-counter {
   position: absolute;
@@ -104,12 +119,32 @@
   }
 
   .modal-next {
-    right: 8px;
+    right: 10px;
   }
 
   .modal-counter {
     top: 10px;
     font-size: 12px;
     padding: 6px 12px;
+  }
+  .modal-content {
+    max-height: 85vh;
+    width: 95%;
+  }
+  .modal-close {
+    right: 10px;
+    top: 8px;
+    font-size: 24px;
+  }
+  .modal-nav {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+  .modal-prev {
+    left: 8px;
+  }
+  .modal-next {
+    right: 8px;
   }
 }
