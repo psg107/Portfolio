@@ -194,6 +194,8 @@ const enterFullscreen = (element, fullscreenBtn, closeBtn) => {
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.8);
@@ -201,6 +203,7 @@ const enterFullscreen = (element, fullscreenBtn, closeBtn) => {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0;
   `;
   document.body.appendChild(overlay);
   
@@ -209,14 +212,26 @@ const enterFullscreen = (element, fullscreenBtn, closeBtn) => {
   overlay.appendChild(element);
   
   element.classList.add("fullscreen");
+  element.style.cssText = `
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `;
   document.body.style.overflow = "hidden";
   
   fullscreenBtn.style.display = "none";
   closeBtn.style.display = "";
 
   const svg = element.querySelector("svg");
-  if (svg && svg._enableFullscreen) {
-    svg._enableFullscreen();
+  if (svg) {
+    svg.style.width = "100%";
+    svg.style.height = "100%";
+    if (svg._enableFullscreen) {
+      svg._enableFullscreen();
+    }
   }
 
   element._escListener = (e) => {
@@ -239,6 +254,7 @@ const enterFullscreen = (element, fullscreenBtn, closeBtn) => {
 
 const exitFullscreen = (element, fullscreenBtn, closeBtn) => {
   element.classList.remove("fullscreen");
+  element.style.cssText = "";
   document.body.style.overflow = "";
   
   if (element._originalParent) {
@@ -259,8 +275,12 @@ const exitFullscreen = (element, fullscreenBtn, closeBtn) => {
   closeBtn.style.display = "none";
 
   const svg = element.querySelector("svg");
-  if (svg && svg._disableFullscreen) {
-    svg._disableFullscreen();
+  if (svg) {
+    svg.style.width = "";
+    svg.style.height = "";
+    if (svg._disableFullscreen) {
+      svg._disableFullscreen();
+    }
   }
 
   document.removeEventListener("keydown", element._escListener);
