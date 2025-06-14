@@ -109,17 +109,21 @@ const initializePanzoom = (element) => {
       disableZoom: false,
     });
 
-    svgElement.parentElement.addEventListener(
-      "wheel",
-      (e) => {
-        e.preventDefault();
+    const wheelHandler = (e) => {
+      e.preventDefault();
+      if (fullscreenPanzoom) {
         fullscreenPanzoom.zoomWithWheel(e);
-      },
-      { passive: false }
-    );
+      }
+    };
+    
+    svgElement.parentElement.addEventListener("wheel", wheelHandler, { passive: false });
+    
+    svgElement._wheelHandler = wheelHandler;
 
     setTimeout(() => {
-      fullscreenPanzoom.zoom(1.0, { animate: false });
+      if (fullscreenPanzoom) {
+        fullscreenPanzoom.zoom(1.0, { animate: false });
+      }
     }, 0);
 
     svgElement._panzoom = fullscreenPanzoom;
@@ -129,6 +133,11 @@ const initializePanzoom = (element) => {
     if (fullscreenPanzoom) {
       fullscreenPanzoom.destroy();
       fullscreenPanzoom = null;
+    }
+
+    if (svgElement._wheelHandler) {
+      svgElement.parentElement.removeEventListener("wheel", svgElement._wheelHandler, { passive: false });
+      delete svgElement._wheelHandler;
     }
 
     normalPanzoom = Panzoom(svgElement, {
