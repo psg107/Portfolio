@@ -7,7 +7,7 @@ export const COMPANIES = {
 
 export const UI_CONFIG = {
   ZOOM: {
-    MIN: 1.0,
+    MIN: 0.8,
     MAX: 2.0,
     INITIAL: 1.0,
   },

@@ -76,7 +76,40 @@
   z-index: 10001;
 }
 @media only screen and (max-width: 700px) {
+  .modal {
+    padding-top: 20px;
+  }
+
   .modal-content {
-    width: 100%;
+    width: 95%;
+    max-width: 95%;
+  }
+
+  .modal-close {
+    right: 15px;
+    top: 5px;
+    font-size: 28px;
+    padding: 5px;
+  }
+
+  .modal-nav {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    padding: 12px 8px;
+  }
+
+  .modal-prev {
+    left: 8px;
+  }
+
+  .modal-next {
+    right: 8px;
+  }
+
+  .modal-counter {
+    top: 10px;
+    font-size: 12px;
+    padding: 6px 12px;
   }
 }

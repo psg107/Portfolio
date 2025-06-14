@@ -65,77 +65,82 @@ const initializePanzoom = (element) => {
     return;
   }
 
-  const panzoom = Panzoom(svgElement, {
-    maxScale: UI_CONFIG.ZOOM.MAX,
-    minScale: UI_CONFIG.ZOOM.MIN,
-    startScale: UI_CONFIG.ZOOM.INITIAL,
-    startX: 0,
-    startY: 0,
-    animate: true,
+  let normalPanzoom = Panzoom(svgElement, {
+    maxScale: 1,
+    minScale: 1,
+    startScale: 1,
+    disablePan: true,
+    disableZoom: true,
   });
 
-  svgElement._panzoom = panzoom;
-  attachPanzoomEvents(svgElement, panzoom);
-};
+  let fullscreenPanzoom = null;
 
-const attachPanzoomEvents = (svgElement, panzoom) => {
-  svgElement.parentElement.addEventListener("wheel", (e) => {
-    if (svgElement.closest('.mermaid').classList.contains('fullscreen')) {
-      e.preventDefault();
-      panzoom.zoomWithWheel(e);
+  svgElement._panzoom = normalPanzoom;
+
+  svgElement._enableFullscreen = () => {
+    if (normalPanzoom) {
+      normalPanzoom.destroy();
+      normalPanzoom = null;
     }
-  });
 
-  let lastTouchDistance = 0;
-  svgElement.parentElement.addEventListener("touchstart", handleTouchStart, {
-    passive: false,
-  });
-  svgElement.parentElement.addEventListener("touchmove", handleTouchMove, {
-    passive: false,
-  });
-  svgElement.parentElement.addEventListener("touchend", handleTouchEnd);
+    const isMobile = (() => {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      const mobileUserAgents = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i;
+      
+      const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+      
+      const isSmallScreen = window.innerWidth <= 768;
+      
+      const hasCoarsePointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+      
+      return mobileUserAgents.test(userAgent) || (hasTouch && isSmallScreen) || hasCoarsePointer;
+    })();
+    
+    const maxScale = isMobile ? UI_CONFIG.ZOOM.MAX * 3 : UI_CONFIG.ZOOM.MAX;
 
-  function handleTouchStart(e) {
-    if (e.touches.length === 2 && svgElement.closest('.mermaid').classList.contains('fullscreen')) {
-      e.preventDefault();
-      const touch1 = e.touches[0];
-      const touch2 = e.touches[1];
-      lastTouchDistance = Math.hypot(
-        touch2.clientX - touch1.clientX,
-        touch2.clientY - touch1.clientY
-      );
-    }
-  }
+    fullscreenPanzoom = Panzoom(svgElement, {
+      maxScale: maxScale,
+      minScale: UI_CONFIG.ZOOM.MIN,
+      startScale: UI_CONFIG.ZOOM.INITIAL,
+      startX: 0,
+      startY: 0,
+      animate: true,
+      disablePan: false,
+      disableZoom: false,
+    });
 
-  function handleTouchMove(e) {
-    if (e.touches.length === 2 && svgElement.closest('.mermaid').classList.contains('fullscreen')) {
-      e.preventDefault();
-      const touch1 = e.touches[0];
-      const touch2 = e.touches[1];
-      const distance = Math.hypot(
-        touch2.clientX - touch1.clientX,
-        touch2.clientY - touch1.clientY
-      );
-      const delta = distance - lastTouchDistance;
-      lastTouchDistance = distance;
-
-      const scale = panzoom.getScale();
-      const newScale = scale * (1 + delta * 0.01);
-      panzoom.zoom(newScale);
-    }
-  }
-
-  function handleTouchEnd(e) {
-    if (svgElement.closest('.mermaid').classList.contains('fullscreen')) {
-      const currentTime = new Date().getTime();
-      const tapLength = currentTime - lastTouchTime;
-      if (tapLength < 500 && tapLength > 0) {
+    svgElement.parentElement.addEventListener(
+      "wheel",
+      (e) => {
         e.preventDefault();
-        panzoom.reset();
-      }
-      lastTouchTime = currentTime;
+        fullscreenPanzoom.zoomWithWheel(e);
+      },
+      { passive: false }
+    );
+
+    setTimeout(() => {
+      fullscreenPanzoom.zoom(1.0, { animate: false });
+    }, 0);
+
+    svgElement._panzoom = fullscreenPanzoom;
+  };
+
+  svgElement._disableFullscreen = () => {
+    if (fullscreenPanzoom) {
+      fullscreenPanzoom.destroy();
+      fullscreenPanzoom = null;
     }
-  }
+
+    normalPanzoom = Panzoom(svgElement, {
+      maxScale: 1,
+      minScale: 1,
+      startScale: 1,
+      disablePan: true,
+      disableZoom: true,
+    });
+
+    svgElement._panzoom = normalPanzoom;
+  };
 };
 
 const addFullscreenButton = (element) => {
@@ -179,7 +184,10 @@ const enterFullscreen = (element, fullscreenBtn, closeBtn) => {
   fullscreenBtn.style.display = "none";
   closeBtn.style.display = "";
 
-  resetMermaid(element);
+  const svg = element.querySelector("svg");
+  if (svg && svg._enableFullscreen) {
+    svg._enableFullscreen();
+  }
 
   element._escListener = (e) => {
     if (e.key === "Escape") {
@@ -195,13 +203,10 @@ const exitFullscreen = (element, fullscreenBtn, closeBtn) => {
   fullscreenBtn.style.display = "";
   closeBtn.style.display = "none";
 
-  resetMermaid(element);
-  document.removeEventListener("keydown", element._escListener);
-};
-
-const resetMermaid = (element) => {
   const svg = element.querySelector("svg");
-  if (svg && svg._panzoom) {
-    svg._panzoom.reset();
+  if (svg && svg._disableFullscreen) {
+    svg._disableFullscreen();
   }
+
+  document.removeEventListener("keydown", element._escListener);
 };

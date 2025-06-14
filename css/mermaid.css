@@ -25,6 +25,9 @@
 .mermaid svg {
   width: 100%;
   min-height: 450px;
+  cursor: default;
+}
+.mermaid.fullscreen svg {
   cursor: move;
 }
 .mermaid-controls {
@@ -81,7 +84,46 @@
   font-weight: 500;
 }
 @media (max-width: 768px) {
+  .mermaid-container {
+    margin-top: 40px;
+  }
+
+  .mermaid-container h3 {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    padding: 0 5px;
+  }
+
+  .mermaid {
+    min-height: 300px;
+    padding: 15px 5px;
+    margin: 0 0 15px 0;
+  }
+
+  .mermaid svg {
+    min-height: 300px;
+  }
+
+  .mermaid-controls {
+    top: 5px;
+    right: 5px;
+    gap: 2px;
+  }
+
   .mermaid-button {
-    padding: 10px;
+    padding: 6px;
+    font-size: 10px;
+    min-width: 28px;
+  }
+
+  .mermaid.fullscreen {
+    padding: 20px 10px;
+  }
+
+  .close-button {
+    top: 10px;
+    right: 10px;
+    padding: 6px 12px !important;
+    font-size: 12px;
   }
 }
