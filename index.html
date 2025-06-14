@@ -339,8 +339,7 @@
             classDef highlighted fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
 
             subgraph "데이터베이스"
-            CMS_DB[("CMS-db&#10;MSSQL")]:::highlighted
-            CRM_DB[("CRM-db&#10;MSSQL")]:::highlighted
+            CMS/CRM_DB[("CMS/CRM-db&#10;MSSQL")]:::highlighted
             end
 
             subgraph "시스템 서비스"
@@ -358,11 +357,11 @@
             FIREBASE["Firebase&#10;푸시 알림"]
             end
 
-            CMS_DB --> CMS_MAIN
-            CMS_DB --> CMS_PLUS
-            CMS_DB --> CMS_MOBILE
-            CRM_DB --> CRM_WEB
-            CRM_DB --> CRM_DESKTOP
+            CMS/CRM_DB --> CMS_MAIN
+            CMS/CRM_DB --> CMS_PLUS
+            CMS/CRM_DB --> CMS_MOBILE
+            CMS/CRM_DB --> CRM_WEB
+            CMS/CRM_DB --> CRM_DESKTOP
 
             CMS_MAIN --> KFTC
             CMS_MAIN --> HYOSUNG
