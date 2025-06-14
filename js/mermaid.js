@@ -156,7 +156,7 @@ const addFullscreenButton = (element) => {
 
   const closeBtn = document.createElement("button");
   closeBtn.className = "mermaid-button close-button";
-  closeBtn.innerHTML = "닫기 (ESC)";
+  closeBtn.innerHTML = "&times;";
   closeBtn.style.display = "none";
   closeBtn.onclick = () => toggleFullscreen(element);
 
@@ -179,8 +179,29 @@ const toggleFullscreen = (element) => {
 };
 
 const enterFullscreen = (element, fullscreenBtn, closeBtn) => {
+  const overlay = document.createElement('div');
+  overlay.className = 'mermaid-fullscreen-overlay';
+  overlay.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 99998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `;
+  document.body.appendChild(overlay);
+  
+  element._originalParent = element.parentElement;
+  element._originalNextSibling = element.nextSibling;
+  overlay.appendChild(element);
+  
   element.classList.add("fullscreen");
   document.body.style.overflow = "hidden";
+  
   fullscreenBtn.style.display = "none";
   closeBtn.style.display = "";
 
@@ -194,12 +215,37 @@ const enterFullscreen = (element, fullscreenBtn, closeBtn) => {
       toggleFullscreen(element);
     }
   };
+  
+  overlay._clickListener = (e) => {
+    if (e.target === overlay) {
+      toggleFullscreen(element);
+    }
+  };
+  
   document.addEventListener("keydown", element._escListener);
+  overlay.addEventListener("click", overlay._clickListener);
+  
+  element._overlay = overlay;
 };
 
 const exitFullscreen = (element, fullscreenBtn, closeBtn) => {
   element.classList.remove("fullscreen");
   document.body.style.overflow = "";
+  
+  if (element._originalParent) {
+    if (element._originalNextSibling) {
+      element._originalParent.insertBefore(element, element._originalNextSibling);
+    } else {
+      element._originalParent.appendChild(element);
+    }
+  }
+  
+  if (element._overlay) {
+    element._overlay.removeEventListener("click", element._overlay._clickListener);
+    document.body.removeChild(element._overlay);
+    delete element._overlay;
+  }
+  
   fullscreenBtn.style.display = "";
   closeBtn.style.display = "none";
 
@@ -209,4 +255,7 @@ const exitFullscreen = (element, fullscreenBtn, closeBtn) => {
   }
 
   document.removeEventListener("keydown", element._escListener);
+  
+  delete element._originalParent;
+  delete element._originalNextSibling;
 };

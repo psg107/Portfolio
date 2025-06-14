@@ -572,31 +572,48 @@ input:checked + .slider:before {
 #section-architecture {
   margin: var(--spacing-2xl) 0;
   padding: var(--spacing-xl);
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
+  background-color: var(--bg-card);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-md);
 }
+
+#section-architecture h2 {
+  font-size: var(--font-3xl);
+  font-weight: bold;
+  color: var(--highlight-color);
+  margin-bottom: var(--spacing-lg);
+  border-left: 4px solid var(--highlight-color);
+  padding-left: var(--spacing-sm);
+}
+
+#section-architecture .section-description {
+  font-size: var(--font-lg);
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xl);
+}
+
 .architecture-container {
-  margin-top: 20px;
-}
-.architecture-container h3 {
-  color: #333;
-  margin-top: 30px;
-  margin-bottom: 15px;
-  font-size: 1.2rem;
-}
-.architecture-container h3:first-child {
-  margin-top: 0;
+  display: grid;
+  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 }
 .mermaid {
-  background-color: var(--background-color);
-  border: 1px solid var(--text-color);
-  padding: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 15px 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 25px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin: 15px 0 30px 0;
   overflow: hidden;
   text-align: center;
   position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mermaid:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 .mermaid svg {
   width: 100%;
@@ -1087,66 +1104,186 @@ input:checked + .slider:before {
   display: none;
 }
 
+.company-section {
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  padding: 32px;
+  margin-bottom: 0;
+  background: var(--bg-card);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.company-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--primary-color),
+    var(--secondary-color),
+    var(--accent-color)
+  );
+}
+
+.company-section::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(37, 99, 235, 0.03) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.company-section:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border-color: var(--primary-color);
+}
+
+.company-section:hover::after {
+  opacity: 1;
+}
+
+.company-section:first-of-type {
+  margin-top: 0;
+}
+
+.company-divider {
+  border-color: var(--warning-color);
+}
+
+.company-divider::before {
+  background: linear-gradient(90deg, var(--warning-color), #ea580c, #dc2626);
+}
+
+.company-divider:hover {
+  border-color: var(--warning-color);
+}
+
+.section-header {
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--border-light);
+}
+
+.section-header h3 {
+  color: var(--primary-color);
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.company-divider .section-header h3 {
+  color: var(--warning-color);
+}
+
+.section-header h4 {
+  color: var(--text-secondary);
+  font-size: var(--font-lg);
+  font-weight: 500;
+  margin: 0;
+}
+
+.company-section > p {
+  font-size: var(--font-base);
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-lg) 0;
+}
+
+.mermaid-container {
+  margin-top: var(--spacing-lg);
+}
+
+.architecture-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: var(--spacing-lg) 0 var(--spacing-md) 0;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--primary-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.company-divider .architecture-title {
+  border-left-color: var(--warning-color);
+}
+
+.architecture-title h4 {
+  color: var(--text-primary);
+  font-size: var(--font-lg);
+  font-weight: 600;
+  margin: 0;
+}
+
+.architecture-title .period {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: white;
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-sm);
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.company-divider .architecture-title .period {
+  background: linear-gradient(135deg, var(--warning-color), #ea580c);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
+}
+
 @media (max-width: 768px) {
-  .timeline::before {
-    display: none;
+  .architecture-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
-
-  .timeline-item {
-    flex-direction: column !important;
-    margin: 0 0 20px 0 !important;
-    padding: 0 !important;
-    border-left: 3px solid #667eea !important;
-    padding-left: 25px !important;
-    padding-right: 15px !important;
-    position: relative;
+  
+  .company-section {
+    padding: 20px 16px;
+    border-radius: 15px;
   }
-
-  .timeline-year {
-    position: static !important;
-    width: auto;
-    text-align: left;
-    font-size: 0.8rem;
-    padding: 4px 8px;
-    background: #667eea;
-    color: white;
-    border-radius: 12px;
-    margin-bottom: 10px;
-    display: inline-block;
-    font-weight: 600;
+  
+  .section-header h3 {
+    font-size: var(--font-xl);
   }
-
-  .timeline-year::after {
-    display: none !important;
+  
+  .section-header h4 {
+    font-size: var(--font-base);
   }
-
-  .timeline-content {
-    margin: 0 !important;
-    padding: 8px 12px 8px 8px !important;
-    width: 100%;
-    max-width: none;
+  
+  .company-section > p {
+    font-size: var(--font-sm);
   }
-
-  .timeline-content h3 {
-    font-size: 1rem;
-    margin-bottom: 6px;
-    word-break: keep-all;
-    line-height: 1.3;
+  
+  .architecture-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 15px;
   }
-
-  .timeline-content p {
-    font-size: 0.85rem;
-    line-height: 1.4;
-    margin-bottom: 10px;
-    word-break: keep-all;
+  
+  .architecture-title h4 {
+    font-size: var(--font-base);
   }
-
-  .tech-badges {
-    gap: 4px;
-  }
-
-  .tech-badge {
-    font-size: 0.75rem;
-    padding: 3px 8px;
+  
+  .architecture-title .period {
+    align-self: flex-end;
+    font-size: var(--font-xs);
+    padding: 4px 12px;
   }
 }
