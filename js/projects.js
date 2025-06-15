@@ -14,7 +14,16 @@ export const updateProjects = (tabName) => {
 
   projectsContainer.innerHTML = "";
   const projectsToShow = projectState.data[tabName] || [];
-  projectsToShow.sort((a, b) => b.from.localeCompare(a.from));
+  
+  if (tabName === "all") {
+    projectsToShow.sort((a, b) => {
+      if (a.type === "personal" && b.type !== "personal") return 1;
+      if (a.type !== "personal" && b.type === "personal") return -1;
+      return b.from.localeCompare(a.from);
+    });
+  } else {
+    projectsToShow.sort((a, b) => b.from.localeCompare(a.from));
+  }
 
   projectsToShow.forEach((project) => {
     const projectCard = createProjectCard(project, tabName);

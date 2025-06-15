@@ -62,19 +62,26 @@ const ui = {
 
 const projectManager = {
   getAllProjectsSorted() {
-    const companyOrder = ["noluniverse", "ksoft", "personal"];
-    let allProjects = [];
+    const companyOrder = ["noluniverse", "ksoft"];
+    let companyProjects = [];
+    let personalProjects = [];
 
     companyOrder.forEach((company) => {
       if (projectState.data[company]) {
         const projects = projectState.data[company].sort((a, b) =>
           b.from.localeCompare(a.from)
         );
-        allProjects = allProjects.concat(projects);
+        companyProjects = companyProjects.concat(projects);
       }
     });
 
-    return allProjects;
+    if (projectState.data["personal"]) {
+      personalProjects = projectState.data["personal"].sort((a, b) =>
+        b.from.localeCompare(a.from)
+      );
+    }
+
+    return companyProjects.concat(personalProjects);
   },
 
   createProjectContainer() {
