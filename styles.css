@@ -957,6 +957,36 @@ input:checked + .slider:before {
   object-fit: cover;
 }
 
+.gallery-item img {
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item img.loading {
+  opacity: 0.7;
+  filter: blur(2px);
+}
+
+.gallery-item img.loaded {
+  opacity: 1;
+  filter: none;
+}
+
+.gallery-item img.error {
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
+.gallery-item:not(.loaded) {
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 .company-tabs {
   display: flex;
   justify-content: center;
@@ -1384,4 +1414,20 @@ input:checked + .slider:before {
     font-size: var(--font-xs);
     padding: 4px 12px;
   }
+}
+
+.is-scrolling {
+  pointer-events: none;
+}
+
+.is-scrolling * {
+  pointer-events: none !important;
+}
+
+.is-scrolling .swiper {
+  pointer-events: auto;
+}
+
+.is-scrolling .swiper * {
+  pointer-events: auto !important;
 }

@@ -3,6 +3,7 @@ import { projectState } from "./projectState.js";
 import { switchCompanyTab, initializeTabs } from "./tabs.js";
 import { initializeModal } from "./modal.js";
 import { initializeMermaid, renderMermaidInTab } from "./mermaid.js";
+import "./scrollOptimization.js";
 
 const initializeProjects = async () => {
   try {
