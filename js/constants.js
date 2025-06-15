@@ -19,4 +19,9 @@ export const UI_CONFIG = {
     MAX: 2.0,
     INITIAL: 1.0,
   },
+  GRID: {
+    LARGE_SCREEN: 3,
+    MEDIUM_SCREEN: 2, 
+    SMALL_SCREEN: 1,
+  },
 };

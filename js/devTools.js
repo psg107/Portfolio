@@ -44,6 +44,11 @@ const ui = {
         display: none !important;
       }
       
+      /* PDF 모드에서 그리드 제어 버튼 숨기기 */
+      .grid-controls {
+        display: none !important;
+      }
+      
       /* PDF 모드에서 프로젝트 카드 스타일 조정 */
       .project-card {
         margin-bottom: 20px;

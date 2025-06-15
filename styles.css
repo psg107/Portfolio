@@ -748,6 +748,47 @@ input:checked + .slider:before {
 .zoom-controls button:hover {
   background: #f0f0f0;
 }
+
+.grid-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.grid-btn {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--border-medium);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+.grid-btn.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.grid-btn.active:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -771,14 +812,25 @@ input:checked + .slider:before {
 
 @media (min-width: 1400px) {
   .projects-container {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(var(--grid-large, 3), 1fr);
     max-width: 1400px;
     margin: 0 auto;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1399px) {
+  .projects-container {
+    grid-template-columns: repeat(var(--grid-medium, 2), 1fr);
+    gap: 20px;
   }
 }
 @media (max-width: 768px) {
   .container {
     padding: 0 10px;
+  }
+
+  .grid-controls {
+    display: none !important;
   }
 
   body {
@@ -890,7 +942,7 @@ input:checked + .slider:before {
   }
 
   .projects-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(var(--grid-small, 1), 1fr);
     gap: 12px;
   }
   .project-card {
