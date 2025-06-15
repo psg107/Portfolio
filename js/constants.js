@@ -5,6 +5,14 @@ export const COMPANIES = {
   ALL: "all",
 };
 
+export const SERVICE_CATEGORIES = {
+  NEW_PACKAGE: "new-package",
+  OLD_PACKAGE: "old-package",
+  CMS_CRM: "cms-crm",
+  PERSONAL: "personal",
+  ALL: "all",
+};
+
 export const UI_CONFIG = {
   ZOOM: {
     MIN: 0.8,

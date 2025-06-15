@@ -62,26 +62,42 @@ const ui = {
 
 const projectManager = {
   getAllProjectsSorted() {
-    const companyOrder = ["noluniverse", "ksoft"];
-    let companyProjects = [];
-    let personalProjects = [];
+    const serviceCategories = {
+      'new-package': [],
+      'old-package': [],
+      'cms-crm': [],
+      'personal': []
+    };
 
-    companyOrder.forEach((company) => {
-      if (projectState.data[company]) {
-        const projects = projectState.data[company].sort((a, b) =>
-          b.from.localeCompare(a.from)
-        );
-        companyProjects = companyProjects.concat(projects);
+    const addedProjects = new Set();
+
+    Object.values(projectState.data).flat().forEach(project => {
+      const projectKey = `${project.name}-${project.from}`;
+      if (!addedProjects.has(projectKey) && project.serviceCategory && serviceCategories[project.serviceCategory]) {
+        serviceCategories[project.serviceCategory].push(project);
+        addedProjects.add(projectKey);
       }
     });
 
-    if (projectState.data["personal"]) {
-      personalProjects = projectState.data["personal"].sort((a, b) =>
-        b.from.localeCompare(a.from)
-      );
-    }
+    Object.keys(serviceCategories).forEach(category => {
+      serviceCategories[category].sort((a, b) => {
+        const aDisplayOrder = a.displayOrder || 0;
+        const bDisplayOrder = b.displayOrder || 0;
+        
+        if (aDisplayOrder !== bDisplayOrder) {
+          return aDisplayOrder - bDisplayOrder;
+        }
+        
+        return a.from.localeCompare(b.from);
+      });
+    });
 
-    return companyProjects.concat(personalProjects);
+    return [
+      ...serviceCategories['new-package'],
+      ...serviceCategories['old-package'], 
+      ...serviceCategories['cms-crm'],
+      ...serviceCategories['personal']
+    ];
   },
 
   createProjectContainer() {

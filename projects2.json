@@ -14,6 +14,7 @@
     "from": "2025",
     "to": null,
     "type": "personal",
+    "serviceCategory": "personal",
     "link": "https://github.com/psg107/sync-github-contribution",
     "linkVisible": true,
     "skills": [
@@ -33,6 +34,7 @@
     "from": "2023",
     "to": null,
     "type": "personal",
+    "serviceCategory": "personal",
     "link": "https://github.com/psg107/KEmojiExtractorDotnet",
     "linkVisible": false,
     "skills": [
@@ -56,6 +58,7 @@
     "from": "2022",
     "to": null,
     "type": "personal",
+    "serviceCategory": "personal",
     "link": "https://github.com/psg107/SRT_Ticketing",
     "linkVisible": false,
     "skills": [
@@ -78,6 +81,7 @@
     "from": "2022",
     "to": null,
     "type": "personal",
+    "serviceCategory": "personal",
     "linkVisible": false,
     "skills": [
       "C#",
@@ -99,6 +103,7 @@
     "from": "2022",
     "to": null,
     "type": "personal",
+    "serviceCategory": "personal",
     "link": null,
     "linkVisible": false,
     "skills": [
@@ -124,6 +129,7 @@
     "from": "2021",
     "to": null,
     "type": "personal",
+    "serviceCategory": "personal",
     "link": "https://github.com/psg107/HumorUnivAutoAssist",
     "linkVisible": false,
     "skills": [
@@ -150,6 +156,7 @@
     "from": "2021",
     "to": null,
     "type": "personal",
+    "serviceCategory": "personal",
     "link": "https://github.com/psg107/ScriptLoader",
     "linkVisible": false,
     "skills": [
@@ -176,6 +183,7 @@
     "from": "2021",
     "to": null,
     "type": "personal",
+    "serviceCategory": "personal",
     "link": "https://github.com/psg107/MabiMultiClientHelper",
     "linkVisible": false,
     "skills": [
@@ -201,6 +209,7 @@
     "from": "2020",
     "to": null,
     "type": "personal",
+    "serviceCategory": "personal",
     "link": "https://github.com/psg107/TelegramMonitorServer",
     "linkVisible": false,
     "skills": [
@@ -228,6 +237,7 @@
     "from": "2020",
     "to": null,
     "type": "personal",
+    "serviceCategory": "personal",
     "link": "https://github.com/psg107/InterparkTicketing",
     "linkVisible": false,
     "skills": [
@@ -257,6 +267,7 @@
     "from": "2020",
     "to": null,
     "type": "personal",
+    "serviceCategory": "personal",
     "link": null,
     "linkVisible": false,
     "skills": [
@@ -279,6 +290,7 @@
     "from": "2017",
     "to": null,
     "type": "personal",
+    "serviceCategory": "personal",
     "link": null,
     "linkVisible": false,
     "skills": [
@@ -306,6 +318,7 @@
     "from": "2009",
     "to": null,
     "type": "personal",
+    "serviceCategory": "personal",
     "link": null,
     "linkVisible": false,
     "skills": [

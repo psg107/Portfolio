@@ -1,4 +1,5 @@
 import { projectState } from "./projectState.js";
+import { SERVICE_CATEGORIES } from "./constants.js";
 import { createImageGallery } from "./gallery.js";
 
 export const updateProjects = (tabName) => {
@@ -15,11 +16,42 @@ export const updateProjects = (tabName) => {
   projectsContainer.innerHTML = "";
   const projectsToShow = projectState.data[tabName] || [];
   
+  // 정렬 로직
   if (tabName === "all") {
     projectsToShow.sort((a, b) => {
-      if (a.type === "personal" && b.type !== "personal") return 1;
-      if (a.type !== "personal" && b.type === "personal") return -1;
-      return b.from.localeCompare(a.from);
+      const serviceOrder = {
+        'new-package': 1,
+        'old-package': 2, 
+        'cms-crm': 3,
+        'personal': 4
+      };
+      
+      const aOrder = serviceOrder[a.serviceCategory] || 5;
+      const bOrder = serviceOrder[b.serviceCategory] || 5;
+      
+      if (aOrder !== bOrder) {
+        return aOrder - bOrder;
+      }
+      
+      const aDisplayOrder = a.displayOrder || 0;
+      const bDisplayOrder = b.displayOrder || 0;
+      
+      if (aDisplayOrder !== bDisplayOrder) {
+        return aDisplayOrder - bDisplayOrder;
+      }
+      
+      return a.from.localeCompare(b.from);
+    });
+  } else if (Object.values(SERVICE_CATEGORIES).includes(tabName) && tabName !== "all") {
+    projectsToShow.sort((a, b) => {
+      const aDisplayOrder = a.displayOrder || 0;
+      const bDisplayOrder = b.displayOrder || 0;
+      
+      if (aDisplayOrder !== bDisplayOrder) {
+        return aDisplayOrder - bDisplayOrder;
+      }
+      
+      return a.from.localeCompare(b.from);
     });
   } else {
     projectsToShow.sort((a, b) => b.from.localeCompare(a.from));

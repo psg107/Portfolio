@@ -1,4 +1,4 @@
-import { COMPANIES } from "./constants.js";
+import { COMPANIES, SERVICE_CATEGORIES } from "./constants.js";
 import { projectState } from "./projectState.js";
 import { switchCompanyTab, initializeTabs } from "./tabs.js";
 import { initializeModal } from "./modal.js";
@@ -24,7 +24,7 @@ const initializeProjects = async () => {
       }
     });
 
-    switchCompanyTab(COMPANIES.ALL, { scroll: false });
+    switchCompanyTab(SERVICE_CATEGORIES.ALL, { scroll: false });
   } catch (error) {
     console.error("프로젝트 데이터를 불러오는 데 실패했습니다:", error);
   }

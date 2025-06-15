@@ -1,11 +1,11 @@
-import { UI_CONFIG } from "./constants.js";
+import { UI_CONFIG, SERVICE_CATEGORIES } from "./constants.js";
 import { updateProjects } from "./projects.js";
 import { renderMermaidInTab } from "./mermaid.js";
 
 export const switchCompanyTab = (tabName, options = { scroll: true }) => {
   const tabButtons = document.querySelectorAll(".tab-button");
   const targetButton = Array.from(tabButtons).find(
-    (button) => button.dataset.company === tabName
+    (button) => button.dataset.company === tabName || button.dataset.service === tabName
   );
 
   tabButtons.forEach((button) => button.classList.remove("active"));
@@ -36,8 +36,10 @@ export const initializeTabs = () => {
   tabButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const company = button.dataset.company;
-      if (company) {
-        switchCompanyTab(company);
+      const service = button.dataset.service;
+      const tabName = company || service;
+      if (tabName) {
+        switchCompanyTab(tabName);
       }
     });
   });
