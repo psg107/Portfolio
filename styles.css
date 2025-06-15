@@ -851,6 +851,7 @@ input:checked + .slider:before {
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
   }
   .navbar .nav-links::-webkit-scrollbar {
     display: none;
@@ -869,6 +870,7 @@ input:checked + .slider:before {
     overflow-x: auto !important;
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
+    -webkit-overflow-scrolling: touch !important;
     position: relative !important;
     margin-bottom: 16px !important;
     display: flex !important;
@@ -1481,5 +1483,21 @@ input:checked + .slider:before {
 }
 
 .is-scrolling .swiper * {
+  pointer-events: auto !important;
+}
+
+.is-scrolling .company-tabs {
+  pointer-events: auto;
+}
+
+.is-scrolling .company-tabs * {
+  pointer-events: auto !important;
+}
+
+.is-scrolling .nav-links {
+  pointer-events: auto;
+}
+
+.is-scrolling .nav-links * {
   pointer-events: auto !important;
 }
