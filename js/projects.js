@@ -40,6 +40,10 @@ export const updateProjects = (tabName) => {
         return aDisplayOrder - bDisplayOrder;
       }
       
+      if (a.serviceCategory === 'personal' && b.serviceCategory === 'personal') {
+        return b.from.localeCompare(a.from);
+      }
+      
       return a.from.localeCompare(b.from);
     });
   } else if (Object.values(SERVICE_CATEGORIES).includes(tabName) && tabName !== "all") {
@@ -49,6 +53,10 @@ export const updateProjects = (tabName) => {
       
       if (aDisplayOrder !== bDisplayOrder) {
         return aDisplayOrder - bDisplayOrder;
+      }
+      
+      if (tabName === SERVICE_CATEGORIES.PERSONAL) {
+        return b.from.localeCompare(a.from);
       }
       
       return a.from.localeCompare(b.from);
