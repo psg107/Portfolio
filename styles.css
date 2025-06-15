@@ -304,6 +304,105 @@ section h2 {
   left: 8px;
   color: var(--text-light);
 }
+
+.project-card .challenges-section,
+.project-card .solutions-section,
+.project-card .technical-section,
+.project-card .performance-section,
+.project-card .highlights-section {
+  margin-bottom: 1.5em;
+}
+
+.project-card .challenges-section h4 {
+  color: #dc2626;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75em;
+  border-left: 3px solid #dc2626;
+  padding-left: 12px;
+}
+
+.project-card .solutions-section h4 {
+  color: #059669;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75em;
+  border-left: 3px solid #059669;
+  padding-left: 12px;
+}
+
+.project-card .technical-section h4 {
+  color: #7c3aed;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75em;
+  border-left: 3px solid #7c3aed;
+  padding-left: 12px;
+}
+
+.project-card .performance-section h4 {
+  color: #ea580c;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75em;
+  border-left: 3px solid #ea580c;
+  padding-left: 12px;
+}
+
+.project-card .highlights-section h4 {
+  color: var(--primary-color);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75em;
+  border-left: 3px solid var(--primary-color);
+  padding-left: 12px;
+}
+
+.project-card .challenges,
+.project-card .solutions,
+.project-card .technical-details,
+.project-card .performance-results {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 1.5em;
+}
+
+.project-card .challenges li,
+.project-card .solutions li,
+.project-card .technical-details li,
+.project-card .performance-results li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 0.6em;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.project-card .challenges li:before {
+  content: "❗";
+  position: absolute;
+  left: 4px;
+  color: #dc2626;
+}
+
+.project-card .solutions li:before {
+  content: "✅";
+  position: absolute;
+  left: 4px;
+  color: #059669;
+}
+
+.project-card .technical-details li:before {
+  content: "⚙️";
+  position: absolute;
+  left: 4px;
+}
+
+.project-card .performance-results li:before {
+  content: "📈";
+  position: absolute;
+  left: 4px;
+}
 .project-card .date {
   font-size: 0.9rem;
   color: #888;

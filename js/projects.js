@@ -106,6 +106,54 @@ const addProjectDescription = (container, description, tabName) => {
     container.appendChild(summary);
   }
 
+  if (description.challenges) {
+    const challengesSection = document.createElement("div");
+    challengesSection.classList.add("challenges-section");
+    const challengesTitle = document.createElement("h4");
+    challengesTitle.textContent = "해결 과제";
+    challengesSection.appendChild(challengesTitle);
+    challengesSection.appendChild(
+      createList("challenges", description.challenges)
+    );
+    container.appendChild(challengesSection);
+  }
+
+  if (description.solutions) {
+    const solutionsSection = document.createElement("div");
+    solutionsSection.classList.add("solutions-section");
+    const solutionsTitle = document.createElement("h4");
+    solutionsTitle.textContent = "해결 방안";
+    solutionsSection.appendChild(solutionsTitle);
+    solutionsSection.appendChild(
+      createList("solutions", description.solutions)
+    );
+    container.appendChild(solutionsSection);
+  }
+
+  if (description.technical_details) {
+    const technicalSection = document.createElement("div");
+    technicalSection.classList.add("technical-section");
+    const technicalTitle = document.createElement("h4");
+    technicalTitle.textContent = "기술적 구현";
+    technicalSection.appendChild(technicalTitle);
+    technicalSection.appendChild(
+      createList("technical-details", description.technical_details)
+    );
+    container.appendChild(technicalSection);
+  }
+
+  if (description.performance_results) {
+    const performanceSection = document.createElement("div");
+    performanceSection.classList.add("performance-section");
+    const performanceTitle = document.createElement("h4");
+    performanceTitle.textContent = "성과";
+    performanceSection.appendChild(performanceTitle);
+    performanceSection.appendChild(
+      createList("performance-results", description.performance_results)
+    );
+    container.appendChild(performanceSection);
+  }
+
   if (description.highlights) {
     const highlightsSection = document.createElement("div");
     highlightsSection.classList.add("highlights-section");
