@@ -17,14 +17,6 @@ export const projectState = {
     try {
       this.data[SERVICE_CATEGORIES.ALL].push(project);
 
-      if (companyName === COMPANIES.NOLUNIVERSE) {
-        this.data[COMPANIES.NOLUNIVERSE].push(project);
-      } else if (companyName === COMPANIES.KSOFT) {
-        this.data[COMPANIES.KSOFT].push(project);
-      } else if (type === "personal") {
-        this.data[COMPANIES.PERSONAL].push(project);
-      }
-
       if (serviceCategory === SERVICE_CATEGORIES.NEW_PACKAGE) {
         this.data[SERVICE_CATEGORIES.NEW_PACKAGE].push(project);
       } else if (serviceCategory === SERVICE_CATEGORIES.OLD_PACKAGE) {
