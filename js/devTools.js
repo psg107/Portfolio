@@ -81,16 +81,7 @@ const projectManager = {
     });
 
     Object.keys(serviceCategories).forEach(category => {
-      serviceCategories[category].sort((a, b) => {
-        const aDisplayOrder = a.displayOrder || 0;
-        const bDisplayOrder = b.displayOrder || 0;
-        
-        if (aDisplayOrder !== bDisplayOrder) {
-          return aDisplayOrder - bDisplayOrder;
-        }
-        
-        return a.from.localeCompare(b.from);
-      });
+      serviceCategories[category].sort((a, b) => b.from.localeCompare(a.from));
     });
 
     return [

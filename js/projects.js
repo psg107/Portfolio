@@ -16,54 +16,32 @@ export const updateProjects = (tabName) => {
   projectsContainer.innerHTML = "";
   const projectsToShow = projectState.data[tabName] || [];
   
-  // 정렬 로직
-  if (tabName === "all") {
-    projectsToShow.sort((a, b) => {
-      const serviceOrder = {
-        'new-package': 1,
-        'old-package': 2, 
-        'cms-crm': 3,
-        'personal': 4
-      };
-      
-      const aOrder = serviceOrder[a.serviceCategory] || 5;
-      const bOrder = serviceOrder[b.serviceCategory] || 5;
-      
-      if (aOrder !== bOrder) {
-        return aOrder - bOrder;
-      }
-      
-      const aDisplayOrder = a.displayOrder || 0;
-      const bDisplayOrder = b.displayOrder || 0;
-      
-      if (aDisplayOrder !== bDisplayOrder) {
-        return aDisplayOrder - bDisplayOrder;
-      }
-      
-      if (a.serviceCategory === 'personal' && b.serviceCategory === 'personal') {
-        return b.from.localeCompare(a.from);
-      }
-      
-      return a.from.localeCompare(b.from);
-    });
-  } else if (Object.values(SERVICE_CATEGORIES).includes(tabName) && tabName !== "all") {
-    projectsToShow.sort((a, b) => {
-      const aDisplayOrder = a.displayOrder || 0;
-      const bDisplayOrder = b.displayOrder || 0;
-      
-      if (aDisplayOrder !== bDisplayOrder) {
-        return aDisplayOrder - bDisplayOrder;
-      }
-      
-      if (tabName === SERVICE_CATEGORIES.PERSONAL) {
-        return b.from.localeCompare(a.from);
-      }
-      
-      return a.from.localeCompare(b.from);
-    });
-  } else {
-    projectsToShow.sort((a, b) => b.from.localeCompare(a.from));
-  }
+  const getProjectCategory = (project) => {
+    return project.serviceCategory || "unknown";
+  };
+
+  const getCategoryPriority = (category) => {
+    switch (category) {
+      case "new-package": return 1;
+      case "old-package": return 2;
+      case "cms-crm": return 3;
+      case "personal": return 4;
+      default: return 5;
+    }
+  };
+
+  projectsToShow.sort((a, b) => {
+    const categoryA = getProjectCategory(a);
+    const categoryB = getProjectCategory(b);
+    const priorityA = getCategoryPriority(categoryA);
+    const priorityB = getCategoryPriority(categoryB);
+    
+    if (priorityA !== priorityB) {
+      return priorityA - priorityB;
+    }
+    
+    return b.from.localeCompare(a.from);
+  });
 
   projectsToShow.forEach((project) => {
     const projectCard = createProjectCard(project, tabName);
@@ -81,7 +59,6 @@ export const createProjectCard = (project, tabName) => {
   const title = document.createElement("h3");
   title.textContent = project.name;
   
-  // 상태 배지 추가
   if (project.status) {
     const statusBadge = createStatusBadge(project.status);
     title.appendChild(statusBadge);
@@ -162,8 +139,17 @@ const addProjectDescription = (container, description, tabName) => {
     container.appendChild(summary);
   }
 
-  const hasDetailedInfo = description.highlights || description.challenges || description.solutions || 
-                         description.technical_details || description.performance_results || 
+  if (description.key_features) {
+    const keyFeaturesSection = document.createElement("div");
+    keyFeaturesSection.classList.add("key-features-section");
+    keyFeaturesSection.appendChild(
+      createList("key-features", description.key_features)
+    );
+    container.appendChild(keyFeaturesSection);
+  }
+
+  const hasDetailedInfo = description.challenges || description.solutions || 
+                         description.performance_results || 
                          description.ongoing_challenges;
 
   if (hasDetailedInfo) {
@@ -175,18 +161,6 @@ const addProjectDescription = (container, description, tabName) => {
     const detailsContainer = document.createElement("div");
     detailsContainer.classList.add("details-container");
     detailsContainer.style.display = "none";
-
-    if (description.highlights) {
-      const highlightsSection = document.createElement("div");
-      highlightsSection.classList.add("highlights-section");
-      const highlightsTitle = document.createElement("h4");
-      highlightsTitle.textContent = "주요 특징";
-      highlightsSection.appendChild(highlightsTitle);
-      highlightsSection.appendChild(
-        createList("highlights", description.highlights)
-      );
-      detailsContainer.appendChild(highlightsSection);
-    }
 
     if (description.challenges) {
       const challengesSection = document.createElement("div");
@@ -210,18 +184,6 @@ const addProjectDescription = (container, description, tabName) => {
         createList("solutions", description.solutions)
       );
       detailsContainer.appendChild(solutionsSection);
-    }
-
-    if (description.technical_details) {
-      const technicalSection = document.createElement("div");
-      technicalSection.classList.add("technical-section");
-      const technicalTitle = document.createElement("h4");
-      technicalTitle.textContent = "기술적 구현";
-      technicalSection.appendChild(technicalTitle);
-      technicalSection.appendChild(
-        createList("technical-details", description.technical_details)
-      );
-      detailsContainer.appendChild(technicalSection);
     }
 
     if (description.performance_results) {
@@ -306,7 +268,6 @@ const createStatusBadge = (status) => {
   return badge;
 };
 
-// 일괄 펼치기/접기 함수들
 export const expandAllDetails = () => {
   const allToggleButtons = document.querySelectorAll('.details-toggle');
   const allDetailsContainers = document.querySelectorAll('.details-container');

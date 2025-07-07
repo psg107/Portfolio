@@ -284,35 +284,35 @@ section h2 {
   margin-bottom: 1em;
   line-height: 1.5;
 }
-.project-card .summary {
-  font-size: 1.1em;
-  color: #333;
-  margin-bottom: 1em;
-  line-height: 1.5;
-}
-.project-card .highlights {
+
+.project-card .key-features {
   list-style: none;
   padding-left: 0;
   margin-bottom: 1.5em;
 }
-.project-card .highlights li {
+
+.project-card .key-features li {
   position: relative;
   padding-left: 24px;
   margin-bottom: 0.5em;
-  color: var(--text-secondary);
+  color: var(--primary-color);
+  font-weight: 500;
 }
-.project-card .highlights li:before {
-  content: "•";
+
+.project-card .key-features li:before {
+  content: "▶";
   position: absolute;
   left: 8px;
-  color: var(--text-light);
+  color: var(--primary-color);
+}
+
+.project-card .key-features-section {
+  margin-bottom: 1.5em;
 }
 
 .project-card .challenges-section,
 .project-card .solutions-section,
-.project-card .technical-section,
-.project-card .performance-section,
-.project-card .highlights-section {
+.project-card .performance-section {
   margin-bottom: 1.5em;
 }
 
@@ -334,15 +334,6 @@ section h2 {
   padding-left: 12px;
 }
 
-.project-card .technical-section h4 {
-  color: #7c3aed;
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.75em;
-  border-left: 3px solid #7c3aed;
-  padding-left: 12px;
-}
-
 .project-card .performance-section h4 {
   color: #ea580c;
   font-size: 1rem;
@@ -352,18 +343,8 @@ section h2 {
   padding-left: 12px;
 }
 
-.project-card .highlights-section h4 {
-  color: var(--primary-color);
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.75em;
-  border-left: 3px solid var(--primary-color);
-  padding-left: 12px;
-}
-
 .project-card .challenges,
 .project-card .solutions,
-.project-card .technical-details,
 .project-card .performance-results {
   list-style: none;
   padding-left: 0;
@@ -372,7 +353,6 @@ section h2 {
 
 .project-card .challenges li,
 .project-card .solutions li,
-.project-card .technical-details li,
 .project-card .performance-results li {
   position: relative;
   padding-left: 24px;
@@ -393,12 +373,6 @@ section h2 {
   position: absolute;
   left: 4px;
   color: #059669;
-}
-
-.project-card .technical-details li:before {
-  content: "⚙️";
-  position: absolute;
-  left: 4px;
 }
 
 .project-card .performance-results li:before {
