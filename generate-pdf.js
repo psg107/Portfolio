@@ -17,6 +17,8 @@ const puppeteer = require('puppeteer');
         }
     });
 
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     const bodyHeight = await page.evaluate(() => {
         return Math.max(
             document.body.scrollHeight,

@@ -56,6 +56,16 @@ const ui = {
       .project-card .link-section {
         display: none !important;
       }
+      
+      .pdf-mode .details-container,
+      .project-card .details-container {
+        display: block !important;
+      }
+      
+      .pdf-mode .details-toggle,
+      .project-card .details-toggle {
+        display: none !important;
+      }
     `;
     document.head.appendChild(style);
   },
@@ -123,7 +133,11 @@ const changeToPdfMode = () => {
   projectManager.displayAllProjects(container);
 
   ui.addPdfModeStyles();
-  setPdfMode(true);
+  
+  // DOM이 업데이트된 후 setPdfMode 호출
+  setTimeout(() => {
+    setPdfMode(true);
+  }, 100);
 };
 
 window.changeToPdfMode = changeToPdfMode;
