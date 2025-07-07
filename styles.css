@@ -977,6 +977,81 @@ input:checked + .slider:before {
     font-size: 16px;
   }
 }
+
+.project-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+.project-status-badge.in-progress {
+  background-color: rgba(255, 149, 0, 0.1);
+  color: #ff9500;
+  border: 1px solid rgba(255, 149, 0, 0.3);
+}
+
+.project-status-badge.planned {
+  background-color: rgba(108, 117, 125, 0.1);
+  color: #6c757d;
+  border: 1px solid rgba(108, 117, 125, 0.3);
+}
+
+.project-status-badge.completed {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* ongoing_challenges 섹션 스타일 */
+.project-card .ongoing-challenges-section {
+  margin-bottom: 1.5em;
+  background-color: rgba(255, 149, 0, 0.05);
+  border: 1px solid rgba(255, 149, 0, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.project-card .ongoing-challenges-section h4 {
+  color: #ff9500;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75em;
+  border-left: 3px solid #ff9500;
+  padding-left: 12px;
+  margin-top: 0;
+}
+
+.project-card .ongoing-challenges {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.project-card .ongoing-challenges li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 0.6em;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.project-card .ongoing-challenges li:before {
+  content: "🚧";
+  position: absolute;
+  left: 4px;
+}
+
+.project-card h3 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-md);
+}
 .swiper {
   width: 100%;
   margin: 0;

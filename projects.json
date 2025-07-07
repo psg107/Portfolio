@@ -1,5 +1,69 @@
 [
   {
+    "name": "AI 챗봇 문서 학습 파이프라인",
+    "status": "in-progress",
+    "description": {
+      "summary": "여행 패키지 시스템 관련 문서 데이터(Slack, Jira, Wiki, GitHub, PDF)를 수집하여 AI 챗봇 학습을 위한 RAG(Retrieval-Augmented Generation) 파이프라인을 구축했습니다. OpenAI Vision API를 활용한 이미지 분석, Redis 캐싱 최적화, 그리고 품질 향상을 위한 이중 임베딩 시스템(ONNX/Python FastAPI)을 통해 고품질의 학습 데이터 생성 시스템을 구현했습니다.",
+      "challenges": [
+        "Slack, Jira, Wiki, GitHub, PDF 등 각기 다른 API 구조와 인증 방식을 가진 외부 시스템들을 통합하여 일관된 데이터 수집 파이프라인을 구축해야 했습니다",
+        "매뉴얼 문서에 텍스트와 이미지가 혼재되어 있어 의미있는 정보만을 정확히 추출하고, 불필요한 제목/저작권/반복 내용을 제거하는 전처리 시스템이 필요했습니다",
+        "OpenAI Vision API 호출 비용을 최적화하면서도 이미지에서 정확한 텍스트를 추출하고, 중복 분석을 방지하는 효율적인 캐싱 전략이 필요했습니다",
+        "팀 내 메인 언어인 Kotlin으로 통합 구현을 시도했으나 ONNX 기반 임베딩의 품질이 만족스럽지 않아, 고품질 임베딩을 위한 대안적 접근 방식이 필요했습니다",
+        "수집된 문서들을 AI 학습에 최적화된 형태로 청킹하고 임베딩하는 과정에서 문서의 의미적 맥락을 유지하면서도 검색 성능을 보장해야 했습니다"
+      ],
+      "solutions": [
+        "각 외부 시스템별 API 구조와 인증 방식의 차이를 추상화하는 통합 인터페이스를 설계하여 Slack, Jira, Wiki, GitHub, PDF 등 모든 소스에서 일관된 데이터 수집이 가능한 파이프라인을 구축했습니다",
+        "복합 문서 전처리 로직을 구현하여 불필요한 메타데이터를 자동 제거하고, OpenAI Vision API를 활용한 이미지 분석에서도 실제 의미있는 텍스트만 추출하도록 프롬프트를 최적화했습니다",
+        "Redis 기반 통합 캐싱 시스템으로 OpenAI API 호출 비용을 최적화하고 중복 처리를 방지하며, 각 소스별 데이터 특성에 맞는 캐싱 전략을 적용했습니다",
+        "임베딩 품질 개선을 위해 이중 구조를 도입했습니다. ONNX 기반 OnnxTextEmbedder와 Python FastAPI 기반 ExternalTextEmbedder를 구현하여 성능과 품질을 비교 검증할 수 있는 환경을 구축했습니다",
+        "MongoDB 기반 문서 저장소와 비동기 처리를 통해 대용량 문서 데이터를 효율적으로 관리하고, 소스별 특성을 고려한 의미적 맥락 유지 청킹 전략을 적용했습니다"
+      ],
+      "technical_details": [
+        "통합 캐시 서비스를 구축하여 OpenAI, Wiki, Jira API 클라이언트의 캐싱 로직을 일원화하고, Redis TTL 기반으로 API 호출 비용을 최적화했습니다",
+        "이중 임베딩 시스템을 구현했습니다. 초기 Kotlin 통합 구현 목표로 OnnxTextEmbedder를 개발했으나 품질 한계로 인해 Python FastAPI 기반 ExternalTextEmbedder(BAAI/bge-base-en-v1.5 모델)를 추가 구축하여 성능을 비교 검증했습니다",
+        "OpenAI Vision API를 활용한 이미지 분석에서 불필요한 설명문을 필터링하고 실제 텍스트만 추출하는 프롬프트 최적화를 적용했습니다",
+        "MongoDB raw_docs 컬렉션에 source, timestamp, title, content, meta 필드로 표준화된 문서 데이터를 저장하고, 각 소스별 메타데이터를 체계적으로 관리했습니다",
+        "Kotlin Coroutines를 활용한 비동기 병렬 처리로 Slack, Jira, Wiki, GitHub에서 동시 데이터 수집이 가능하도록 구현했습니다",
+        "Spring Boot 기반 RESTful API로 소스별 개별 수집(/api/collect/pdf, /api/collect/jira 등)과 통합 수집(/api/collect/all) 엔드포인트를 제공했습니다"
+      ],
+      "performance_results": [
+        "Redis 캐싱 도입으로 OpenAI API 비용을 대폭 절감하고, 동일 이미지 재분석을 완전히 방지하여 처리 효율성을 크게 향상시켰습니다",
+        "이중 임베딩 시스템 구축으로 임베딩 품질과 성능을 지속적으로 개선할 수 있는 기반을 마련했습니다. Python 기반 모델이 더 높은 품질을 보여 최종 운영에 적용했습니다",
+        "통합 캐시 서비스로 외부 API 호출 횟수를 최소화하고 코드 중복을 제거하여 시스템 유지보수성과 성능을 동시에 개선했습니다",
+        "전처리 로직을 통해 불필요한 정보가 제거된 고품질 데이터를 생성하여 AI 학습 효과와 챗봇 응답 품질을 향상시켰습니다",
+        "다중 소스 통합 수집 파이프라인으로 개발팀의 문서 관리 효율성을 향상시키고 지식 검색 시스템의 기반을 마련했습니다"
+      ],
+      "ongoing_challenges": [
+        "Jira, Wiki 문서의 비정형 구조로 인한 청킹 품질 이슈가 여전히 존재합니다. 단순 글자수 청킹은 의미 단위가 깨지고, 문서 단위 청킹은 너무 큰 단위가 되어 검색 정확도가 떨어집니다",
+        "이미지 위주의 매뉴얼 문서에서 텍스트만으로는 의미 파악이 어려운 경우가 있어, OpenAI API를 통한 의미 추출을 고려하고 있으나 비용 부담으로 아직 시도하지 못했습니다",
+        "기존 문서 수정 없이 전처리와 청킹만으로 해결하려는 목표가 있으나, 문서 포맷의 비정형성으로 인해 추가적인 접근 방식이 필요한 상황입니다"
+      ]
+    },
+    "from": "2025.06",
+    "to": "2025.07",
+    "type": "company",
+    "companyName": "noluniverse",
+    "serviceCategory": "new-package",
+    "link": null,
+    "linkVisible": false,
+    "skills": [
+      "Kotlin",
+      "SpringBoot",
+      "MongoDB",
+      "Redis",
+      "OpenAI API",
+      "RAG",
+      "PDF Processing",
+      "Image Analysis",
+      "RestAPI",
+      "Coroutines",
+      "Python",
+      "FastAPI",
+      "ONNX",
+      "Text Embedding"
+    ]
+  },
+  {
     "name": "패키지 예약 시뮬레이팅",
     "description": {
       "summary": "기존 수동 엑셀 계산으로 진행되던 패키지 상품 수익성 분석을 자동화하여 실시간 의사결정을 지원하는 시스템을 구축했습니다. 복잡한 예약 데이터를 실시간으로 분석하고 다양한 시나리오 시뮬레이션을 통해 최적의 출발 확정 판단을 지원합니다.",

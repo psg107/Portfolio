@@ -80,6 +80,13 @@ export const createProjectCard = (project, tabName) => {
   titleSection.classList.add("header-section");
   const title = document.createElement("h3");
   title.textContent = project.name;
+  
+  // 상태 배지 추가
+  if (project.status) {
+    const statusBadge = createStatusBadge(project.status);
+    title.appendChild(statusBadge);
+  }
+  
   titleSection.appendChild(title);
   projectCard.appendChild(titleSection);
 
@@ -203,6 +210,18 @@ const addProjectDescription = (container, description, tabName) => {
     container.appendChild(performanceSection);
   }
 
+  if (description.ongoing_challenges && description.ongoing_challenges.length > 0) {
+    const ongoingSection = document.createElement("div");
+    ongoingSection.classList.add("ongoing-challenges-section");
+    const ongoingTitle = document.createElement("h4");
+    ongoingTitle.textContent = "현재 해결 중인 과제들";
+    ongoingSection.appendChild(ongoingTitle);
+    ongoingSection.appendChild(
+      createList("ongoing-challenges", description.ongoing_challenges)
+    );
+    container.appendChild(ongoingSection);
+  }
+
   if (description.highlights) {
     const highlightsSection = document.createElement("div");
     highlightsSection.classList.add("highlights-section");
@@ -232,4 +251,29 @@ const createList = (className, items) => {
   });
 
   return list;
+};
+
+const createStatusBadge = (status) => {
+  const badge = document.createElement("span");
+  badge.classList.add("project-status-badge");
+  
+  switch (status) {
+    case "in-progress":
+      badge.classList.add("in-progress");
+      badge.textContent = "🚧 진행중";
+      break;
+    case "planned":
+      badge.classList.add("planned");
+      badge.textContent = "📋 계획됨";
+      break;
+    case "completed":
+      badge.classList.add("completed");
+      badge.textContent = "✅ 완료";
+      break;
+    default:
+      badge.classList.add("completed");
+      badge.textContent = "✅ 완료";
+  }
+  
+  return badge;
 };
