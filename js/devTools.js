@@ -1,5 +1,5 @@
 import { projectState } from "./projectState.js";
-import { createProjectCard } from "./projects.js";
+import { createProjectCard, setPdfMode } from "./projects.js";
 
 const PDF_MODE = {
   MERMAID_RENDER_DELAY: 100,
@@ -39,24 +39,20 @@ const ui = {
     const style = document.createElement("style");
     style.id = "pdf-mode-styles";
     style.textContent = `
-      /* PDF 모드에서 이미지 갤러리 숨기기 */
       .gallery-section {
         display: none !important;
       }
       
-      /* PDF 모드에서 그리드 제어 버튼 숨기기 */
       .grid-controls {
         display: none !important;
       }
       
-      /* PDF 모드에서 프로젝트 카드 스타일 조정 */
       .project-card {
         margin-bottom: 20px;
         box-shadow: none !important;
         border: 1px solid #ccc !important;
       }
 
-      /* PDF 모드에서 링크 섹션 숨기기 */
       .project-card .link-section {
         display: none !important;
       }
@@ -136,6 +132,7 @@ const changeToPdfMode = () => {
   projectManager.displayAllProjects(container);
 
   ui.addPdfModeStyles();
+  setPdfMode(true);
 };
 
 window.changeToPdfMode = changeToPdfMode;

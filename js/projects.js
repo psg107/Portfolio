@@ -162,76 +162,104 @@ const addProjectDescription = (container, description, tabName) => {
     container.appendChild(summary);
   }
 
-  if (description.challenges) {
-    const challengesSection = document.createElement("div");
-    challengesSection.classList.add("challenges-section");
-    const challengesTitle = document.createElement("h4");
-    challengesTitle.textContent = "해결 과제";
-    challengesSection.appendChild(challengesTitle);
-    challengesSection.appendChild(
-      createList("challenges", description.challenges)
-    );
-    container.appendChild(challengesSection);
-  }
+  const hasDetailedInfo = description.highlights || description.challenges || description.solutions || 
+                         description.technical_details || description.performance_results || 
+                         description.ongoing_challenges;
 
-  if (description.solutions) {
-    const solutionsSection = document.createElement("div");
-    solutionsSection.classList.add("solutions-section");
-    const solutionsTitle = document.createElement("h4");
-    solutionsTitle.textContent = "해결 방안";
-    solutionsSection.appendChild(solutionsTitle);
-    solutionsSection.appendChild(
-      createList("solutions", description.solutions)
-    );
-    container.appendChild(solutionsSection);
-  }
+  if (hasDetailedInfo) {
+    const toggleButton = document.createElement("button");
+    toggleButton.classList.add("details-toggle");
+    toggleButton.innerHTML = '<span class="toggle-text">상세 정보 보기</span> <span class="toggle-icon">▼</span>';
+    toggleButton.setAttribute("aria-expanded", "false");
+    
+    const detailsContainer = document.createElement("div");
+    detailsContainer.classList.add("details-container");
+    detailsContainer.style.display = "none";
 
-  if (description.technical_details) {
-    const technicalSection = document.createElement("div");
-    technicalSection.classList.add("technical-section");
-    const technicalTitle = document.createElement("h4");
-    technicalTitle.textContent = "기술적 구현";
-    technicalSection.appendChild(technicalTitle);
-    technicalSection.appendChild(
-      createList("technical-details", description.technical_details)
-    );
-    container.appendChild(technicalSection);
-  }
+    if (description.highlights) {
+      const highlightsSection = document.createElement("div");
+      highlightsSection.classList.add("highlights-section");
+      const highlightsTitle = document.createElement("h4");
+      highlightsTitle.textContent = "주요 특징";
+      highlightsSection.appendChild(highlightsTitle);
+      highlightsSection.appendChild(
+        createList("highlights", description.highlights)
+      );
+      detailsContainer.appendChild(highlightsSection);
+    }
 
-  if (description.performance_results) {
-    const performanceSection = document.createElement("div");
-    performanceSection.classList.add("performance-section");
-    const performanceTitle = document.createElement("h4");
-    performanceTitle.textContent = "성과";
-    performanceSection.appendChild(performanceTitle);
-    performanceSection.appendChild(
-      createList("performance-results", description.performance_results)
-    );
-    container.appendChild(performanceSection);
-  }
+    if (description.challenges) {
+      const challengesSection = document.createElement("div");
+      challengesSection.classList.add("challenges-section");
+      const challengesTitle = document.createElement("h4");
+      challengesTitle.textContent = "해결 과제";
+      challengesSection.appendChild(challengesTitle);
+      challengesSection.appendChild(
+        createList("challenges", description.challenges)
+      );
+      detailsContainer.appendChild(challengesSection);
+    }
 
-  if (description.ongoing_challenges && description.ongoing_challenges.length > 0) {
-    const ongoingSection = document.createElement("div");
-    ongoingSection.classList.add("ongoing-challenges-section");
-    const ongoingTitle = document.createElement("h4");
-    ongoingTitle.textContent = "현재 해결 중인 과제들";
-    ongoingSection.appendChild(ongoingTitle);
-    ongoingSection.appendChild(
-      createList("ongoing-challenges", description.ongoing_challenges)
-    );
-    container.appendChild(ongoingSection);
-  }
+    if (description.solutions) {
+      const solutionsSection = document.createElement("div");
+      solutionsSection.classList.add("solutions-section");
+      const solutionsTitle = document.createElement("h4");
+      solutionsTitle.textContent = "해결 방안";
+      solutionsSection.appendChild(solutionsTitle);
+      solutionsSection.appendChild(
+        createList("solutions", description.solutions)
+      );
+      detailsContainer.appendChild(solutionsSection);
+    }
 
-  if (description.highlights) {
-    const highlightsSection = document.createElement("div");
-    highlightsSection.classList.add("highlights-section");
-    const highlightsTitle = document.createElement("h4");
-    highlightsTitle.textContent = "핵심 내용";
-    highlightsSection.appendChild(highlightsTitle);
-    highlightsSection.appendChild(
-      createList("highlights", description.highlights)
-    );
-    container.appendChild(highlightsSection);
+    if (description.technical_details) {
+      const technicalSection = document.createElement("div");
+      technicalSection.classList.add("technical-section");
+      const technicalTitle = document.createElement("h4");
+      technicalTitle.textContent = "기술적 구현";
+      technicalSection.appendChild(technicalTitle);
+      technicalSection.appendChild(
+        createList("technical-details", description.technical_details)
+      );
+      detailsContainer.appendChild(technicalSection);
+    }
+
+    if (description.performance_results) {
+      const performanceSection = document.createElement("div");
+      performanceSection.classList.add("performance-section");
+      const performanceTitle = document.createElement("h4");
+      performanceTitle.textContent = "성과";
+      performanceSection.appendChild(performanceTitle);
+      performanceSection.appendChild(
+        createList("performance-results", description.performance_results)
+      );
+      detailsContainer.appendChild(performanceSection);
+    }
+
+    if (description.ongoing_challenges) {
+      const ongoingSection = document.createElement("div");
+      ongoingSection.classList.add("ongoing-section");
+      const ongoingTitle = document.createElement("h4");
+      ongoingTitle.textContent = "진행 중인 과제";
+      ongoingSection.appendChild(ongoingTitle);
+      ongoingSection.appendChild(
+        createList("ongoing-challenges", description.ongoing_challenges)
+      );
+      detailsContainer.appendChild(ongoingSection);
+    }
+
+    toggleButton.addEventListener("click", () => {
+      const isExpanded = toggleButton.getAttribute("aria-expanded") === "true";
+      
+      if (isExpanded) {
+        collapseAllDetails();
+      } else {
+        expandAllDetails();
+      }
+    });
+
+    container.appendChild(toggleButton);
+    container.appendChild(detailsContainer);
   }
 };
 
@@ -276,4 +304,54 @@ const createStatusBadge = (status) => {
   }
   
   return badge;
+};
+
+// 일괄 펼치기/접기 함수들
+export const expandAllDetails = () => {
+  const allToggleButtons = document.querySelectorAll('.details-toggle');
+  const allDetailsContainers = document.querySelectorAll('.details-container');
+  
+  allToggleButtons.forEach(button => {
+    button.innerHTML = '<span class="toggle-text">상세 정보 숨기기</span> <span class="toggle-icon">▲</span>';
+    button.setAttribute("aria-expanded", "true");
+  });
+  
+  allDetailsContainers.forEach(container => {
+    container.style.display = "block";
+  });
+};
+
+export const collapseAllDetails = () => {
+  const allToggleButtons = document.querySelectorAll('.details-toggle');
+  const allDetailsContainers = document.querySelectorAll('.details-container');
+  
+  allToggleButtons.forEach(button => {
+    button.innerHTML = '<span class="toggle-text">상세 정보 보기</span> <span class="toggle-icon">▼</span>';
+    button.setAttribute("aria-expanded", "false");
+  });
+  
+  allDetailsContainers.forEach(container => {
+    container.style.display = "none";
+  });
+};
+
+export const setPdfMode = (enabled) => {
+  const body = document.body;
+  const allToggleButtons = document.querySelectorAll('.details-toggle');
+  const allDetailsContainers = document.querySelectorAll('.details-container');
+  
+  if (enabled) {
+    body.classList.add('pdf-mode');
+    allToggleButtons.forEach(button => {
+      button.style.display = "none";
+    });
+    allDetailsContainers.forEach(container => {
+      container.style.display = "block";
+    });
+  } else {
+    body.classList.remove('pdf-mode');
+    allToggleButtons.forEach(button => {
+      button.style.display = "flex";
+    });
+  }
 };
