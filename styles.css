@@ -218,10 +218,12 @@ section h2 {
   padding: 32px;
   margin-bottom: 0;
   background: var(--bg-card);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
   position: relative;
   overflow: hidden;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .project-card::before {
@@ -239,31 +241,108 @@ section h2 {
   );
 }
 
-.project-card::after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(
-    circle,
-    rgba(37, 99, 235, 0.03) 0%,
-    transparent 70%
-  );
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
 .project-card:hover {
-  transform: translateY(-8px);
+  transform: translate3d(0, -8px, 0);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   border-color: var(--primary-color);
 }
 
-.project-card:hover::after {
-  opacity: 1;
+.is-scrolling .project-card:hover {
+  transform: none;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  border-color: var(--border-light);
+}
+
+.is-scrolling .project-card {
+  transform: none !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06) !important;
+  border-color: var(--border-light) !important;
+  transition: none !important;
+}
+
+.is-scrolling .company-section:hover {
+  transform: none;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  border-color: var(--border-light);
+}
+
+.is-scrolling .company-section {
+  transform: none !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06) !important;
+  border-color: var(--border-light) !important;
+  transition: none !important;
+}
+
+.is-scrolling .mermaid:hover {
+  transform: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.is-scrolling .mermaid {
+  transform: none !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+  transition: none !important;
+}
+
+.is-scrolling .grid-btn:hover {
+  transform: none;
+  border-color: var(--border-medium);
+  color: var(--text-secondary);
+  box-shadow: none;
+}
+
+.is-scrolling .grid-btn {
+  transform: none !important;
+  border-color: var(--border-medium) !important;
+  color: var(--text-secondary) !important;
+  box-shadow: none !important;
+  transition: none !important;
+}
+
+.is-scrolling .tab-button:hover {
+  color: var(--text-secondary);
+  background-color: transparent;
+}
+
+.is-scrolling .tab-button {
+  color: var(--text-secondary) !important;
+  background-color: transparent !important;
+  transition: none !important;
+}
+
+.is-scrolling .tech-category:hover,
+.is-scrolling .contact-item:hover,
+.is-scrolling .gallery-item:hover,
+.is-scrolling .tech-item:hover,
+.is-scrolling .company-section:hover,
+.is-scrolling .mermaid:hover,
+.is-scrolling .grid-btn:hover,
+.is-scrolling .tab-button:hover {
+  transform: none !important;
+  transition: none !important;
+}
+
+.is-scrolling .tech-category,
+.is-scrolling .contact-item,
+.is-scrolling .gallery-item,
+.is-scrolling .tech-item,
+.is-scrolling .company-section,
+.is-scrolling .mermaid,
+.is-scrolling .grid-btn,
+.is-scrolling .tab-button {
+  transition: none !important;
+}
+
+.is-scrolling .project-card,
+.is-scrolling .tech-category,
+.is-scrolling .contact-item,
+.is-scrolling .gallery-item,
+.is-scrolling .tech-item,
+.is-scrolling .company-section,
+.is-scrolling .mermaid,
+.is-scrolling .grid-btn,
+.is-scrolling .tab-button {
+  pointer-events: none !important;
 }
 .project-card h3 {
   font-size: var(--font-2xl);
@@ -404,7 +483,7 @@ section h2 {
   font-size: 1rem;
   font-weight: 600;
   padding: 10px 20px;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 8px rgba(66, 153, 225, 0.3);
 }
 .project-card .project-link:hover {
@@ -428,11 +507,12 @@ section h2 {
   padding: 24px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border: 1px solid var(--border-light);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
 }
 
 .tech-category:hover {
-  transform: translateY(-2px);
+  transform: translate3d(0, -2px, 0);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
 }
 
@@ -460,33 +540,14 @@ section h2 {
   font-size: 0.8rem;
   font-weight: 500;
   color: white;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
-}
-
-.tech-item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: left 0.6s;
-}
-
-.tech-item:hover::before {
-  left: 100%;
+  will-change: transform;
 }
 
 .tech-item:hover {
-  transform: translateY(-1px);
+  transform: translate3d(0, -1px, 0);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -530,34 +591,15 @@ section h2 {
   background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
   border-radius: var(--radius-xl);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   border: 1px solid var(--border-light);
   position: relative;
   overflow: hidden;
-}
-
-.contact-item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(37, 99, 235, 0.05),
-    transparent
-  );
-  transition: left 0.6s ease;
-}
-
-.contact-item:hover::before {
-  left: 100%;
+  will-change: transform;
 }
 
 .contact-item:hover {
-  transform: translateY(-4px);
+  transform: translate3d(0, -4px, 0);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
   border-color: var(--primary-color);
 }
@@ -686,10 +728,11 @@ input:checked + .slider:before {
   text-align: center;
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
 }
 
 .mermaid:hover {
-  transform: translateY(-2px);
+  transform: translate3d(0, -2px, 0);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 .mermaid svg {
@@ -746,15 +789,16 @@ input:checked + .slider:before {
   font-size: 14px;
   font-weight: 600;
   color: var(--text-secondary);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
+  will-change: transform;
 }
 
 .grid-btn:hover {
   border-color: var(--primary-color);
   color: var(--primary-color);
-  transform: translateY(-1px);
+  transform: translate3d(0, -1px, 0);
   box-shadow: var(--shadow-sm);
 }
 
@@ -1057,9 +1101,11 @@ input:checked + .slider:before {
   cursor: pointer;
   background-color: #f8f9fa;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  will-change: transform;
 }
 .gallery-item:hover {
-  transform: scale(1.05);
+  transform: scale3d(1.05, 1.05, 1);
 }
 .gallery-item img {
   width: 100%;
@@ -1115,7 +1161,7 @@ input:checked + .slider:before {
   cursor: pointer;
   color: var(--text-secondary);
   border-radius: 8px;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease, background-color 0.3s ease;
   margin: 0 2px;
   position: relative;
 }
@@ -1290,10 +1336,12 @@ input:checked + .slider:before {
   padding: 32px;
   margin-bottom: 0;
   background: var(--bg-card);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
   position: relative;
   overflow: hidden;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .company-section::before {
@@ -1311,31 +1359,10 @@ input:checked + .slider:before {
   );
 }
 
-.company-section::after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(
-    circle,
-    rgba(37, 99, 235, 0.03) 0%,
-    transparent 70%
-  );
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
 .company-section:hover {
-  transform: translateY(-8px);
+  transform: translate3d(0, -8px, 0);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   border-color: var(--primary-color);
-}
-
-.company-section:hover::after {
-  opacity: 1;
 }
 
 .company-section:first-of-type {
@@ -1545,31 +1572,17 @@ input:checked + .slider:before {
   font-size: var(--font-sm);
   font-weight: 500;
   color: var(--text-primary);
-  transition: all 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
-}
-
-.project-card .details-toggle:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-  transition: left 0.5s;
+  will-change: transform;
 }
 
 .project-card .details-toggle:hover {
   background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
   border-color: var(--primary-color);
-  transform: translateY(-1px);
+  transform: translate3d(0, -1px, 0);
   box-shadow: var(--shadow-md);
-}
-
-.project-card .details-toggle:hover:before {
-  left: 100%;
 }
 
 .project-card .details-toggle:focus {
