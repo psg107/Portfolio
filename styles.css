@@ -575,6 +575,65 @@ section h2 {
 .tech-item.iis {
   background: linear-gradient(135deg, #0078d4, #40a3ff);
 }
+
+/* 개발 도구 스타일 */
+.tech-item.intellij {
+  background: linear-gradient(135deg, #000000, #fe315d);
+}
+.tech-item.vscode {
+  background: linear-gradient(135deg, #007acc, #0e7cc9);
+}
+.tech-item.visual-studio {
+  background: linear-gradient(135deg, #5c2d91, #8a4baf);
+}
+.tech-item.cursor {
+  background: linear-gradient(135deg, #000000, #333333);
+}
+.tech-item.compass {
+  background: linear-gradient(135deg, #47a248, #00ed64);
+}
+.tech-item.datagrip {
+  background: linear-gradient(135deg, #9775fa, #b794fc);
+}
+.tech-item.ssms {
+  background: linear-gradient(135deg, #cc2927, #e74c3c);
+}
+.tech-item.medis {
+  background: linear-gradient(135deg, #dc382d, #ff4757);
+}
+.tech-item.slack {
+  background: linear-gradient(135deg, #4a154b, #e01e5a);
+}
+.tech-item.jira {
+  background: linear-gradient(135deg, #0052cc, #2684ff);
+}
+.tech-item.confluence {
+  background: linear-gradient(135deg, #172b4d, #0052cc);
+}
+.tech-item.claude-code {
+  background: linear-gradient(135deg, #f97316, #fb923c);
+}
+.tech-item.copilot {
+  background: linear-gradient(135deg, #000000, #24292e);
+}
+.tech-item.obsidian {
+  background: linear-gradient(135deg, #483699, #7c3aed);
+}
+.tech-item.postman {
+  background: linear-gradient(135deg, #ff6c37, #ff8a65);
+}
+.tech-item.warp {
+  background: linear-gradient(135deg, #01a6f0, #0ea5e9);
+}
+.tech-item.docker {
+  background: linear-gradient(135deg, #0db7ed, #2496ed);
+}
+.tech-item.git {
+  background: linear-gradient(135deg, #f14e32, #f05032);
+}
+.tech-item.datadog {
+  background: linear-gradient(135deg, #632ca6, #9b59b6);
+}
 #section-contact {
   background: var(--bg-card);
 }
