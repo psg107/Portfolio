@@ -214,9 +214,13 @@ const addProjectDescription = (container, description, tabName) => {
       const isExpanded = toggleButton.getAttribute("aria-expanded") === "true";
       
       if (isExpanded) {
-        collapseAllDetails();
+        toggleButton.innerHTML = '<span class="toggle-text">상세 정보 보기</span> <span class="toggle-icon">▼</span>';
+        toggleButton.setAttribute("aria-expanded", "false");
+        detailsContainer.style.display = "none";
       } else {
-        expandAllDetails();
+        toggleButton.innerHTML = '<span class="toggle-text">상세 정보 숨기기</span> <span class="toggle-icon">▲</span>';
+        toggleButton.setAttribute("aria-expanded", "true");
+        detailsContainer.style.display = "block";
       }
     });
 
@@ -270,44 +274,42 @@ const createStatusBadge = (status) => {
 
 export const expandAllDetails = () => {
   const allToggleButtons = document.querySelectorAll('.details-toggle');
-  const allDetailsContainers = document.querySelectorAll('.details-container');
   
   allToggleButtons.forEach(button => {
+    const detailsContainer = button.nextElementSibling;
     button.innerHTML = '<span class="toggle-text">상세 정보 숨기기</span> <span class="toggle-icon">▲</span>';
     button.setAttribute("aria-expanded", "true");
-  });
-  
-  allDetailsContainers.forEach(container => {
-    container.style.display = "block";
+    if (detailsContainer) {
+      detailsContainer.style.display = "block";
+    }
   });
 };
 
 export const collapseAllDetails = () => {
   const allToggleButtons = document.querySelectorAll('.details-toggle');
-  const allDetailsContainers = document.querySelectorAll('.details-container');
   
   allToggleButtons.forEach(button => {
+    const detailsContainer = button.nextElementSibling;
     button.innerHTML = '<span class="toggle-text">상세 정보 보기</span> <span class="toggle-icon">▼</span>';
     button.setAttribute("aria-expanded", "false");
-  });
-  
-  allDetailsContainers.forEach(container => {
-    container.style.display = "none";
+    if (detailsContainer) {
+      detailsContainer.style.display = "none";
+    }
   });
 };
 
 export const setPdfMode = (enabled) => {
   const body = document.body;
   const allToggleButtons = document.querySelectorAll('.details-toggle');
-  const allDetailsContainers = document.querySelectorAll('.details-container');
   
   if (enabled) {
     body.classList.add('pdf-mode');
     allToggleButtons.forEach(button => {
+      const detailsContainer = button.nextElementSibling;
       button.style.display = "none";
-    });
-    allDetailsContainers.forEach(container => {
-      container.style.display = "block";
+      if (detailsContainer) {
+        detailsContainer.style.display = "block";
+      }
     });
   } else {
     body.classList.remove('pdf-mode');
