@@ -1,7 +1,7 @@
 import { UI_CONFIG } from "./constants.js";
 
 export const GridLayoutController = {
-  setGridLayout(large = UI_CONFIG.GRID.LARGE_SCREEN, medium = UI_CONFIG.GRID.MEDIUM_SCREEN, small = UI_CONFIG.GRID.SMALL_SCREEN) {
+  setGridLayout(large = UI_CONFIG.GRID.SMALL_SCREEN, medium = UI_CONFIG.GRID.SMALL_SCREEN, small = UI_CONFIG.GRID.SMALL_SCREEN) {
     const root = document.documentElement;
     root.style.setProperty('--grid-large', large);
     root.style.setProperty('--grid-medium', medium);
