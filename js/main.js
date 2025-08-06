@@ -8,19 +8,15 @@ import { GridLayoutController } from "./gridController.js";
 
 const initializeProjects = async () => {
   try {
-    const [projects1Response, projects2Response] = await Promise.all([
-      fetch("projects.json"),
-      fetch("projects2.json"),
-    ]);
+    const projectsResponse = await fetch("projects.json");
 
-    if (!projects1Response.ok || !projects2Response.ok) {
+    if (!projectsResponse.ok) {
       throw new Error("프로젝트 데이터를 불러오는데 실패했습니다.");
     }
 
-    const projects1 = await projects1Response.json();
-    const projects2 = await projects2Response.json();
+    const projects = await projectsResponse.json();
 
-    [...projects1, ...projects2].forEach((project) => {
+    projects.forEach((project) => {
       if (project && typeof project === "object") {
         projectState.addProject(project);
       }
