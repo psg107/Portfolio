@@ -185,6 +185,116 @@ section h2 {
   z-index: 1;
   animation: fadeInUp 1s ease-out 0.2s both;
 }
+
+#section-introduction .hero-subtitle {
+  font-size: var(--font-lg);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-2xl);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.9;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+/* 성과 하이라이트 섹션 */
+.achievement-highlights {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-2xl);
+  margin: var(--spacing-2xl) 0;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 1s ease-out 0.4s both;
+}
+
+.achievement-item {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-width: 160px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.achievement-item:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.achievement-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: var(--spacing-sm);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.achievement-text {
+  font-size: var(--font-sm);
+  color: var(--text-white);
+  opacity: 0.9;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* 히어로 액션 버튼 */
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-2xl);
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+.cta-button.primary {
+  background: var(--text-white);
+  color: var(--primary-color);
+  padding: 15px 30px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: var(--font-lg);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 2px solid transparent;
+}
+
+.cta-button.primary:hover {
+  background: transparent;
+  color: var(--text-white);
+  border-color: var(--text-white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.cta-button.secondary {
+  background: transparent;
+  color: var(--text-white);
+  padding: 15px 30px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: var(--font-lg);
+  transition: all 0.3s ease;
+  border: 2px solid var(--text-white);
+  backdrop-filter: blur(10px);
+}
+
+.cta-button.secondary:hover {
+  background: var(--text-white);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
 #section-introduction .cta-button {
   display: inline-block;
   background: white;
@@ -944,6 +1054,62 @@ input:checked + .slider:before {
     padding: 4px 6px;
     white-space: nowrap;
     min-width: fit-content;
+  }
+
+  /* 모바일에서 소개 섹션 최적화 */
+  #section-introduction {
+    padding: 80px 15px 60px 15px;
+  }
+
+  #section-introduction h1 {
+    font-size: 2rem;
+    line-height: 1.3;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  #section-introduction .hero-subtitle {
+    font-size: var(--font-base);
+    line-height: 1.5;
+    margin-bottom: var(--spacing-xl);
+  }
+
+  /* 모바일에서 성과 하이라이트 최적화 */
+  .achievement-highlights {
+    gap: var(--spacing-lg);
+    margin: var(--spacing-xl) 0;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .achievement-item {
+    min-width: 140px;
+    padding: var(--spacing-lg);
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .achievement-number {
+    font-size: 2rem;
+  }
+
+  .achievement-text {
+    font-size: var(--font-xs);
+  }
+
+  /* 모바일에서 히어로 액션 버튼 최적화 */
+  .hero-actions {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: center;
+  }
+
+  .cta-button.primary,
+  .cta-button.secondary {
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
+    padding: 12px 24px;
+    font-size: var(--font-base);
   }
 
   .company-tabs {
