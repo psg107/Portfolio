@@ -9,37 +9,27 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="css/mermaid.css">
-  <link rel="stylesheet" href="css/modal.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
   <link rel="stylesheet" href="lib/css/swiper-bundle.min.css">
-  <script src="lib/js/mermaid.min.js"></script>
+
   <script src="lib/js/panzoom.min.js"></script>
   <script src="lib/js/swiper-bundle.min.js"></script>
   <script type="module" src="js/main.js"></script>
-  <script type="module" src="js/devTools.js"></script>
+  <script type="module" src="js/utils/devTools.js"></script>
 </head>
 
 <body>
-  <!-- 이미지 모달 -->
-  <div id="imageModal" class="modal">
-    <span class="modal-close">&times;</span>
-    <div class="modal-counter"></div>
-    <button class="modal-nav modal-prev" aria-label="이전 이미지">&#10094;</button>
-    <button class="modal-nav modal-next" aria-label="다음 이미지">&#10095;</button>
-    <img class="modal-content" id="modalImage">
-  </div>
 
   <!-- 네비게이션 바 -->
   <nav class="navbar">
     <div class="container">
-      <ul class="nav-links">        <li><a href="#section-introduction">소개</a></li>
-        <li><a href="#section-tech-stack">사용기술</a></li>
-        <li><a href="#section-tools">개발도구</a></li>
+      <ul class="nav-links">
+        <li><a href="#section-introduction">소개</a></li>
+        <li><a href="#section-tech-stack">핵심기술</a></li>
         <li><a href="#section-tech-evolution">개발경력</a></li>
         <li><a href="#section-project">프로젝트</a></li>
-        <li><a href="#section-architecture">아키텍처</a></li>
         <li><a href="#section-contact">연락처</a></li>
+      </ul>
       </ul>
     </div>
   </nav>
@@ -47,24 +37,9 @@
   <div class="container">
     <!-- 소개 -->
     <section id="section-introduction">
-      <h1>대용량 여행 시스템을 구축하는<br>백엔드 개발자입니다</h1>
-      <p class="hero-subtitle">모놀리식에서 MSA로 전환하며 검색 성능을 대폭 개선하고<br>안정적인 예약 시스템을 구축해왔습니다</p>
-      
-      <!-- 주요 성과 하이라이트 -->
-      <div class="achievement-highlights">
-        <div class="achievement-item">
-          <div class="achievement-number">8초→1초</div>
-          <div class="achievement-text">검색 응답시간<br>대폭 개선</div>
-        </div>
-        <div class="achievement-item">
-          <div class="achievement-number">300만+</div>
-          <div class="achievement-text">여행 상품<br>실시간 처리</div>
-        </div>
-        <div class="achievement-item">
-          <div class="achievement-number">99.9%</div>
-          <div class="achievement-text">서비스 가용성<br>달성</div>
-        </div>
-      </div>
+      <h1>안녕하세요! 박상곤입니다</h1>
+      <p class="hero-subtitle">Kotlin/Spring Boot와 C#/.NET 기반의 서비스 개발 경험을 바탕으로<br>여행 예약 시스템의 백엔드 개발과 운영을 담당해왔습니다</p>
+      <p class="hero-description">모놀리식부터 MSA까지 다양한 아키텍처를 경험했고,<br>대용량 트래픽 처리, 실시간 검색·예약, 외부 연동 자동화 등 핵심 기능을 구현했습니다<br><br>AWS ECS 환경에서의 배포 자동화와 안정성 있는 인프라 운영에 익숙하며,<br>팀과의 긴밀한 협업을 통해 서비스를 지속적으로 개선하고 있습니다</p>
       
       <div class="hero-actions">
         <a href="#section-project" class="cta-button primary">주요 프로젝트 보기</a>
@@ -72,92 +47,36 @@
       </div>
     </section>
 
-    <!-- 사용 기술 -->
+    <!-- 핵심 기술 & 도구 -->
     <section id="section-tech-stack">
-      <h2>사용 기술</h2>
+      <h2>핵심 기술 & 도구</h2>
       <div class="tech-categories">
         <div class="tech-category">
-          <h3>언어</h3>
+          <h3>주요 기술 스택</h3>
           <div class="tech-items">
             <span class="tech-item kotlin">Kotlin</span>
-            <span class="tech-item csharp">C#</span>
-          </div>
-        </div>
-        <div class="tech-category">
-          <h3>프레임워크</h3>
-          <div class="tech-items">
             <span class="tech-item spring">Spring Boot</span>
-            <span class="tech-item dotnet">ASP.NET</span>
-          </div>
-        </div>
-        <div class="tech-category">
-          <h3>데이터베이스</h3>
-          <div class="tech-items">
             <span class="tech-item mongodb">MongoDB</span>
-            <span class="tech-item mssql">MSSQL</span>
-          </div>
-        </div>
-        <div class="tech-category">
-          <h3>인프라</h3>
-          <div class="tech-items">
             <span class="tech-item aws">AWS</span>
-            <span class="tech-item iis">IIS</span>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- 개발 도구 -->
-    <section id="section-tools">
-      <h2>개발 도구</h2>
-      <div class="tech-categories">
         <div class="tech-category">
-          <h3>IDE & 에디터</h3>
+          <h3>AI 개발 도구</h3>
           <div class="tech-items">
-            <span class="tech-item intellij">IntelliJ IDEA</span>
-            <span class="tech-item vscode">Visual Studio Code</span>
-            <span class="tech-item visual-studio">Visual Studio</span>
+            <span class="tech-item claude-code">Claude Code</span>
+            <span class="tech-item copilot">GitHub Copilot</span>
             <span class="tech-item cursor">Cursor</span>
           </div>
         </div>
         <div class="tech-category">
-          <h3>데이터베이스 관리</h3>
+          <h3>협업 & 개발 환경</h3>
           <div class="tech-items">
-            <span class="tech-item compass">MongoDB Compass</span>
-            <span class="tech-item datagrip">DataGrip</span>
-            <span class="tech-item ssms">SSMS</span>
-            <span class="tech-item medis">Medis</span>
-          </div>
-        </div>
-        <div class="tech-category">
-          <h3>협업 & 커뮤니케이션</h3>
-          <div class="tech-items">
+            <span class="tech-item intellij">IntelliJ IDEA</span>
+            <span class="tech-item vscode">Visual Studio Code</span>
             <span class="tech-item slack">Slack</span>
             <span class="tech-item jira">Jira</span>
-            <span class="tech-item confluence">Confluence</span>
-          </div>
-        </div>
-        <div class="tech-category">
-          <h3>개발 보조</h3>
-          <div class="tech-items">
-            <span class="tech-item claude-code">Claude Code</span>
-            <span class="tech-item copilot">GitHub Copilot</span>
-            <span class="tech-item obsidian">Obsidian</span>
-            <span class="tech-item postman">Postman</span>
-          </div>
-        </div>
-        <div class="tech-category">
-          <h3>터미널 & 시스템</h3>
-          <div class="tech-items">
-            <span class="tech-item warp">Warp</span>
-            <span class="tech-item docker">Docker Desktop</span>
             <span class="tech-item git">Git</span>
-          </div>
-        </div>
-        <div class="tech-category">
-          <h3>모니터링 & 운영</h3>
-          <div class="tech-items">
-            <span class="tech-item datadog">Datadog</span>
+            <span class="tech-item docker">Docker</span>
           </div>
         </div>
       </div>
@@ -170,8 +89,12 @@
         <div class="timeline-item">
           <div class="timeline-year">2018-2021</div>
           <div class="timeline-content">
-            <h3>풀스택 개발 경험</h3>
+            <h3>케이소프트 - 풀스택 개발 경험</h3>
             <p>C#/.NET 기반 데스크톱/웹/모바일 애플리케이션 개발</p>
+            <p class="system-experience">
+              <strong>주요 시스템:</strong> 자동이체(CMS) 솔루션, 고객관리(CRM) 시스템<br>
+              <strong>아키텍처:</strong> 모놀리식 아키텍처, MSSQL 기반 데이터베이스, 금융결제원 연동
+            </p>
             <div class="tech-badges">
               <span class="tech-badge">C#</span>
               <span class="tech-badge">ASP.NET</span>
@@ -184,27 +107,38 @@
         <div class="timeline-item">
           <div class="timeline-year">2021-2023</div>
           <div class="timeline-content">
-            <h3>백엔드 전문화</h3>
+            <h3>놀유니버스 - 백엔드 전문화</h3>
             <p>C# 기반 웹 서비스 백엔드 개발 및 대규모 시스템 운영</p>
+            <p class="system-experience">
+              <strong>주요 시스템:</strong> 여행 패키지 검색/예약 시스템 (레거시)<br>
+              <strong>아키텍처:</strong> 모놀리식 아키텍처, MSSQL + Redis, Kafka 이벤트 스트림
+            </p>
             <div class="tech-badges">
               <span class="tech-badge">C#</span>
               <span class="tech-badge">ASP.NET</span>
               <span class="tech-badge">MSSQL</span>
-              <span class="tech-badge">Jenkins</span>
+              <span class="tech-badge">Redis</span>
+              <span class="tech-badge">Kafka</span>
             </div>
           </div>
         </div>
         <div class="timeline-item">
           <div class="timeline-year">2023-현재</div>
           <div class="timeline-content">
-            <h3>모던 백엔드 전환</h3>
+            <h3>놀유니버스 - 모던 백엔드 전환</h3>
             <p>Kotlin/Spring Boot 기반 MSA 및 클라우드 네이티브 개발</p>
+            <p class="system-experience">
+              <strong>주요 시스템:</strong> 여행 패키지 검색/예약 시스템 (MSA 전환)<br>
+              <strong>아키텍처:</strong> 마이크로서비스 아키텍처, MongoDB + Redis, AWS Kinesis 이벤트 스트림, 
+              AWS ECS 컨테이너 오케스트레이션, Terraform IaC
+            </p>
             <div class="tech-badges">
               <span class="tech-badge">Kotlin</span>
               <span class="tech-badge">Spring Boot</span>
               <span class="tech-badge">MongoDB</span>
               <span class="tech-badge">Redis</span>
               <span class="tech-badge">AWS ECS</span>
+              <span class="tech-badge">AWS Kinesis</span>
               <span class="tech-badge">Terraform</span>
               <span class="tech-badge">GitHub Actions</span>
               <span class="tech-badge">Datadog</span>
@@ -217,11 +151,7 @@
     <!-- 프로젝트 -->
     <section id="section-project">
       <h2>프로젝트
-        <div class="grid-controls">
-          <button class="grid-btn active" data-columns="1" title="1열로 보기">1</button>
-          <button class="grid-btn" data-columns="2" title="2열로 보기">2</button>
-          <button class="grid-btn" data-columns="3" title="3열로 보기">3</button>
-        </div>
+
       </h2>
       <div class="project-container">
         <!-- 탭 -->
@@ -250,236 +180,28 @@
       </div>
     </section>
 
-    <!-- 시스템경험 -->
-    <section id="section-architecture">
-      <h2>아키텍처</h2>
-      <p class="section-description">
-        각 회사에서 담당했던 시스템들의 아키텍처를 소개합니다.<br>
-        여행 예약 시스템의 MSA 전환과 금융 솔루션 개발 등<br>
-        서로 다른 도메인의 시스템을 실제 프로덕션 환경에서 경험했습니다.
-      </p>
-      
-      <div class="architecture-container">
-        <!-- 놀유니버스 -->
-        <div class="company-section">
-          <div class="section-header">
-            <h3>놀유니버스</h3>
-            <h4>여행 패키지 검색/예약 시스템</h4>
-          </div>
-          <p>레거시 시스템을 현대화한 프로젝트로, 모놀리식 아키텍처를 마이크로서비스로 전환했습니다.<br>
-             기존 C# 기반 시스템을 안정적으로 운영하면서, 새로운 서비스들을 Kotlin으로 개발하여 점진적으로 이전했습니다.</p>
-          
-          <div id="noluniverse-architecture" class="mermaid-container">
-            <div class="architecture-title">
-              <h4>(구) 패키지 시스템 - C# 기반 모놀리식</h4>
-              <span class="period">2021-2023</span>
-            </div>
-            <div class="mermaid">
-              graph TD
-              classDef default fill:#f4f4f4,stroke:#666,stroke-width:1px;
-              classDef highlighted fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
 
-              subgraph "데이터베이스&캐시"
-              DB[("tour-db&#10;MSSQL")]:::highlighted
-              REDIS[("tour-cache&#10;Redis")]:::highlighted
-              end
-
-              subgraph "서비스"
-              PWA["package-worldin-admin&#10;여행업무 백오피스&#10;상품/예약/결제/정산"]:::highlighted
-              CTA["common-touradmin&#10;여행업무 백오피스&#10;알림/전시/포인트"]:::highlighted
-              PB["package-batch&#10;배치 작업"]:::highlighted
-              PA["package-api&#10;API 서버"]:::highlighted
-              PT["package-tprm&#10;외부사 연동"]:::highlighted
-              PAD["pack.api.display&#10;전시 API"]:::highlighted
-              PBS["pack.batch.search&#10;검색 인덱스"]:::highlighted
-              PC_FRONT["PC프론트&#10;닷넷"]:::highlighted
-              end
-
-              subgraph "외부 연동"
-              NAVER[네이버]
-              MT[모두투어]
-              SETTLE[정산 서비스]
-              HMC[현대카드]
-              end
-
-              KAFKA["Kafka&#10;이벤트 스트림"]:::highlighted
-              KAFKA_CONSUMER["Kafka Consumer&#10;이벤트 처리"]
-              ELASTIC["Elasticsearch&#10;검색 엔진"]
-
-              DOMESTIC["국내숙소"]
-              OVERSEAS["해외숙소"]
-              TOUR_TICKET["투어·티켓"]
-
-              MOBILE_FRONT["모바일프론트&#10;리액트,뷰,바닐라,.."]
-
-              데이터베이스&캐시 --> 서비스
-
-              PA --> NAVER
-              PA --> MT
-              PT --> NAVER
-              PT --> MT
-              PA --> SETTLE
-              SETTLE --> HMC
-              PBS --> KAFKA
-              KAFKA --> KAFKA_CONSUMER
-              KAFKA_CONSUMER --> ELASTIC
-              DOMESTIC --> KAFKA_CONSUMER
-              OVERSEAS --> KAFKA_CONSUMER
-              TOUR_TICKET --> KAFKA_CONSUMER
-              PA --> MOBILE_FRONT
-            </div>
-
-            <div class="architecture-title">
-              <h4>(신) 패키지 시스템 - Kotlin 기반 마이크로서비스</h4>
-              <span class="period">2023-현재</span>
-            </div>
-            <div class="mermaid">
-              graph TD
-              classDef default fill:#f4f4f4,stroke:#666,stroke-width:1px;
-              classDef highlighted fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
-
-              subgraph "상품데이터베이스&캐시"
-              MONGO_P[("product-db&#10;MongoDB")]:::highlighted
-              REDIS_P[("product-cache&#10;Redis")]:::highlighted
-              end
-
-              subgraph "예약데이터베이스&캐시"
-              MONGO_R[("reservation-db&#10;MongoDB")]:::highlighted
-              REDIS_R[("reservation-cache&#10;Redis")]:::highlighted
-              end
-
-              subgraph "공급사데이터베이스&캐시"
-              MONGO_S[("supplier-db&#10;MongoDB")]:::highlighted
-              REDIS_S[("supplier-cache&#10;Redis")]:::highlighted
-              end
-
-              subgraph "허브데이터베이스&캐시"
-              MONGO_H[("hub-db&#10;MongoDB")]:::highlighted
-              REDIS_H[("hub-cache&#10;Redis")]:::highlighted
-              end
-
-              subgraph "서비스"
-              PP["package-product&#10;상품 관리"]:::highlighted
-              PR["package-reservation&#10;예약 관리"]:::highlighted
-              PS["package-supplier&#10;공급사 연동"]:::highlighted
-              PH["package-hub&#10;구/신 패키지 통합 검색/전시"]:::highlighted
-              end
-
-              subgraph "외부 서비스"
-              GA["항공 관리 서비스"]
-              MC["호텔/투어 관리 서비스"]
-              PAY["결제 서비스"]
-              SETTLE["정산 서비스"]
-              MT["모두투어 API"]
-              ANDOR["검색 서비스&#10;Andor"]
-              ES["Elasticsearch&#10;검색 엔진"]
-              end
-
-              OVERSEAS["해외숙소"]
-              TOUR_TICKET["투어·티켓"]
-              TICKET["티켓"]
-
-              상품데이터베이스&캐시 --> PP
-              예약데이터베이스&캐시 --> PR
-              공급사데이터베이스&캐시 --> PS
-              허브데이터베이스&캐시 --> PH
-
-              subgraph "이벤트"
-              KINESIS["AWS Kinesis&#10;이벤트 스트림"]:::highlighted
-              SQS["Amazon SQS&#10;메시지 큐"]:::highlighted
-              end
-
-              서비스 --> 이벤트
-              이벤트 --> GA
-              이벤트 --> MC
-              PR --> PAY
-              PAY --> SETTLE
-              PS --> MT
-              PH --> ANDOR
-              OVERSEAS --> ANDOR
-              TOUR_TICKET --> ANDOR
-              TICKET --> ANDOR
-              ANDOR --> ES
-            </div>
-          </div>
-        </div>
-
-        <!-- 케이소프트 -->
-        <div class="company-section company-divider">
-          <div class="section-header">
-            <h3>케이소프트</h3>
-            <h4>자동이체(CMS) 솔루션</h4>
-          </div>
-          <p>금융결제원과 연계하여 자동이체 처리를 자동화하는 솔루션입니다.<br>
-             CMS 처리 자동화와 함께 고객관리(CRM) 기능을 통합하여 완성도 있는 시스템을 구축했습니다.</p>
-          
-          <div id="ksoft-architecture" class="mermaid-container">
-            <div class="architecture-title">
-              <h4>CMS/CRM 시스템 구조</h4>
-              <span class="period">2018-2021</span>
-            </div>
-          <div class="mermaid">
-            graph TD
-            classDef default fill:#f4f4f4,stroke:#666,stroke-width:1px;
-            classDef highlighted fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
-
-            subgraph "데이터베이스"
-            CMS/CRM_DB[("CMS/CRM-db&#10;MSSQL")]:::highlighted
-            end
-
-            subgraph "시스템 서비스"
-            CMS_MAIN["AutoCMS&#10;자동 이체 시스템"]:::highlighted
-            CMS_PLUS["CMSPlus&#10;계좌 관리 시스템"]
-            CRM_WEB["CRM 웹"]:::highlighted
-            CRM_DESKTOP["CRM 데스크톱"]
-            CMS_MOBILE["CMS Mobile&#10;Android/iOS"]:::highlighted
-            end
-
-            subgraph "외부 연동"
-            KFTC["금융결제원"]
-            HYOSUNG["효성"]
-            NICEPAY["나이스페이먼츠"]
-            FIREBASE["Firebase&#10;푸시 알림"]
-            end
-
-            CMS/CRM_DB --> CMS_MAIN
-            CMS/CRM_DB --> CMS_PLUS
-            CMS/CRM_DB --> CMS_MOBILE
-            CMS/CRM_DB --> CRM_WEB
-            CMS/CRM_DB --> CRM_DESKTOP
-
-            CMS_MAIN --> KFTC
-            CMS_MAIN --> HYOSUNG
-            CMS_MAIN --> NICEPAY
-            CMS_PLUS --> KFTC
-            CMS_PLUS --> HYOSUNG
-            CMS_PLUS --> NICEPAY
-            CMS_MOBILE --> FIREBASE
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- 연락처 -->
     <section id="section-contact">
       <h2>연락처</h2>
       <div class="contact-grid">
         <div class="contact-item">
-          <div class="contact-icon">📧</div>
+          <div class="contact-icon">✉</div>
           <div class="contact-info">
             <h3>이메일</h3>
             <a href="mailto:psg107@naver.com">psg107@naver.com</a>
           </div>
         </div>
         <div class="contact-item">
-          <div class="contact-icon">👨‍💻</div>
+          <div class="contact-icon">@</div>
           <div class="contact-info">
             <h3>GitHub</h3>
             <a href="https://github.com/psg107" target="_blank">github.com/psg107</a>
           </div>
         </div>
         <div class="contact-item online-portfolio-item">
-          <div class="contact-icon">🌐</div>
+          <div class="contact-icon">⚑</div>
           <div class="contact-info">
             <h3>Portfolio</h3>
             <a href="https://psg107.github.io/Portfolio/" target="_blank">온라인 포트폴리오</a>
@@ -488,6 +210,18 @@
       </div>
     </section>
   </div>
+
+  <!-- 이미지 모달 -->
+  <div id="imageModal" class="modal">
+    <span class="modal-close">&times;</span>
+    <div class="modal-content">
+      <img id="modalImage" alt="확대 이미지">
+      <div class="modal-counter"></div>
+      <button class="modal-prev" type="button" aria-label="이전 이미지">❮</button>
+      <button class="modal-next" type="button" aria-label="다음 이미지">❯</button>
+    </div>
+  </div>
+
 </body>
 
 </html>
