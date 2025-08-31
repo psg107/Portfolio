@@ -4,10 +4,8 @@ import { updateProjects } from "../projects.js";
 /**
  * 회사/서비스 탭 전환 함수
  * @param {string} tabName - 전환할 탭 이름
- * @param {Object} options - 옵션 객체
- * @param {boolean} options.scroll - 탭 전환 후 스크롤 여부 (기본값: true)
  */
-export const switchCompanyTab = (tabName, options = { scroll: true }) => {
+export const switchCompanyTab = (tabName) => {
   const tabButtons = document.querySelectorAll(".tab-button");
   
   // 대상 탭 버튼 찾기
@@ -32,14 +30,6 @@ export const switchCompanyTab = (tabName, options = { scroll: true }) => {
   const targetTab = document.getElementById(tabName + "-tab");
   if (targetTab) {
     targetTab.classList.add("active");
-
-    // 스크롤 옵션이 활성화된 경우 프로젝트 섹션으로 스크롤
-    if (options.scroll) {
-      const sectionProject = document.getElementById("section-project");
-      sectionProject.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-
-
   }
 };
 

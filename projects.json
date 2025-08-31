@@ -184,6 +184,11 @@
   {
     "name": "패키지 여행 공급사 연동 서비스",
     "repository": "nol-tour/package-supplier",
+    "isCore": true,
+    "hero": {
+      "summary": "외부 공급사 상품 데이터를 실시간으로 동기화하는 연동 시스템",
+      "metrics": ["실시간 동기화", "3단계 검증"]
+    },
     "description": {
       "summary": "외부 공급사와의 대용량 패키지 상품 실시간 연동을 위한 마이크로서비스를 구축했습니다.",
       "key_features": [
@@ -242,6 +247,11 @@
   {
     "name": "패키지 여행 통합 검색/전시 서비스",
     "repository": "nol-tour/package-hub",
+    "isCore": true,
+    "hero": {
+      "summary": "C#과 Kotlin 기반의 서로 다른 패키지 시스템을 통합한 검색 허브",
+      "metrics": ["시스템 통합", "응답시간 단축"]
+    },
     "images": ["1.png", "2.png"],
     "description": {
       "summary": "구패키지와 신패키지 시스템을 통합한 고성능 패키지 여행 상품 검색/전시 허브 서비스를 구축했습니다. 사내 검색 서비스를 활용하여 검색 성능을 최적화했습니다.",
@@ -301,6 +311,11 @@
   {
     "name": "패키지 여행 예약 서비스",
     "repository": "nol-tour/package-reservation",
+    "isCore": true,
+    "hero": {
+      "summary": "항공·호텔·투어 등 여러 구성요소를 하나로 묶는 복합 예약 시스템",
+      "metrics": ["복합 예약", "분산 트랜잭션"]
+    },
     "images": ["4.png", "5.png"],
     "description": {
       "summary": "다채널 예약과 다공급사 연동을 위한 분산 아키텍처 기반 패키지 여행 예약 서비스를 구축했습니다.",

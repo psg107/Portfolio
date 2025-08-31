@@ -2,6 +2,7 @@ import { COMPANIES, SERVICE_CATEGORIES } from "./constants.js";
 import { projectState } from "./services/projectState.js";
 import { switchCompanyTab, initializeTabs } from "./ui/tabs.js";
 import { initializeModal } from "./ui/modal.js";
+import { renderHeroProjects, initializeShowMoreButton } from "./components/heroProjects.js";
 import "./utils/scrollOptimization.js";
 
 /**
@@ -26,8 +27,12 @@ const initializeProjects = async () => {
       }
     });
 
+    // 데이터 로딩 완료 후 Hero 프로젝트 렌더링
+    console.log('About to render hero projects with', projectState.data[SERVICE_CATEGORIES.ALL]?.length, 'projects');
+    renderHeroProjects();
+    
     // 기본 탭으로 전환 (스크롤 없이)
-    switchCompanyTab(SERVICE_CATEGORIES.ALL, { scroll: false });
+    switchCompanyTab(SERVICE_CATEGORIES.ALL);
   } catch (error) {
     console.error("프로젝트 데이터를 불러오는 데 실패했습니다:", error);
   }
@@ -71,4 +76,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeProjects();
   initializeModal();
   initializeNavigation();
+  initializeShowMoreButton();
 });

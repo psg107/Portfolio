@@ -45,4 +45,13 @@ export const projectState = {
       console.error("프로젝트 추가 중 오류 발생:", error);
     }
   },
+
+  /**
+   * 필터링된 프로젝트 목록 반환
+   * @param {string} category - 필터링할 카테고리
+   * @returns {Array} 필터링된 프로젝트 배열
+   */
+  getFilteredProjects(category) {
+    return this.data[category] || [];
+  },
 };
