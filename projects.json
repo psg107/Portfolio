@@ -1008,5 +1008,61 @@
       "WPF",
       "MSSQL"
     ]
+  },
+  {
+    "name": "AI 해커톤 아이디어 생성 시스템",
+    "repository": ["https://github.com/psg107/IdeaProjects/hackathon", "https://github.com/psg107/IdeaProjects/hackathonIdeaGenerator"],
+    "description": {
+      "summary": "야놀자 10X-THON 2025 AI 해커톤을 위한 아이디어 생성 및 관리 시스템입니다. Claude CLI를 연동하여 AI 아이디어를 자동 생성하고 관리하는 기능을 제공합니다.",
+      "key_features": [
+        "Claude CLI 연동 AI 아이디어 자동 생성",
+        "Spring Boot + Kotlin 백엔드, React + TypeScript 프론트엔드",
+        "사용자별 투표/북마크/태그/댓글 시스템"
+      ],
+      "challenges": [
+        "야놀자 해커톤의 제약사항(2일 구현, AI 필수 활용, 외부 API 제한)을 반영한 프롬프트 설계가 필요했습니다",
+        "External AX(고객 대상)와 Internal AX(직원 대상) 트랙별로 차별화된 아이디어 생성 로직 구현이 필요했습니다",
+        "단순 아이디어 생성에서 시작하여 완전한 관리 시스템으로 확장하면서 아키텍처 설계가 필요했습니다",
+        "Claude CLI 응답의 안정적 파싱, 키워드 기반 중복 검사 등 복합적 기능 구현이 필요했습니다"
+      ],
+      "solutions": [
+        "해커톤 제약사항과 평가기준을 반영한 프롬프트 엔지니어링 구현",
+        "Spring Boot + Gradle 백엔드 프로토타입에서 시작하여 React 프론트엔드 추가",
+        "REST API 엔드포인트와 H2 인메모리 데이터베이스 기반 관계형 모델 설계",
+        "키워드 기반 중복 검사, 유사도 분석, 자동 생성 등 기능 구현"
+      ],
+      "performance_results": [
+        "브라우저에서 즉시 사용 가능한 프로토타입 시스템 구축",
+        "야놀자 해커톤 규정에 부합하는 AI 아이디어 자동 생성 및 JSON 구조화 출력",
+        "모바일 최적화 UI로 하단 네비게이션, 스낵바 알림 등 사용자 인터페이스 제공",
+        "유사도 분석, 키워드 추출, 통계 대시보드 등 데이터 기반 기능 제공"
+      ],
+      "ongoing_challenges": [
+        "Claude CLI 연동 시 응답 시간 최적화 및 버전 업데이트 호환성 유지 필요",
+        "대용량 사용자 동시 접근 시 성능 최적화 및 캐싱 전략 개선",
+        "아이디어 품질 평가 자동화 및 피드백 기반 프롬프트 개선 시스템 구축 필요"
+      ]
+    },
+    "from": "2025.10",
+    "to": null,
+    "type": "personal",
+    "companyName": "personal",
+    "serviceCategory": "personal",
+    "link": "http://localhost:5175",
+    "linkVisible": false,
+    "skills": [
+      "Kotlin",
+      "Spring Boot",
+      "React",
+      "TypeScript",
+      "Material-UI",
+      "H2 Database",
+      "Gradle",
+      "REST API",
+      "Claude CLI",
+      "AI Integration",
+      "Prompt Engineering",
+      "Vite"
+    ]
   }
 ]
