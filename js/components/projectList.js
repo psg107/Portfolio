@@ -48,24 +48,16 @@ const clearProjectsContainer = (container) => {
 
 /**
  * 프로젝트 정렬
- * 카테고리 우선순위와 날짜를 기준으로 프로젝트를 정렬
+ * 시작 날짜를 기준으로 프로젝트를 정렬
  * 
  * 정렬 기준:
- * 1. 서비스 카테고리 우선순위 (new-package > old-package > cms-crm > personal)
- * 2. 시작 날짜 (최신순)
+ * 1. 시작 날짜 (최신순)
  * 
  * @param {Array} projects - 정렬할 프로젝트 배열
  * @returns {Array} 정렬된 프로젝트 배열
  */
 const sortProjects = (projects) => {
   return [...projects].sort((a, b) => {
-    const priorityA = CATEGORY_PRIORITY[a.serviceCategory] || 5;
-    const priorityB = CATEGORY_PRIORITY[b.serviceCategory] || 5;
-    
-    if (priorityA !== priorityB) {
-      return priorityA - priorityB;
-    }
-    
     return b.from.localeCompare(a.from);
   });
 };
