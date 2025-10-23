@@ -1016,7 +1016,7 @@
       "summary": "야놀자 10X-THON 2025 AI 해커톤을 위한 아이디어 생성 및 관리 시스템입니다. Claude CLI를 연동하여 AI 아이디어를 자동 생성하고 관리하는 기능을 제공합니다.",
       "key_features": [
         "Claude CLI 연동 AI 아이디어 자동 생성",
-        "Spring Boot + Kotlin 백엔드, React + TypeScript 프론트엔드",
+        "Spring Boot + Kotlin 백엔드, Next.js + TypeScript 프론트엔드",
         "사용자별 투표/북마크/태그/댓글 시스템"
       ],
       "challenges": [
@@ -1027,8 +1027,8 @@
       ],
       "solutions": [
         "해커톤 제약사항과 평가기준을 반영한 프롬프트 엔지니어링 구현",
-        "Spring Boot + Gradle 백엔드 프로토타입에서 시작하여 React 프론트엔드 추가",
-        "REST API 엔드포인트와 H2 인메모리 데이터베이스 기반 관계형 모델 설계",
+        "Spring Boot + Gradle 백엔드 프로토타입에서 시작하여 Next.js 프론트엔드 추가",
+        "REST API 엔드포인트와 PostgreSQL 데이터베이스 기반 관계형 모델 설계",
         "키워드 기반 중복 검사, 유사도 분석, 자동 생성 등 기능 구현"
       ],
       "performance_results": [
@@ -1053,16 +1053,15 @@
     "skills": [
       "Kotlin",
       "Spring Boot",
-      "React",
+      "Next.js",
       "TypeScript",
       "Material-UI",
-      "H2 Database",
+      "PostgreSQL",
       "Gradle",
       "REST API",
       "Claude CLI",
       "AI Integration",
-      "Prompt Engineering",
-      "Vite"
+      "Prompt Engineering"
     ]
   }
 ]
