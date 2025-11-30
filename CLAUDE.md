@@ -1,98 +1,248 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+이 파일은 Claude Code (claude.ai/code)가 이 저장소에서 작업할 때 참고하는 가이드입니다.
 
-## Project Overview
+## 프로젝트 개요
 
-This is a Korean portfolio website for 박상곤 (Park Sang-gon), showcasing backend development experience across different technology stacks. The project is a static HTML/CSS/JavaScript website that can be served locally and generated as a PDF.
+박상곤의 포트폴리오 웹사이트입니다. 다양한 기술 스택의 백엔드 개발 경험을 보여주는 정적 HTML/CSS/JavaScript 사이트로, 로컬에서 서빙하거나 PDF로 생성할 수 있습니다.
 
-**Live Site**: https://psg107.github.io/Portfolio/
+**라이브 사이트**: https://psg107.github.io/Portfolio/
 
-## Development Commands
+## 개발 명령어
 
-### Local Development
+### 로컬 개발
 ```bash
-# Serve the project locally (use any static server)
-# Example with Python:
+# 로컬에서 프로젝트 서빙 (아무 정적 서버나 사용)
+# Python 예시:
 python -m http.server 5500
-# Or with Node.js http-server:
+# Node.js http-server 예시:
 npx http-server -p 5500
 ```
 
-### PDF Generation
+### PDF 생성
 ```bash
-# Generate portfolio.pdf from the website
+# 웹사이트를 portfolio.pdf로 생성
 node generate-pdf.js
 ```
-Note: The PDF generation expects the site to be running on `http://127.0.0.1:5500/`
+참고: PDF 생성은 `http://127.0.0.1:5500/`에서 사이트가 실행 중이어야 합니다.
 
-### Dependencies
+### 의존성
 ```bash
-# Install PDF generation dependencies
+# PDF 생성 의존성 설치
 npm install
 ```
 
-## Architecture
+## 아키텍처
 
-### File Structure
-- `index.html` - Main portfolio page with Korean content
-- `styles.css` - Main stylesheet
-- `js/` - Modular JavaScript components
-  - `main.js` - Entry point and initialization
-  - `projects.js` - Project data management
-  - `tabs.js` - Tab switching functionality
-  - `modal.js` - Image modal gallery
-  - `gridController.js` - Layout grid controls
-  - `mermaid.js` - Architecture diagram rendering
-  - `scrollOptimization.js` - Performance optimizations
-- `css/` - Component-specific styles
-- `projects.json` & `projects2.json` - Project data in JSON format
-- `generate-pdf.js` - Puppeteer-based PDF generation script
+### 파일 구조
+- `index.html` - 한국어 콘텐츠가 포함된 메인 포트폴리오 페이지
+- `styles.css` - 메인 스타일시트
+- `js/` - 모듈화된 JavaScript 컴포넌트
+  - `main.js` - 진입점 및 초기화
+  - `projects.js` - 프로젝트 데이터 관리
+  - `tabs.js` - 탭 전환 기능
+  - `modal.js` - 이미지 모달 갤러리
+  - `gridController.js` - 레이아웃 그리드 컨트롤
+  - `mermaid.js` - 아키텍처 다이어그램 렌더링
+  - `scrollOptimization.js` - 성능 최적화
+- `css/` - 컴포넌트별 스타일
+- `projects.json` & `projects2.json` - JSON 형식의 프로젝트 데이터
+- `generate-pdf.js` - Puppeteer 기반 PDF 생성 스크립트
 
-### Key Features
-- **Responsive Design**: Mobile-first approach with grid layout controls (1-3 columns)
-- **Project Filtering**: Tab-based filtering by service categories (전체, 신패키지시스템, 구패키지시스템, CRM/CMS, 개인프로젝트)
-- **Interactive Architecture Diagrams**: Mermaid.js diagrams showing system architectures
-- **Image Gallery**: Modal-based project image viewer
-- **PDF Export**: Automated PDF generation for offline viewing
-- **Performance Optimized**: Lazy loading, scroll optimization, and caching
+### 주요 기능
+- **반응형 디자인**: 모바일 우선 접근 방식, 그리드 레이아웃 컨트롤 (1-3 컬럼)
+- **프로젝트 필터링**: 서비스 카테고리별 탭 기반 필터링 (전체, 신패키지시스템, 구패키지시스템, CRM/CMS, 개인프로젝트)
+- **인터랙티브 아키텍처 다이어그램**: Mermaid.js로 시스템 아키텍처 표시
+- **이미지 갤러리**: 모달 기반 프로젝트 이미지 뷰어
+- **PDF 내보내기**: 오프라인 보기를 위한 자동 PDF 생성
+- **성능 최적화**: 지연 로딩, 스크롤 최적화, 캐싱
 
-### JavaScript Architecture
-The project uses ES6 modules with a clean separation of concerns:
-- State management through `projectState.js`
-- Event-driven tab switching
-- Modular component initialization
-- Performance-optimized scroll handling
+### JavaScript 아키텍처
+ES6 모듈을 사용하여 관심사를 명확히 분리:
+- `projectState.js`를 통한 상태 관리
+- 이벤트 기반 탭 전환
+- 모듈화된 컴포넌트 초기화
+- 성능 최적화된 스크롤 처리
 
-### Content Structure
-The portfolio showcases:
-- Personal introduction and tech stack
-- Career timeline (2018-present)
-- Project portfolio with detailed descriptions
-- System architecture diagrams (Mermaid.js)
-- Contact information
+### 콘텐츠 구조
+포트폴리오에 포함된 내용:
+- 개인 소개 및 기술 스택
+- 경력 타임라인 (2018-현재)
+- 상세 설명이 포함된 프로젝트 포트폴리오
+- 시스템 아키텍처 다이어그램 (Mermaid.js)
+- 연락처 정보
 
-## Development Notes
+## 개발 참고사항
 
-### Project Data
-Projects are stored in JSON files (`projects.json`, `projects2.json`) with structured data including:
-- Project metadata (name, status, description)
-- Technical challenges and solutions
-- Technology stacks
-- Implementation details
-- Image galleries
+### 프로젝트 데이터
+프로젝트는 JSON 파일(`projects.json`, `projects2.json`)에 저장되며 다음을 포함합니다:
+- 프로젝트 메타데이터 (이름, 상태, 설명)
+- 기술적 도전과제 및 솔루션
+- 기술 스택
+- 구현 세부사항
+- 이미지 갤러리
 
-### PDF Mode
-The site includes a special PDF mode activated by `window.changeToPdfMode()` that optimizes the layout for PDF generation.
+### PDF 모드
+`window.changeToPdfMode()`로 활성화되는 특별한 PDF 모드가 있으며, PDF 생성을 위해 레이아웃을 최적화합니다.
 
-### Dependencies
-- **Puppeteer**: PDF generation
-- **Mermaid.js**: Architecture diagrams
-- **Swiper.js**: Image carousels
-- **PanZoom**: Image zoom functionality
+### 의존성
+- **Puppeteer**: PDF 생성
+- **Mermaid.js**: 아키텍처 다이어그램
+- **Swiper.js**: 이미지 캐러셀
+- **PanZoom**: 이미지 줌 기능
 
-### Styling Approach
-- CSS Grid and Flexbox for layouts
-- CSS custom properties for theming
-- Component-based CSS organization
-- Responsive breakpoints for mobile/tablet/desktop
+### 스타일링 접근법
+- CSS Grid와 Flexbox를 사용한 레이아웃
+- CSS 커스텀 속성을 사용한 테마
+- 컴포넌트 기반 CSS 구조
+- 모바일/태블릿/데스크톱 반응형 브레이크포인트
+
+---
+
+## 포트폴리오 작성 가이드
+
+### 대상 독자
+- **주요 대상**: 기술팀 리더, CTO (기술 면접 전 사전 검토)
+- **부차 대상**: HR 담당자 (1차 스크리닝)
+- **채용 레벨**: 7-8년차 백엔드 개발자
+
+### 작성 원칙
+
+#### 1. 경력 수준별 차별화
+- **신입~2년차**: "무엇을 했는가" (기능 나열, 기술 스택)
+- **3-5년차**: "어떻게 했는가" (구현 방법, 기술적 선택)
+- **7-8년차** (박상곤): **"왜 그렇게 했는가" + "어떤 임팩트를 만들었는가"**
+
+#### 2. 어필해야 할 포인트
+1. **문제 해결 능력** (가장 중요)
+   - 비즈니스 문제를 정확히 이해하고 기술로 해결
+   - 제약사항과 요구사항 파악
+
+2. **기술적 의사결정**
+   - 왜 이 기술/방식을 선택했는가
+   - 다른 대안과 트레이드오프
+   - 리스크 관리
+
+3. **비즈니스 임팩트**
+   - 측정 가능한 성과 (가능한 경우)
+   - 팀/회사에 만든 가치
+
+4. **협업과 리더십**
+   - 팀과의 협업 방식
+   - 다른 팀원에게 준 영향
+
+#### 3. 지양해야 할 표현
+- ❌ "코드 XX줄 작성" → 줄 수는 의미 없는 지표
+- ❌ "시스템을 구축했습니다" → 모호함
+- ❌ "성능을 크게 향상" → "크게"가 얼마나? 정량화 필요
+- ❌ 기술 스택 나열만 → Why 없는 How
+- ❌ 너무 상세한 코드 레벨 설명 → 메서드명, 변수명 언급은 과도
+- ❌ **summary에 회사 내부 사정 언급** → "레거시 대체", "신규 시스템에서 불가능한", "월드인 일몰", "기존에는 수기로 처리하던" 등
+- ❌ 구현이 쉬운 기술을 핵심 기능으로 강조 → 경력에 맞는 난이도 선택
+
+#### 4. 지향해야 할 표현
+- ✅ "XX 문제가 있어서, YY 방식을 선택했고, ZZ 결과를 냈다"
+- ✅ 구체적인 숫자와 지표 (가능한 경우)
+- ✅ 비즈니스 맥락 속 기술적 선택
+- ✅ 다른 대안과의 비교
+- ✅ 솔직한 학습 과정과 성장
+
+### projects.json 필드 가이드
+
+#### 화면에 표시되는 필드
+`js/components/projectCard.js` 기준:
+
+```javascript
+// 항상 표시:
+- description.summary          // 프로젝트 요약
+- description.key_features      // 핵심 기능 (리스트)
+
+// "상세 정보 보기" 버튼 클릭 시 표시:
+- description.solutions         // 기술적 구현/해결 방법
+- description.ongoing_challenges // 진행 중인 과제
+```
+
+#### 화면에 표시되지 않는 필드
+```javascript
+// 코드에서 사용하지 않음 - 추가하지 말 것:
+- description.challenges        // ❌ 사용 안 함
+- description.performance_results // ❌ 사용 안 함
+```
+
+#### 필드별 작성 가이드
+
+**`summary`** (1-2줄)
+- **시스템이 무엇을 하는지** 설명 (기능 중심)
+- **프로젝트를 왜 만들게 되었는지는 설명하지 않음** (회사 내부 사정 지양)
+- **인사팀도 이해할 수 있게 쉽게 작성**
+- ✅ 좋은 예: "법인단체 여행 관리 시스템입니다. 행사별 예약 관리, 출발 그룹별 결제/환불, 이중 보험 연동, 다단계 승인 프로세스를 제공합니다."
+- ❌ 나쁜 예: "레거시 시스템 일몰 대응을 위해...", "신규 시스템에서 불가능한...", "기존에는 수기로 처리하던..."
+
+**`key_features`** (3-5개 항목)
+- **"기능명: 무엇을 하는지" 형식으로 작성**
+- 기술 용어(JPA, PolyLLM 등)보다는 **비즈니스 가치** 중심
+- 인사팀도 이해할 수 있는 표현 사용
+- 예: "AI 자동 입력: 담당자가 텍스트 붙여넣으면 호텔·투어 정보를 자동으로 추출하여 수기 입력 시간 단축"
+
+**`solutions`** (가장 중요, 2-4개 항목)
+- **각 항목은 "문제 → 해결 → 결과" 구조**
+- 왜 이 방식을 선택했는지
+- 다른 대안은 무엇이었는지
+- 어떤 결과를 만들었는지
+- 예시 구조:
+  ```
+  "{비즈니스 문제 설명}.
+  {고려한 대안들과 선택한 이유}.
+  {구현 방법 간략히}.
+  {결과/영향}"
+  ```
+
+**`ongoing_challenges`** (1-3개 항목)
+- 현재 진행 중이거나 개선 예정인 부분
+- 너무 많으면 미완성처럼 보임
+- 솔직하되 간결하게
+
+### 어조와 스타일
+
+- **솔직하게**: 경험이 적었던 기술은 학습 과정을 언급
+- **구체적으로**: 모호한 표현 지양, 가능한 한 정량화
+- **겸손하게**: "혼자 다 했다" 보다 "주도했다", "기여했다"
+- **비즈니스 중심**: 기술은 문제 해결의 수단
+- **현실적으로**: 개발 초기라 성과가 없으면 솔직히 인정
+
+### 작성 예시
+
+#### ❌ 지양해야 할 예시
+```
+"3계층 JPA 엔티티 관계 설계로 복잡한 가격 계산 로직을 구현했습니다.
+13,000줄 이상의 코드로 시스템을 안정적으로 구축했습니다."
+```
+**문제점**: 코드 줄 수 언급, How만 있고 Why 없음
+
+#### ✅ 지향해야 할 예시 (solutions 필드 작성 시)
+```
+"레거시 시스템의 모든 것이 가능하지만 관리가 어려운 구조 대신,
+행사-출발그룹-여행자 계층 구조로 비즈니스 로직을 명확히 분리했습니다.
+하나의 행사가 여러 출발 그룹으로 나뉘고, 각 그룹마다 여행자와 항목이 관리되는 구조로 설계하여
+복잡한 가격 계산과 승인 이력을 체계적으로 관리하면서도 담당자가 필요한 자유로운 금액 조정은 가능하도록 했습니다."
+```
+**장점**:
+- 비즈니스 도메인을 일반적인 용어로 설명 (Event→행사, DepartureGroup→출발그룹)
+- 기술적 문제 → 기술 선택 이유 → 해결 방향 명확
+- 회사 내부 사정은 solutions에만, summary에는 없음
+
+### 회사 시스템 배경 (놀유니버스, 2021-현재)
+
+포트폴리오 작성 시 참고할 맥락 정보입니다.
+
+#### 구패키지 시스템 (월드인, 2021-2023)
+- 17년 운영된 레거시 C# 시스템
+- 모든 것이 가능하지만 관리 어려움
+- 비용 투명성 부족
+- 2026년 일몰 예정
+
+#### 신패키지 시스템 (2023-현재)
+- Kotlin + Spring Boot로 재구축
+- 표준화된 패키지 상품에 최적화
+- 자동화와 투명성 확보
+- 하지만 커스터마이징 불가 (수동 예약, 자유로운 금액 조정 등)
