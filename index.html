@@ -1,236 +1,76 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>박상곤의 포트폴리오</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>박상곤 | 백엔드 개발자</title>
+  <meta name="description" content="여행 예약 시스템 백엔드 개발자 박상곤의 포트폴리오">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-
-  <link rel="stylesheet" href="lib/css/swiper-bundle.min.css">
-
-  <script src="lib/js/panzoom.min.js"></script>
-  <script src="lib/js/swiper-bundle.min.js"></script>
-  <script type="module" src="js/main.js"></script>
-  <script type="module" src="js/utils/devTools.js"></script>
 </head>
-
 <body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <header class="sidebar-header">
+          <h1 id="profile-name"></h1>
+          <p class="title" id="profile-title"></p>
+          <ul class="skills-list" id="skills-list"></ul>
+        </header>
 
-  <!-- 네비게이션 바 -->
-  <nav class="navbar">
-    <div class="container">
-      <ul class="nav-links">
-        <li><a href="#section-introduction">소개</a></li>
-        <li><a href="#section-tech-stack">핵심기술</a></li>
-        <li><a href="#section-tech-evolution">개발경력</a></li>
-        <li><a href="#section-project">프로젝트</a></li>
-        <li><a href="#section-contact">연락처</a></li>
-      </ul>
-      </ul>
-    </div>
-  </nav>
-
-  <div class="container">
-    <!-- 소개 -->
-    <section id="section-introduction">
-      <h1>안녕하세요! 박상곤입니다</h1>
-      <p class="hero-subtitle">여행 예약 시스템 백엔드 개발 8년차<br>레거시 C# 시스템을 Kotlin/Spring Boot MSA로 전환한 경험</p>
-      <p class="hero-description">대용량 여행 패키지 데이터를 처리하는 백엔드 시스템을 설계하고 운영합니다.<br>모놀리식 아키텍처에서 MSA로 단계적 마이그레이션을 통해<br>시스템 안정성을 높이고 개발 효율성을 개선했습니다.<br><br><strong>주력 기술:</strong> Kotlin, Spring Boot, MongoDB, Redis, AWS ECS</p>
-      
-      <div class="hero-actions">
-        <a href="#section-project" class="cta-button primary">주요 프로젝트 보기</a>
-        <a href="#section-contact" class="cta-button secondary">연락하기</a>
-      </div>
-    </section>
-
-    <!-- 핵심 기술 & 도구 -->
-    <section id="section-tech-stack">
-      <h2>핵심 기술 & 도구</h2>
-      <div class="tech-categories">
-        <div class="tech-category">
-          <h3>주요 기술 스택</h3>
-          <div class="tech-items">
-            <span class="tech-item kotlin">Kotlin</span>
-            <span class="tech-item spring">Spring Boot</span>
-            <span class="tech-item mongodb">MongoDB</span>
-            <span class="tech-item aws">AWS</span>
-          </div>
-        </div>
-        <div class="tech-category">
-          <h3>AI 개발 도구</h3>
-          <div class="tech-items">
-            <span class="tech-item claude-code">Claude Code</span>
-            <span class="tech-item copilot">GitHub Copilot</span>
-            <span class="tech-item cursor">Cursor</span>
-          </div>
-        </div>
-        <div class="tech-category">
-          <h3>협업 & 개발 환경</h3>
-          <div class="tech-items">
-            <span class="tech-item intellij">IntelliJ IDEA</span>
-            <span class="tech-item vscode">Visual Studio Code</span>
-            <span class="tech-item slack">Slack</span>
-            <span class="tech-item jira">Jira</span>
-            <span class="tech-item git">Git</span>
-            <span class="tech-item docker">Docker</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 개발 경력 -->
-    <section id="section-tech-evolution">
-      <h2>개발 경력</h2>
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-year">2018-2021</div>
-          <div class="timeline-content">
-            <h3>케이소프트 - 백엔드 개발 시작</h3>
-            <p>C# 기반 데스크톱 및 웹 애플리케이션 개발을 담당했습니다.</p>
-            <p class="system-experience">
-              <strong>주요 업무:</strong> 은행 자동이체 시스템, 고객 관리 솔루션 개발<br>
-              <strong>주요 성과:</strong> 금융기관 API 실시간 연동을 통한 대량 자동 이체 시스템 구축<br>
-              <strong>기술 스택:</strong> WPF 데스크톱 및 ASP.NET 웹 애플리케이션 개발, MSSQL 데이터베이스 설계
-            </p>
-            <div class="tech-badges">
-              <span class="tech-badge">C#</span>
-              <span class="tech-badge">ASP.NET</span>
-              <span class="tech-badge">WPF</span>
-              <span class="tech-badge">Xamarin</span>
-              <span class="tech-badge">MSSQL</span>
-            </div>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-year">2021-2023</div>
-          <div class="timeline-content">
-            <h3>놀유니버스 - 여행 예약 시스템 백엔드 개발</h3>
-            <p>대규모 여행 패키지 예약 시스템의 백엔드 아키텍처 설계 및 운영을 담당했습니다.</p>
-            <p class="system-experience">
-              <strong>담당 업무:</strong> 기존 패키지 예약 시스템 운영 및 기능 개선<br>
-              <strong>주요 업무:</strong> 담당자 업무 편의 기능 개발, 배치 작업 최적화, 시스템 안정성 개선<br>
-              <strong>기술 경험:</strong> C# 기반 모놀리식 아키텍처 운영, Kafka를 통한 데이터 연동
-            </p>
-            <div class="tech-badges">
-              <span class="tech-badge">C#</span>
-              <span class="tech-badge">ASP.NET</span>
-              <span class="tech-badge">MSSQL</span>
-              <span class="tech-badge">Kafka</span>
-            </div>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-year">2023-현재</div>
-          <div class="timeline-content">
-            <h3>놀유니버스 - MSA 아키텍처 전환 및 Kotlin 마이그레이션</h3>
-            <p>레거시 모놀리식 시스템을 마이크로서비스 아키텍처로 전환하며 Kotlin/Spring Boot 스택을 도입했습니다.</p>
-            <p class="system-experience">
-              <strong>주요 업무:</strong> C#/.NET에서 Kotlin/Spring Boot로 기술 스택 전환<br>
-              <strong>성능 개선:</strong> Redis 캐싱 도입, 데이터베이스 최적화<br>
-              <strong>인프라 전환:</strong> AWS ECS 컨테이너 배포 환경 구축, Datadog APM 도입
-            </p>
-            <div class="tech-badges">
-              <span class="tech-badge">Kotlin</span>
-              <span class="tech-badge">Spring Boot</span>
-              <span class="tech-badge">MongoDB</span>
-              <span class="tech-badge">Redis</span>
-              <span class="tech-badge">AWS ECS</span>
-              <span class="tech-badge">AWS Kinesis</span>
-              <span class="tech-badge">Terraform</span>
-              <span class="tech-badge">GitHub Actions</span>
-              <span class="tech-badge">Datadog</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 프로젝트 -->
-    <section id="section-project">
-      <h2>프로젝트</h2>
-      
-      <!-- TOP 3 핵심 프로젝트 Hero 영역 -->
-      <div class="hero-projects">
-        <h3>주요 프로젝트</h3>
-        <div id="hero-projects-grid" class="hero-projects-grid">
-          <!-- Hero projects will be dynamically rendered by JavaScript -->
-        </div>
-        <button id="show-more-projects" class="show-more-btn">더 많은 프로젝트 보기 ↓</button>
+        <nav class="nav">
+          <ul class="nav-list">
+            <li class="nav-item">
+              <a href="#about" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+              <a href="#experience" class="nav-link">Experience</a>
+            </li>
+            <li class="nav-item">
+              <a href="#projects" class="nav-link">Projects</a>
+            </li>
+          </ul>
+        </nav>
       </div>
 
-      <!-- 기존 탭 영역 (초기엔 숨김) -->
-      <div id="extended-projects" class="extended-projects" style="display: none;">
-        <div class="company-tabs">
-          <button class="tab-button active" data-service="all">전체</button>
-          <button class="tab-button" data-service="new-package">신패키지시스템</button>
-          <button class="tab-button" data-service="old-package">구패키지시스템</button>
-          <button class="tab-button" data-service="cms-crm">CRM/CMS</button>
-          <button class="tab-button" data-service="personal">개인프로젝트</button>
-        </div>
+      <div class="social-links" id="social-links"></div>
+    </aside>
 
-        <!-- 전체 -->
-        <div id="all-tab" class="tab-content active"></div>
+    <!-- Main Content -->
+    <main class="main">
+      <section id="about">
+        <h2 class="section-heading" data-num="01.">About</h2>
+        <div class="about-text" id="about-text"></div>
+      </section>
 
-        <!-- 신패키지시스템 -->
-        <div id="new-package-tab" class="tab-content"></div>
+      <section id="experience">
+        <h2 class="section-heading" data-num="02.">Experience</h2>
+        <div class="experience-list" id="experience-list"></div>
+      </section>
 
-        <!-- 구패키지시스템 -->
-        <div id="old-package-tab" class="tab-content"></div>
+      <section id="projects">
+        <h2 class="section-heading" data-num="03.">Projects</h2>
+        <div class="projects-grid" id="projects-grid"></div>
+      </section>
 
-        <!-- CRM/CMS -->
-        <div id="cms-crm-tab" class="tab-content"></div>
-
-        <!-- 개인 프로젝트 -->
-        <div id="personal-tab" class="tab-content"></div>
-      </div>
-    </section>
-
-
-
-    <!-- 연락처 -->
-    <section id="section-contact">
-      <h2>연락처</h2>
-      <div class="contact-grid">
-        <div class="contact-item">
-          <div class="contact-icon">✉</div>
-          <div class="contact-info">
-            <h3>이메일</h3>
-            <a href="mailto:psg107@naver.com">psg107@naver.com</a>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">@</div>
-          <div class="contact-info">
-            <h3>GitHub</h3>
-            <a href="https://github.com/psg107" target="_blank">github.com/psg107</a>
-          </div>
-        </div>
-        <div class="contact-item online-portfolio-item">
-          <div class="contact-icon">⚑</div>
-          <div class="contact-info">
-            <h3>Portfolio</h3>
-            <a href="https://psg107.github.io/Portfolio/" target="_blank">온라인 포트폴리오</a>
-          </div>
-        </div>
-      </div>
-    </section>
+    </main>
   </div>
 
-  <!-- 이미지 모달 -->
-  <div id="imageModal" class="modal">
-    <span class="modal-close">&times;</span>
-    <div class="modal-content">
-      <img id="modalImage" alt="확대 이미지">
-      <div class="modal-counter"></div>
-      <button class="modal-prev" type="button" aria-label="이전 이미지">❮</button>
-      <button class="modal-next" type="button" aria-label="다음 이미지">❯</button>
-    </div>
-  </div>
+  <!-- Project Detail Panel -->
+  <div class="project-panel-overlay" id="panel-overlay"></div>
+  <aside class="project-panel" id="project-panel">
+    <header class="panel-header">
+      <button class="panel-close" id="panel-close">
+        <span>←</span>
+        <span>Back</span>
+      </button>
+    </header>
+    <div class="panel-content" id="panel-content"></div>
+  </aside>
 
+  <script type="module" src="main.js"></script>
 </body>
-
 </html>

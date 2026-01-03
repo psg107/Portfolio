@@ -1,0 +1,251 @@
+{
+  "profile": {
+    "name": "박상곤",
+    "title": "백엔드 개발자",
+    "subtitle": "Backend Developer",
+    "description": "놀유니버스에서 패키지 여행 시스템을 개발하고 있습니다.\n\nC# 기반 시스템 운영을 거쳐 Kotlin/Spring Boot 기반 신규 시스템 구축에 참여했습니다. 상품, 예약, 결제, 검색, 외부 연동 등 시스템 전반을 담당합니다."
+  },
+  "skills": [
+    ["Kotlin", "Spring Boot", "MongoDB", "AWS"],
+    ["Claude Code", "GitHub Copilot"]
+  ],
+  "experience": [
+    {
+      "period": "2023 - 현재",
+      "company": "놀유니버스",
+      "role": "신규 패키지 시스템 백엔드 개발",
+      "description": "Kotlin/Spring Boot 기반 신규 패키지 여행 시스템을 구축하고 있습니다.",
+      "details": [
+        "패키지 상품/예약/검색 서비스 설계 및 개발",
+        "구시스템(C#)과 신시스템(Kotlin) 통합 허브 서비스 구축",
+        "외부 공급사, 보험사, 결제사 API 연동"
+      ],
+      "stack": ["Kotlin", "Spring Boot", "MongoDB", "Redis", "AWS ECS", "AWS SQS", "AWS Kinesis"]
+    },
+    {
+      "period": "2021 - 2023",
+      "company": "놀유니버스",
+      "role": "기존 패키지 시스템 운영 및 개선",
+      "description": "C# 기반 패키지 예약 시스템의 운영과 기능 개선을 담당했습니다.",
+      "details": [
+        "예약/결제 시스템의 안정적 운영",
+        "외부 플랫폼 연동 (현대카드, 모두투어, 네이버)",
+        "담당자 업무 자동화 기능 개발"
+      ],
+      "stack": ["C#", "ASP.NET", "MSSQL"]
+    },
+    {
+      "period": "2018 - 2021",
+      "company": "케이소프트",
+      "role": "백엔드 개발",
+      "description": "C# 기반 금융 솔루션 개발을 담당했습니다.",
+      "details": [
+        "은행 API 연동 자동이체 시스템 개발",
+        "고객 관리 솔루션 웹/데스크톱 개발",
+        "MSSQL 데이터베이스 설계"
+      ],
+      "stack": ["C#", "ASP.NET", "WPF", "MSSQL"]
+    }
+  ],
+  "projects": [
+    {
+      "id": "cm-package",
+      "name": "법인단체 패키지 관리 서비스",
+      "status": "in-progress",
+      "category": "new-package",
+      "sourcePath": ["/Users/psg107/IdeaProjects/cm-package", "/Users/psg107/IdeaProjects/cm-package-admin"],
+      "summary": "법인 고객 대상 단체 여행을 관리하는 서비스입니다. 행사, 여행자, 결제, 보험을 통합 관리합니다.",
+      "description": "법인단체 패키지 관리 서비스입니다. 법인 고객이 단체 여행을 의뢰하면, 담당자가 행사 등록부터 여행자 관리, 결제, 보험 가입까지 한 화면에서 처리합니다.",
+      "implementations": [
+        "DB Lock으로 동시 보험 가입 중복 방지",
+        "외부 호출과 상태 변경의 트랜잭션 경계 분리",
+        "보험사 API 간 장애 격리로 부분 실패 허용",
+        "행사/여행자 자연어 조회 AI 에이전트 구현",
+        "LLM 정형화로 폼 자동 완성 기능 구현"
+      ],
+      "period": { "from": "2025.10", "to": null },
+      "stack": ["Kotlin", "Spring Boot", "MySQL", "React", "Next.js", "Koog Agent"],
+      "link": null
+    },
+    {
+      "id": "ai-chatbot-pipeline",
+      "name": "AI 챗봇 문서 학습 서비스",
+      "status": "in-progress",
+      "category": "personal",
+      "summary": "여행 패키지 시스템의 문서들을 AI 챗봇 학습용 데이터로 변환하는 파이프라인입니다.",
+      "description": "여행 패키지 시스템의 업무 문서가 Slack, Jira, Wiki, GitHub 등에 흩어져 있습니다. 신규 입사자나 타 팀이 정보를 찾기 어려운 문제를 해결하기 위해, 모든 문서를 AI 챗봇이 검색할 수 있는 형태로 통합합니다. URL이나 경로만 입력하면 자동으로 수집하고 임베딩합니다.",
+      "implementations": [
+        "Slack/Jira/Wiki/GitHub/PDF 문서를 하나의 파이프라인으로 수집",
+        "Vision API로 이미지 내 텍스트 추출 후 학습 데이터로 활용",
+        "이미지 캐싱으로 반복 요청 시 API 비용 절감",
+        "임베딩 모델 간 품질 비교 검증"
+      ],
+      "period": { "from": "2025.06", "to": "2025.07" },
+      "stack": ["Kotlin", "Spring Boot", "MongoDB", "OpenAI API", "Python"],
+      "link": null
+    },
+    {
+      "id": "package-supplier",
+      "name": "패키지 여행 공급사 연동 서비스",
+      "status": "completed",
+      "category": "new-package",
+      "sourcePath": ["/Users/psg107/IdeaProjects/package-supplier"],
+      "summary": "외부 공급사의 패키지 상품을 실시간으로 연동하는 서비스입니다.",
+      "description": "외부 공급사 상품 연동 서비스입니다. 모두투어 같은 외부 여행사 상품을 놀유니버스에서 함께 판매합니다. 공급사가 상품을 등록하거나 가격을 변경하면 자동으로 수집해 최신 상태를 유지합니다.",
+      "implementations": [
+        "Virtual Threads로 공급사 API 병렬 수집",
+        "상품-출발상품-취소규정 계층별 변경 감지",
+        "분산 락으로 동시 동기화 요청 중복 방지",
+        "부분 실패 시 성공 건 저장, 실패분만 재시도"
+      ],
+      "period": { "from": "2024.10", "to": "2024.11" },
+      "stack": ["Kotlin", "Spring Boot", "MongoDB", "Redis", "SQS"],
+      "link": null
+    },
+    {
+      "id": "package-hub",
+      "name": "패키지 여행 통합 검색/전시 서비스",
+      "status": "completed",
+      "category": "new-package",
+      "sourcePath": ["/Users/psg107/IdeaProjects/package-hub"],
+      "summary": "구패키지와 신패키지 시스템의 상품을 통합해서 검색/전시하는 허브 서비스입니다.",
+      "description": "통합 검색/전시 서비스입니다. 기존 시스템과 신규 시스템의 상품을 하나의 검색 결과와 전시 페이지로 제공합니다.",
+      "implementations": [
+        "변경 빈도별 캐시 TTL 차등 적용",
+        "동시 캐시 요청 시 첫 요청만 API 호출, 나머지 대기",
+        "캐시 만료 임박 시 백그라운드 사전 갱신",
+        "동기화 실패 건 Dead Letter 저장 후 배치 재시도"
+      ],
+      "period": { "from": "2024.06", "to": "2024.11" },
+      "stack": ["Kotlin", "Spring Boot", "MongoDB", "Redis", "Andor"],
+      "link": "https://travel.interpark.com/package-search"
+    },
+    {
+      "id": "package-reservation",
+      "name": "패키지 여행 예약 서비스",
+      "status": "completed",
+      "category": "new-package",
+      "sourcePath": ["/Users/psg107/IdeaProjects/package-reservation"],
+      "summary": "패키지 여행 예약을 처리하는 핵심 서비스입니다. 다채널, 다공급사 연동을 지원합니다.",
+      "description": "패키지 여행 예약 서비스입니다. 고객이 웹, 홈쇼핑, 외부 플랫폼 어디서든 예약할 수 있습니다. 예약 요청이 들어오면 재고 확인, 결제, 보험 가입까지 한 번에 처리됩니다.",
+      "implementations": [
+        "SQS 이벤트 기반 비동기 처리로 예약/결제/보험 순차 진행",
+        "Redis Lock으로 예약 변경, 결제, 보험 동시 접근 방지",
+        "보험사별 독립 연동으로 부분 장애 격리",
+        "Dead Letter Queue + 배치 작업으로 실패 메시지 자동 재시도"
+      ],
+      "period": { "from": "2023.10", "to": "2024.05" },
+      "stack": ["Kotlin", "Spring Boot", "MongoDB", "Redis", "SQS", "Kinesis"],
+      "link": null
+    },
+    {
+      "id": "package-product",
+      "name": "패키지 여행 상품 서비스",
+      "status": "completed",
+      "category": "new-package",
+      "sourcePath": ["/Users/psg107/IdeaProjects/package-product"],
+      "summary": "패키지 여행 상품을 관리하는 서비스입니다. 항공/호텔/투어를 자유롭게 조합할 수 있습니다.",
+      "description": "패키지 여행 상품 관리 서비스입니다. 항공, 호텔, 투어를 조합해 상품을 만들고, 일자별로 가격과 재고를 관리합니다.",
+      "implementations": [
+        "항공/호텔/투어를 독립 아이템으로 관리, 자유롭게 조합",
+        "낙관적 락 + 자동 재시도로 동시 재고 차감 정합성 유지",
+        "DeferredEvent 패턴으로 이벤트 처리 실패 시 자동 재시도",
+        "SQS로 아이템 변경 이벤트 비동기 발행"
+      ],
+      "period": { "from": "2023.08", "to": "2024.05" },
+      "stack": ["Kotlin", "Spring Boot", "MongoDB", "SQS", "Kinesis"],
+      "link": null
+    },
+    {
+      "id": "package-admin",
+      "name": "패키지 여행 어드민 서비스",
+      "status": "completed",
+      "category": "new-package",
+      "sourcePath": ["/Users/psg107/IdeaProjects/package-platform-admin"],
+      "summary": "패키지 여행 시스템의 통합 관리 도구입니다. 상품, 예약, 정산 등을 관리합니다.",
+      "description": "패키지 여행 통합 관리 도구입니다. 상품 등록, 예약 관리, 정산 등 담당자 업무를 한 화면에서 처리할 수 있습니다.",
+      "implementations": [
+        "Next.js rewrites로 마이크로서비스 통합 라우팅",
+        "공통 컴포넌트 추출로 UI 일관성 유지"
+      ],
+      "period": { "from": "2023.08", "to": "2024.05" },
+      "stack": ["TypeScript", "Next.js", "React", "React Query"],
+      "link": null
+    },
+    {
+      "id": "old-package-ops",
+      "name": "구패키지 시스템 운영",
+      "status": "completed",
+      "category": "old-package",
+      "summary": "C# 기반 패키지 여행 시스템의 운영 전반을 담당했습니다.",
+      "description": "C# 기반 패키지 여행 시스템입니다. 상품 등록부터 예약, 결제, 정산까지 여행 업무 전반을 처리합니다. 어드민, 프론트, 배치, DB, API를 운영했습니다.",
+      "implementations": [
+        "상품/예약/결제/정산 어드민 기능 개발",
+        "고객 알림 발송 시스템 개발",
+        "윈도우 배치 개발 및 최적화",
+        "프로시저/DB Job 개발",
+        "담당자 반복 업무 자동화"
+      ],
+      "period": { "from": "2021.06", "to": "2023.06" },
+      "stack": ["C#", "ASP.NET", "MSSQL", "Redis", "Kafka", "Jenkins"],
+      "link": null
+    },
+    {
+      "id": "external-platform",
+      "name": "외부 플랫폼 연동 서비스",
+      "status": "completed",
+      "category": "old-package",
+      "summary": "현대카드, 모두투어, 네이버 등 외부 플랫폼과의 연동 서비스입니다.",
+      "description": "외부 플랫폼 연동 서비스입니다. 놀유니버스 패키지 상품을 현대카드, 모두투어, 네이버 등 외부 플랫폼에서도 판매합니다. 플랫폼별 포인트 적립, 상품 동기화, 검색 노출을 지원합니다.",
+      "implementations": [
+        "현대카드 포인트 적립/사용 및 회원 연동",
+        "모두투어 상품 실시간 조회 및 예약 연동",
+        "네이버 해외패키지 상품 노출"
+      ],
+      "period": { "from": "2021.11", "to": "2023.06" },
+      "stack": ["C#", "ASP.NET", "REST API", "MSSQL", "Jenkins"],
+      "link": null
+    },
+    {
+      "id": "ai-hackathon",
+      "name": "AI 해커톤 아이디어 생성 서비스",
+      "status": "completed",
+      "category": "personal",
+      "summary": "해커톤을 위한 아이디어 생성 및 관리 서비스입니다.",
+      "description": "해커톤 초반에 아이디어가 부족하거나, 너무 많아서 정리가 안 되는 문제를 해결합니다. 제약사항과 평가기준을 입력하면 AI가 아이디어를 생성하고, 팀원들이 투표와 댓글로 빠르게 의견을 모읍니다. 중복 아이디어는 키워드 기반으로 자동 필터링됩니다.",
+      "implementations": [
+        "Claude CLI 연동으로 제약사항/평가기준 기반 아이디어 자동 생성",
+        "키워드 기반 아이디어 중복 검사",
+        "팀원 투표 및 의견 공유 협업 기능"
+      ],
+      "period": { "from": "2025.10", "to": null },
+      "stack": ["Kotlin", "Spring Boot", "Next.js", "PostgreSQL", "Claude CLI"],
+      "link": null
+    },
+    {
+      "id": "github-sync",
+      "name": "깃허브 기여도 동기화 서비스",
+      "status": "completed",
+      "category": "personal",
+      "summary": "회사 GitHub 커밋을 개인 GitHub 잔디로 동기화하는 CLI 도구입니다.",
+      "description": "기여도 동기화 도구입니다. 회사와 개인 GitHub 계정이 분리된 환경에서 회사 커밋을 개인 잔디에 반영합니다.",
+      "implementations": [
+        "회사 GitHub 커밋을 개인 GitHub 잔디로 동기화",
+        "커밋 날짜 유지로 실제 기여 패턴 반영",
+        "동기화 완료 커밋 스킵으로 중복 방지"
+      ],
+      "period": { "from": "2025", "to": null },
+      "stack": ["Kotlin", "Git API"],
+      "link": "https://github.com/psg107/sync-github-contribution"
+    }
+  ],
+  "contact": {
+    "email": "psg107@naver.com",
+    "github": "https://github.com/psg107",
+    "portfolio": "https://psg107.github.io/Portfolio/"
+  },
+  "meta": {
+    "language": "ko",
+    "lastUpdated": "2025-01-03"
+  }
+}
