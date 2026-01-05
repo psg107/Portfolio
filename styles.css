@@ -112,7 +112,6 @@ a:hover {
   font-size: clamp(40px, 8vw, 48px);
   font-weight: 700;
   color: var(--lightest-slate);
-  margin-bottom: 4px;
   letter-spacing: -0.025em;
 }
 
@@ -636,8 +635,8 @@ section {
 
 /* Footer */
 footer {
-  text-align: center;
-  padding: 20px;
+  text-align: left;
+  padding: 20px 0;
   font-size: var(--fz-xs);
   color: var(--slate);
 }
