@@ -237,7 +237,7 @@ section {
     top: 0;
     z-index: 10;
     padding: 20px 0;
-    margin: 0 -25px 20px;
+    margin: 0 -25px;
     padding-left: 25px;
     background-color: rgba(10, 25, 47, 0.85);
     backdrop-filter: blur(10px);
@@ -306,6 +306,14 @@ section {
     padding: 16px;
     margin: 0 -16px;
   }
+}
+
+.experience-item:first-child {
+  padding-top: 0;
+}
+
+.project-category .project-card:first-child {
+  padding-top: 0;
 }
 
 .experience-period {
