@@ -238,6 +238,9 @@ function closeProjectPanel() {
 }
 
 function setupMouseGradient() {
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  if (isMobile) return;
+
   document.addEventListener('mousemove', e => {
     const x = e.pageX;
     const y = e.pageY;
