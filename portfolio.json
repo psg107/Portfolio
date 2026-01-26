@@ -207,19 +207,21 @@
       "link": null
     },
     {
-      "id": "ai-hackathon",
-      "name": "AI 해커톤 아이디어 생성 서비스",
+      "id": "dynamic-package-idea-generator",
+      "name": "여행 서비스 아이디어 생성 시스템",
       "status": "completed",
       "category": "personal",
-      "summary": "해커톤을 위한 아이디어 생성 및 관리 서비스입니다.",
-      "description": "해커톤 초반에 아이디어가 부족하거나, 너무 많아서 정리가 안 되는 문제를 해결합니다. 제약사항과 평가기준을 입력하면 AI가 아이디어를 생성하고, 팀원들이 투표와 댓글로 빠르게 의견을 모읍니다. 중복 아이디어는 키워드 기반으로 자동 필터링됩니다.",
+      "sourcePath": ["/Users/psg107/IdeaProjects/dynamic-package-idea-generator"],
+      "summary": "여행 서비스 아이디어를 AI로 생성하고 자동 평가하는 시스템입니다.",
+      "description": "여행 서비스 기획 시 다양한 아이디어가 필요하지만 일일이 생성하고 평가하기 어렵습니다. 불편사항을 입력하면 AI가 아이디어를 생성하고, 자동으로 평가와 유사 아이디어 추천이 진행됩니다. 삭제된 아이디어는 패턴을 분석해 다음 생성에 반영됩니다.",
       "implementations": [
-        "Claude CLI 연동으로 제약사항/평가기준 기반 아이디어 자동 생성",
-        "키워드 기반 아이디어 중복 검사",
-        "팀원 투표 및 의견 공유 협업 기능"
+        "임베딩 벡터로 의미적 중복 검사 (Cosine Similarity 0.85)",
+        "Job 파이프라인으로 생성→임베딩→평가 자동 연쇄",
+        "Koog Agent로 심층 분석 모드 제공",
+        "삭제 패턴 AI 추론으로 품질 피드백 루프 구축"
       ],
-      "period": { "from": "2025.10", "to": null },
-      "stack": ["Kotlin", "Spring Boot", "Next.js", "PostgreSQL", "Claude CLI"],
+      "period": { "from": "2026.01", "to": "2026.01" },
+      "stack": ["Kotlin", "Spring Boot", "PostgreSQL", "Claude API", "Koog Agent"],
       "link": null
     },
     {
