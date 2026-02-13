@@ -56,7 +56,7 @@
       "category": "new-package",
       "sourcePath": ["/Users/psg107/IdeaProjects/cm-package", "/Users/psg107/IdeaProjects/cm-package-admin"],
       "summary": "법인 고객 대상 단체 여행을 관리하는 서비스입니다. 행사, 여행자, 결제 및 보험 정보를 통합 관리합니다.",
-      "description": "법인 고객이 단체 여행을 의뢰하면, 행사 등록부터 여행자 관리, 결제, 보험 가입까지의 업무를 담당자가 한 화면에서 처리할 수 있도록 지원하는 내부 시스템입니다.",
+      "description": "법인 고객이 단체 여행을 의뢰하면, 행사 등록부터 여행자 관리, 결제, 보험 가입까지의 업무를 담당자가 한 화면에서 처리할 수 있도록 지원하는 서비스입니다.",
       "implementations": [
         "DB Lock을 활용한 동시 보험 가입 중복 방지",
         "외부 호출과 상태 변경을 분리하는 트랜잭션 경계 설계",
@@ -92,7 +92,7 @@
       "category": "new-package",
       "sourcePath": ["/Users/psg107/IdeaProjects/package-supplier"],
       "summary": "외부 공급사의 패키지 상품을 실시간으로 연동하는 서비스입니다.",
-      "description": "외부 여행사 상품을 수집해 시스템에 연동하고, 가격 및 상태 변경 시 최신 정보를 자동으로 반영합니다.",
+      "description": "외부 여행사 상품을 수집해 연동하고, 가격 및 상태 변경 시 최신 정보를 자동으로 반영합니다.",
       "implementations": [
         "Virtual Threads 기반 공급사 API 병렬 수집",
         "상품·출발상품·취소규정 계층별 변경 감지",
@@ -109,8 +109,8 @@
       "status": "completed",
       "category": "new-package",
       "sourcePath": ["/Users/psg107/IdeaProjects/package-hub"],
-      "summary": "구패키지와 신패키지 시스템의 상품을 통합해 검색 및 전시하는 허브 서비스입니다.",
-      "description": "기존 시스템과 신규 시스템의 상품을 사내 검색 시스템과 연동해 하나의 검색 결과와 전시 페이지로 제공합니다.",
+      "summary": "구패키지와 신패키지 상품을 통합해 검색 및 전시하는 허브 서비스입니다.",
+      "description": "구패키지와 신패키지의 상품을 사내 검색 시스템과 연동해 하나의 검색 결과와 전시 페이지로 제공합니다.",
       "implementations": [
         "변경 빈도에 따른 캐시 TTL 차등 적용",
         "동시 캐시 요청 시 단일 API 호출 구조",
@@ -208,7 +208,7 @@
     },
     {
       "id": "dynamic-package-idea-generator",
-      "name": "여행 서비스 아이디어 생성 시스템",
+      "name": "여행 서비스 아이디어 생성 서비스",
       "status": "completed",
       "category": "personal",
       "sourcePath": ["/Users/psg107/IdeaProjects/dynamic-package-idea-generator"],
