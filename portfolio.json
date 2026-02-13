@@ -6,7 +6,7 @@
     "description": "놀유니버스에서 패키지 여행 시스템 백엔드 개발을 담당하고 있습니다.\n\nC# 기반 기존 시스템 운영을 거쳐, Kotlin/Spring Boot 기반 신규 패키지 여행 시스템의 초기 단계부터 구축에 참여해 서비스 오픈까지 경험했으며, 이후에는 운영과 기능 확장, 구조 개선을 중심으로 개발하고 있습니다.\n\n상품·예약·결제·검색 및 외부 연동 영역을 포함한 시스템 전반을 다루고 있습니다."
   },
   "skills": [
-    ["Kotlin", "Spring Boot", "MongoDB", "AWS"],
+    ["Kotlin", "Spring Boot", "JPA", "MongoDB", "AWS"],
     ["Claude Code", "GitHub Copilot"]
   ],
   "experience": [
@@ -17,10 +17,11 @@
       "description": "Kotlin/Spring Boot 기반 신규 패키지 여행 시스템의 설계 및 구축을 담당하고 있습니다.",
       "details": [
         "패키지 상품·예약·검색 서비스 설계 및 개발",
+        "법인단체 패키지 관리 시스템 개발 (MySQL+JPA)",
         "구시스템(C#)과 신시스템(Kotlin)을 연동하는 통합 허브 서비스 구축",
         "외부 공급사, 보험사, 결제사 API 연동"
       ],
-      "stack": ["Kotlin", "Spring Boot", "MongoDB", "Redis", "AWS ECS", "AWS SQS", "AWS Kinesis"]
+      "stack": ["Kotlin", "Spring Boot", "MongoDB", "MySQL", "JPA", "Redis", "AWS ECS", "AWS SQS", "AWS Kinesis"]
     },
     {
       "period": "2021 - 2023",
