@@ -567,7 +567,7 @@ section {
   font-size: var(--fz-xxl);
   color: var(--lightest-slate);
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
 }
 
 .panel-summary {
