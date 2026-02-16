@@ -192,6 +192,7 @@
       "description": "20년 이상 운영된 C# 기반 패키지 여행 시스템의 운영을 담당했습니다. 상품 등록부터 예약, 결제, 정산까지 전 과정을 처리하며, 안정적 운영과 기능 개선을 병행했습니다.",
       "implementations": [
         "상품·예약·결제·정산 어드민 기능 개발",
+        "현대카드·모두투어·네이버 등 외부 플랫폼 연동",
         "고객 알림 발송 시스템 개발",
         "윈도우 배치 및 DB Job 개발",
         "담당자 반복 업무 자동화"
@@ -201,25 +202,8 @@
       "link": null
     },
     {
-      "id": "external-platform",
-      "order": 8,
-      "name": "외부 플랫폼 연동 서비스",
-      "status": "completed",
-      "category": "old-package",
-      "summary": "현대카드, 모두투어, 네이버 등 외부 플랫폼과의 연동으로 판매 채널을 확대한 서비스입니다.",
-      "description": "놀유니버스 패키지 상품을 현대카드, 모두투어, 네이버 등 외부 플랫폼에서 판매할 수 있도록 했습니다. 상품 조회, 예약, 포인트 연동 등 각 플랫폼의 요구사항에 맞춰 연동을 구축했습니다.",
-      "implementations": [
-        "현대카드 포인트 적립 및 회원 연동",
-        "모두투어 상품 조회 및 예약 연동",
-        "네이버 해외패키지 상품 노출"
-      ],
-      "period": { "from": "2021.11", "to": "2023.06" },
-      "stack": ["C#", "ASP.NET", "REST API", "MSSQL", "Jenkins"],
-      "link": null
-    },
-    {
       "id": "dynamic-package-idea-generator",
-      "order": 10,
+      "order": 8,
       "name": "여행 서비스 아이디어 생성 시스템",
       "status": "completed",
       "category": "personal",
@@ -235,23 +219,6 @@
       "period": { "from": "2026.01", "to": "2026.01" },
       "stack": ["Kotlin", "Spring Boot", "PostgreSQL", "Claude API", "Koog Agent"],
       "link": null
-    },
-    {
-      "id": "github-sync",
-      "order": 11,
-      "name": "깃허브 기여도 동기화 서비스",
-      "status": "completed",
-      "category": "personal",
-      "summary": "회사 GitHub 커밋을 개인 GitHub 기여도로 동기화하는 CLI 도구입니다.",
-      "description": "회사 GitHub 계정으로 커밋하면 개인 계정의 잔디가 비어 보이는 문제를 해결합니다. 회사 저장소의 커밋 이력을 읽어 개인 저장소에 날짜를 유지하며 동기화해, 실제 기여 패턴을 개인 프로필에 반영합니다.",
-      "implementations": [
-        "회사 GitHub 커밋을 개인 GitHub 기여도로 동기화",
-        "커밋 날짜 유지로 실제 기여 패턴 반영",
-        "중복 커밋 스킵 처리"
-      ],
-      "period": { "from": "2025.02", "to": "2025.02" },
-      "stack": ["Kotlin", "Git API"],
-      "link": "https://github.com/psg107/sync-github-contribution"
     }
   ],
   "contact": {
