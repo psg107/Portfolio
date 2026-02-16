@@ -50,6 +50,7 @@
   "projects": [
     {
       "id": "cm-package",
+      "order": 1,
       "name": "법인단체 패키지 관리 서비스",
       "status": "in-progress",
       "category": "new-package",
@@ -69,6 +70,7 @@
     },
     {
       "id": "ai-chatbot-pipeline",
+      "order": 9,
       "name": "AI 챗봇 문서 학습 서비스",
       "status": "completed",
       "category": "personal",
@@ -86,6 +88,7 @@
     },
     {
       "id": "package-supplier",
+      "order": 5,
       "name": "패키지 여행 공급사 연동 서비스",
       "status": "completed",
       "category": "new-package",
@@ -104,6 +107,7 @@
     },
     {
       "id": "package-hub",
+      "order": 4,
       "name": "패키지 여행 통합 검색·전시 서비스",
       "status": "completed",
       "category": "new-package",
@@ -123,6 +127,7 @@
     },
     {
       "id": "package-reservation",
+      "order": 3,
       "name": "패키지 여행 예약 서비스",
       "status": "completed",
       "category": "new-package",
@@ -143,6 +148,7 @@
     },
     {
       "id": "package-product",
+      "order": 2,
       "name": "패키지 여행 상품 서비스",
       "status": "completed",
       "category": "new-package",
@@ -161,6 +167,7 @@
     },
     {
       "id": "package-admin",
+      "order": 6,
       "name": "패키지 여행 어드민 서비스",
       "status": "completed",
       "category": "new-package",
@@ -177,6 +184,7 @@
     },
     {
       "id": "old-package-ops",
+      "order": 7,
       "name": "구패키지 시스템 운영",
       "status": "completed",
       "category": "old-package",
@@ -194,6 +202,7 @@
     },
     {
       "id": "external-platform",
+      "order": 8,
       "name": "외부 플랫폼 연동 서비스",
       "status": "completed",
       "category": "old-package",
@@ -210,6 +219,7 @@
     },
     {
       "id": "dynamic-package-idea-generator",
+      "order": 10,
       "name": "여행 서비스 아이디어 생성 시스템",
       "status": "completed",
       "category": "personal",
@@ -228,6 +238,7 @@
     },
     {
       "id": "github-sync",
+      "order": 11,
       "name": "깃허브 기여도 동기화 서비스",
       "status": "completed",
       "category": "personal",

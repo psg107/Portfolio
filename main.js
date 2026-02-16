@@ -80,16 +80,14 @@ function renderProjects() {
     { key: 'personal', title: '개인 프로젝트' }
   ];
 
-  const sortByDate = (a, b) => {
-    const dateA = a.period.from || '0000';
-    const dateB = b.period.from || '0000';
-    return dateB.localeCompare(dateA);
+  const sortByOrder = (a, b) => {
+    return (a.order || 999) - (b.order || 999);
   };
 
   container.innerHTML = categories.map(category => {
     const categoryProjects = projects
       .filter(p => p.category === category.key)
-      .sort(sortByDate);
+      .sort(sortByOrder);
 
     if (categoryProjects.length === 0) return '';
 
