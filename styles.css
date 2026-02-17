@@ -409,7 +409,6 @@ section {
   padding: 24px;
   margin: 0 -24px;
   border-radius: var(--border-radius);
-  cursor: pointer;
   transition: var(--transition);
   position: relative;
   background: transparent;
@@ -470,22 +469,10 @@ section {
   gap: 4px;
 }
 
-.project-card h3::after {
-  content: '↗';
-  font-size: var(--fz-sm);
-  opacity: 0;
-  transform: translate(-4px, 4px);
-  transition: var(--transition);
-}
-
 .project-card:hover h3 {
   color: var(--green);
 }
 
-.project-card:hover h3::after {
-  opacity: 1;
-  transform: translate(0, 0);
-}
 
 .project-card p {
   font-size: var(--fz-sm);
@@ -498,141 +485,25 @@ section {
   margin-top: 0;
 }
 
-/* Project Detail Panel (Codewonders Style) */
-.project-panel {
-  position: fixed;
-  top: 0;
-  right: -500px;
-  width: 450px;
-  max-width: 90vw;
-  height: 100vh;
-  background-color: var(--light-navy);
-  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  transition: right 0.3s var(--easing);
-  overflow-y: auto;
-}
-
-.project-panel.open {
-  right: 0;
-}
-
-.project-panel-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(10, 25, 47, 0.85);
-  z-index: 999;
-  opacity: 0;
-  visibility: hidden;
-  transition: var(--transition);
-}
-
-.project-panel-overlay.open {
-  opacity: 1;
-  visibility: visible;
-}
-
-.panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24px;
-  border-bottom: 1px solid var(--lightest-navy);
-}
-
-.panel-close {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--slate);
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: var(--fz-sm);
-  transition: var(--transition);
-}
-
-.panel-close:hover {
-  color: var(--green);
-}
-
-.panel-content {
-  padding: 24px;
-}
-
-.panel-title {
-  font-size: var(--fz-xxl);
-  color: var(--lightest-slate);
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-
-.panel-summary {
-  font-size: var(--fz-sm);
-  color: var(--slate);
-  margin-bottom: 24px;
-  line-height: 1.6;
-}
-
-.panel-description {
-  font-size: var(--fz-sm);
-  color: var(--slate);
-  margin-bottom: 24px;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-.panel-section {
-  margin-bottom: 24px;
-}
-
-.panel-section h4 {
-  font-size: var(--fz-md);
-  color: var(--lightest-slate);
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-
-.panel-section ul {
+.project-implementations {
   list-style: none;
+  margin-bottom: 4px;
 }
 
-.panel-section ul li {
+.project-implementations li {
   position: relative;
   padding-left: 20px;
   font-size: var(--fz-sm);
   color: var(--slate);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   line-height: 1.5;
 }
 
-.panel-section ul li::before {
+.project-implementations li::before {
   content: '▹';
   position: absolute;
   left: 0;
   color: var(--green);
-}
-
-.panel-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--green);
-  font-size: var(--fz-sm);
-  margin-top: 16px;
-  padding: 10px 16px;
-  border: 1px solid var(--green);
-  border-radius: var(--border-radius);
-  transition: var(--transition);
-}
-
-.panel-link:hover {
-  background-color: var(--green-tint);
-  text-decoration: none;
 }
 
 /* Footer */

@@ -1,6 +1,5 @@
 const state = {
-  data: null,
-  currentProject: null
+  data: null
 };
 
 async function init() {
@@ -16,7 +15,6 @@ async function init() {
     renderSocialLinks();
 
     setupNavigation();
-    setupProjectPanel();
   } catch (error) {
     console.error('Failed to load portfolio data:', error);
   }
@@ -94,27 +92,29 @@ function renderProjects() {
     return `
       <div class="project-category">
         <h3 class="project-category-title">${category.title}</h3>
-        ${categoryProjects.map(project => `
-          <article class="project-card" data-project-id="${project.id}">
-            <div class="project-card-header">
-              <h3>${project.name}${project.status === 'in-progress' ? '<span class="project-status">진행중</span>' : ''}</h3>
-            </div>
-            <p>${project.summary}</p>
-            <div class="tech-tags">
-              ${project.stack.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
-            </div>
-          </article>
-        `).join('')}
+        ${categoryProjects.map(project => {
+          const statusBadge = project.status === 'in-progress'
+            ? '<span class="project-status">진행중</span>'
+            : '';
+          const implementationsHtml = project.implementations?.length
+            ? `<ul class="project-implementations">${project.implementations.map(s => `<li>${s}</li>`).join('')}</ul>`
+            : '';
+          return `
+            <article class="project-card">
+              <div class="project-card-header">
+                <h3>${project.name}${statusBadge}</h3>
+              </div>
+              <p>${project.description}</p>
+              ${implementationsHtml}
+              <div class="tech-tags">
+                ${project.stack.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
+              </div>
+            </article>
+          `;
+        }).join('')}
       </div>
     `;
   }).join('');
-
-  document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const projectId = card.dataset.projectId;
-      openProjectPanel(projectId);
-    });
-  });
 }
 
 function renderSocialLinks() {
@@ -162,78 +162,6 @@ function setupNavigation() {
   updateActiveNav();
 }
 
-function setupProjectPanel() {
-  const panel = document.getElementById('project-panel');
-  const overlay = document.getElementById('panel-overlay');
-  const closeBtn = document.getElementById('panel-close');
-
-  closeBtn.addEventListener('click', closeProjectPanel);
-  overlay.addEventListener('click', closeProjectPanel);
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeProjectPanel();
-  });
-}
-
-function openProjectPanel(projectId) {
-  const project = state.data.projects.find(p => p.id === projectId);
-  if (!project) return;
-
-  state.currentProject = project;
-
-  const panel = document.getElementById('project-panel');
-  const overlay = document.getElementById('panel-overlay');
-  const content = document.getElementById('panel-content');
-
-  const descriptionHtml = project.description
-    ? `<div class="panel-description">${project.description}</div>`
-    : '';
-
-  const implementationsHtml = project.implementations?.length
-    ? `
-      <div class="panel-section">
-        <h4>주요 구현</h4>
-        <ul>
-          ${project.implementations.map(s => `<li>${s}</li>`).join('')}
-        </ul>
-      </div>
-    `
-    : '';
-
-  const linkHtml = project.link
-    ? `<a href="${project.link}" target="_blank" class="panel-link">프로젝트 보기 →</a>`
-    : '';
-
-  content.innerHTML = `
-    <h3 class="panel-title">${project.name}</h3>
-    ${descriptionHtml}
-    ${implementationsHtml}
-    <div class="panel-section">
-      <h4>기술 스택</h4>
-      <div class="tech-tags">
-        ${project.stack.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
-      </div>
-    </div>
-    ${linkHtml}
-  `;
-
-  panel.classList.add('open');
-  overlay.classList.add('open');
-  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-  document.body.style.overflow = 'hidden';
-  document.body.style.paddingRight = `${scrollbarWidth}px`;
-}
-
-function closeProjectPanel() {
-  const panel = document.getElementById('project-panel');
-  const overlay = document.getElementById('panel-overlay');
-
-  panel.classList.remove('open');
-  overlay.classList.remove('open');
-  document.body.style.overflow = '';
-  document.body.style.paddingRight = '';
-  state.currentProject = null;
-}
 
 function setupMouseGradient() {
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
