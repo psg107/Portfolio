@@ -64,7 +64,7 @@
         "LLM 기반 입력 정보 정형화로 폼 자동 완성"
       ],
       "period": { "from": "2025.10", "to": null },
-      "stack": ["Kotlin", "Spring Boot", "MySQL", "React", "Next.js", "Koog Agent"]
+      "stack": ["Kotlin", "Spring Boot", "JPA", "MySQL", "React", "Next.js", "Koog Agent"]
     },
     {
       "id": "ai-chatbot-pipeline",
@@ -97,7 +97,7 @@
         "부분 실패 시 성공 건은 즉시 반영하고, 실패 건만 선별 재시도"
       ],
       "period": { "from": "2024.10", "to": "2024.11" },
-      "stack": ["Kotlin", "Spring Boot", "MongoDB", "Redis", "SQS"]
+      "stack": ["Kotlin", "Spring Boot", "MongoDB", "Redis", "AWS SQS"]
     },
     {
       "id": "package-hub",
@@ -134,7 +134,7 @@
         "외부 연동 장애 모니터링 및 Slack 알림"
       ],
       "period": { "from": "2023.10", "to": "2024.05" },
-      "stack": ["Kotlin", "Spring Boot", "MongoDB", "Redis", "SQS", "Kinesis"]
+      "stack": ["Kotlin", "Spring Boot", "MongoDB", "Redis", "AWS SQS", "AWS Kinesis"]
     },
     {
       "id": "package-product",
@@ -151,7 +151,7 @@
         "아이템 변경 이벤트 비동기 발행"
       ],
       "period": { "from": "2023.08", "to": "2024.05" },
-      "stack": ["Kotlin", "Spring Boot", "MongoDB", "SQS", "Kinesis"]
+      "stack": ["Kotlin", "Spring Boot", "MongoDB", "AWS SQS", "AWS Kinesis"]
     },
     {
       "id": "package-admin",
@@ -199,7 +199,7 @@
         "사용자 피드백을 다음 생성 과정에 반영"
       ],
       "period": { "from": "2026.01", "to": "2026.01" },
-      "stack": ["Kotlin", "Spring Boot", "PostgreSQL", "Claude API", "Koog Agent"]
+      "stack": ["Kotlin", "Spring Boot", "JPA", "PostgreSQL", "Claude API", "Koog Agent"]
     }
   ],
   "contact": {
