@@ -64,7 +64,7 @@
       "order": 0,
       "name": "다이나믹 패키지 서비스",
       "status": "in-progress",
-      "category": "new-package",
+      "category": "dynamic-package",
       "description": "놀유니버스의 항공·호텔·투어 등은 각각 별도 서비스로 운영됩니다. 다이나믹 패키지는 여러 상품을 조합해 하나의 주문으로 예약·결제하는 서비스입니다.",
       "implementations": [
         "결제→항공→숙소 순차 예약, 실패 시 항공 VOID 기반 보상 트랜잭션",

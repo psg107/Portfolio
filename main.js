@@ -73,6 +73,7 @@ function renderProjects() {
   const container = document.getElementById('projects-grid');
 
   const categories = [
+    { key: 'dynamic-package', title: '다이나믹 패키지' },
     { key: 'new-package', title: '신패키지 시스템' },
     { key: 'old-package', title: '구패키지 시스템' },
     { key: 'personal', title: '개인 프로젝트' }
