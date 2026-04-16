@@ -544,3 +544,21 @@ footer a:hover {
 .hidden {
   display: none !important;
 }
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.2s ease;
+}
+
+.social-link svg {
+  width: 18px;
+  height: 18px;
+}
