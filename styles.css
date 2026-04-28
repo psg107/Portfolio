@@ -393,13 +393,46 @@ section {
   gap: 0;
 }
 
+.project-category-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--lightest-navy);
+}
+
 .project-category-title {
   font-size: var(--fz-md);
   color: var(--lightest-slate);
   font-weight: 600;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--lightest-navy);
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.project-category-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px;
+  font-size: var(--fz-xs);
+  color: var(--slate);
+  line-height: 1.4;
+}
+
+.project-category-period {
+  font-family: var(--font-mono);
+  font-size: var(--fz-xxs);
+  color: var(--slate);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.project-category-tagline {
+  color: var(--light-slate);
+  font-size: var(--fz-xs);
 }
 
 .project-card {

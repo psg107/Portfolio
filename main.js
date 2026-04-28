@@ -73,10 +73,29 @@ function renderProjects() {
   const container = document.getElementById('projects-grid');
 
   const categories = [
-    { key: 'dynamic-package', title: '다이나믹 패키지' },
-    { key: 'new-package', title: '신패키지 시스템' },
-    { key: 'old-package', title: '구패키지 시스템' },
-    { key: 'personal', title: '개인 프로젝트' }
+    {
+      key: 'dynamic-package',
+      title: '다이나믹 패키지',
+      period: '2026.02 - 현재',
+      tagline: '항공·숙소 등 여러 여행 상품을 조합하는 신규 서비스'
+    },
+    {
+      key: 'new-package',
+      title: '신규 패키지 시스템',
+      period: '2023 - 2026',
+      tagline: 'Kotlin/Spring Boot 기반 패키지 여행 플랫폼 구축'
+    },
+    {
+      key: 'old-package',
+      title: '레거시 패키지 시스템',
+      period: '2021 - 2023',
+      tagline: '20년 운영된 C# 시스템 운영·개선'
+    },
+    {
+      key: 'personal',
+      title: '개인 프로젝트',
+      tagline: '관심사·실무 문제를 직접 풀어본 작업'
+    }
   ];
 
   const sortByOrder = (a, b) => {
@@ -90,9 +109,20 @@ function renderProjects() {
 
     if (categoryProjects.length === 0) return '';
 
+    const headerMeta = [
+      category.period ? `<span class="project-category-period">${category.period}</span>` : '',
+      category.tagline ? `<span class="project-category-tagline">${category.tagline}</span>` : ''
+    ].filter(Boolean).join('');
+    const headerMetaHtml = headerMeta
+      ? `<div class="project-category-meta">${headerMeta}</div>`
+      : '';
+
     return `
       <div class="project-category">
-        <h3 class="project-category-title">${category.title}</h3>
+        <div class="project-category-header">
+          <h3 class="project-category-title">${category.title}</h3>
+          ${headerMetaHtml}
+        </div>
         ${categoryProjects.map(project => {
           const statusBadge = project.status === 'in-progress'
             ? '<span class="project-status">진행중</span>'
