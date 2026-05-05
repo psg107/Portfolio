@@ -21,7 +21,6 @@
 </head>
 <body>
   <div class="layout">
-    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-top">
         <header class="sidebar-header">
@@ -32,18 +31,11 @@
 
         <nav class="nav">
           <ul class="nav-list">
-            <li class="nav-item">
-              <a href="#about" class="nav-link">About</a>
-            </li>
-            <li class="nav-item">
-              <a href="#highlights" class="nav-link">Highlights</a>
-            </li>
-            <li class="nav-item">
-              <a href="#experience" class="nav-link">Experience</a>
-            </li>
-            <li class="nav-item">
-              <a href="#projects" class="nav-link">Projects</a>
-            </li>
+            <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+            <li class="nav-item"><a href="#highlights" class="nav-link">Highlights</a></li>
+            <li class="nav-item"><a href="#deep-dive" class="nav-link">Deep Dive</a></li>
+            <li class="nav-item"><a href="#experience" class="nav-link">Experience</a></li>
+            <li class="nav-item"><a href="#projects" class="nav-link">Projects</a></li>
           </ul>
         </nav>
       </div>
@@ -51,7 +43,6 @@
       <div class="social-links" id="social-links"></div>
     </aside>
 
-    <!-- Main Content -->
     <main class="main">
       <section id="about">
         <h2 class="section-heading" data-num="01.">About</h2>
@@ -63,13 +54,18 @@
         <div class="projects-grid" id="highlights-list"></div>
       </section>
 
+      <section id="deep-dive">
+        <h2 class="section-heading" data-num="03.">Deep Dive</h2>
+        <div class="deep-dive-list" id="deep-dive-list"></div>
+      </section>
+
       <section id="experience">
-        <h2 class="section-heading" data-num="03.">Experience</h2>
+        <h2 class="section-heading" data-num="04.">Experience</h2>
         <div class="experience-list" id="experience-list"></div>
       </section>
 
       <section id="projects">
-        <h2 class="section-heading" data-num="04.">Projects</h2>
+        <h2 class="section-heading" data-num="05.">Projects</h2>
         <div class="projects-grid" id="projects-grid"></div>
       </section>
 
@@ -80,5 +76,6 @@
   </div>
 
   <script type="module" src="main.js"></script>
+  <script type="module" src="portfolio-deepdive.js"></script>
 </body>
 </html>
