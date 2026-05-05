@@ -10,6 +10,7 @@ async function init() {
     renderProfile();
     renderAbout();
     renderSkills();
+    renderHighlights();
     renderExperience();
     renderProjects();
     renderSocialLinks();
@@ -47,6 +48,38 @@ function renderSkills() {
   ).join('');
 }
 
+function renderHighlights() {
+  const { highlights = [] } = state.data;
+  const container = document.getElementById('highlights-list');
+
+  if (!container || highlights.length === 0) return;
+
+  container.innerHTML = highlights.map(highlight => {
+    const pointsHtml = highlight.points?.length
+      ? `<ul class="project-implementations">${highlight.points.map(point => `<li>${point}</li>`).join('')}</ul>`
+      : '';
+    const meta = [highlight.label, highlight.period].filter(Boolean).join(' · ');
+    const metaHtml = meta ? `<div class="project-category-meta"><span class="project-category-tagline">${meta}</span></div>` : '';
+
+    return `
+      <article class="project-card highlight-card">
+        <div class="project-card-header">
+          <h3>${highlight.title}</h3>
+          ${metaHtml}
+        </div>
+        <p>${highlight.summary}</p>
+        ${highlight.problem ? `<p><strong>문제</strong> · ${highlight.problem}</p>` : ''}
+        ${highlight.role ? `<p><strong>역할</strong> · ${highlight.role}</p>` : ''}
+        ${highlight.result ? `<p><strong>결과</strong> · ${highlight.result}</p>` : ''}
+        ${pointsHtml}
+        <div class="tech-tags">
+          ${highlight.stack.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
 function renderExperience() {
   const { experience } = state.data;
   const container = document.getElementById('experience-list');
@@ -75,15 +108,15 @@ function renderProjects() {
   const categories = [
     {
       key: 'dynamic-package',
-      title: '다이나믹 패키지',
+      title: '현재 담당 서비스',
       period: '2026.02 - 현재',
-      tagline: '항공·숙소 등 여러 여행 상품을 조합하는 신규 서비스'
+      tagline: '고객이 직접 여행 상품을 조합하고 예약하는 브릭팩 서비스'
     },
     {
       key: 'new-package',
-      title: '신규 패키지 시스템',
+      title: '대표 백엔드 경험',
       period: '2023 - 2026',
-      tagline: 'Kotlin/Spring Boot 기반 패키지 여행 플랫폼 구축'
+      tagline: '검색 성능 개선, 예약 실패 처리, 상품 변경 처리, 어드민 업무 개선'
     },
     {
       key: 'old-package',
