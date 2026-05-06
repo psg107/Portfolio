@@ -48,24 +48,58 @@
 .deep-dive-list {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 18px;
 }
 
 .deep-dive-card {
-  padding: 28px;
+  padding: 24px 28px;
   margin: 0 -28px;
   border-radius: var(--border-radius);
   border: 1px solid rgba(136, 146, 176, 0.14);
-  background: rgba(17, 34, 64, 0.24);
+  background: rgba(17, 34, 64, 0.22);
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.deep-dive-card.is-open {
+  border-color: rgba(100, 255, 218, 0.22);
+  background: rgba(17, 34, 64, 0.34);
+}
+
+.deep-dive-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0;
+  margin: 0 0 8px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.deep-dive-toggle-icon {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(100, 255, 218, 0.22);
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: var(--fz-md);
 }
 
 .deep-dive-header {
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 
 .deep-dive-label {
   display: inline-block;
-  margin-bottom: 8px;
   color: var(--green);
   font-family: var(--font-mono);
   font-size: var(--fz-xxs);
@@ -82,6 +116,15 @@
   color: var(--light-slate);
   font-size: var(--fz-sm);
   line-height: 1.6;
+}
+
+.deep-dive-body {
+  display: none;
+  margin-top: 20px;
+}
+
+.deep-dive-card.is-open .deep-dive-body {
+  display: block;
 }
 
 .deep-dive-grid {
