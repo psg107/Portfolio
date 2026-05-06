@@ -108,19 +108,19 @@ function renderProjects() {
   const categories = [
     {
       key: 'new-package',
-      title: 'Supporting Backend Projects',
+      title: '기타 백엔드 경험',
       period: '2023 - 2026',
       tagline: '상품 변경 처리, 어드민 업무 개선, 공급사 동기화, 기업·단체 예약 관리'
     },
     {
       key: 'old-package',
-      title: 'Legacy System Experience',
+      title: '레거시 시스템 경험',
       period: '2021 - 2023',
       tagline: '20년 운영된 C# 기반 패키지 시스템 운영·개선'
     },
     {
       key: 'personal',
-      title: 'Personal Project',
+      title: '개인 프로젝트',
       tagline: '실무 문제와 관심사를 바탕으로 직접 만든 개인 프로젝트'
     }
   ];
