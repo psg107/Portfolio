@@ -107,27 +107,21 @@ function renderProjects() {
 
   const categories = [
     {
-      key: 'dynamic-package',
-      title: '현재 담당 서비스',
-      period: '2026.02 - 현재',
-      tagline: '고객이 직접 여행 상품을 조합하고 예약하는 브릭팩 서비스'
-    },
-    {
       key: 'new-package',
-      title: '대표 백엔드 경험',
+      title: 'Supporting Backend Projects',
       period: '2023 - 2026',
-      tagline: '검색 성능 개선, 예약 실패 처리, 상품 변경 처리, 어드민 업무 개선'
+      tagline: '상품 변경 처리, 어드민 업무 개선, 공급사 동기화, 기업·단체 예약 관리'
     },
     {
       key: 'old-package',
-      title: '레거시 패키지 시스템',
+      title: 'Legacy System Experience',
       period: '2021 - 2023',
-      tagline: '20년 운영된 C# 시스템 운영·개선'
+      tagline: '20년 운영된 C# 기반 패키지 시스템 운영·개선'
     },
     {
       key: 'personal',
-      title: '개인 프로젝트',
-      tagline: '관심사·실무 문제를 직접 풀어본 작업'
+      title: 'Personal Project',
+      tagline: '실무 문제와 관심사를 바탕으로 직접 만든 개인 프로젝트'
     }
   ];
 
