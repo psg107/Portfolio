@@ -86,6 +86,11 @@ function renderProjects() {
       tagline: 'Kotlin/Spring Boot 기반 패키지 여행 플랫폼 구축'
     },
     {
+      key: 'ai',
+      title: 'AI·자동화',
+      tagline: 'LLM 에이전트 구현과 개발 워크플로 자동화'
+    },
+    {
       key: 'old-package',
       title: '레거시 패키지 시스템',
       period: '2021 - 2023',
@@ -127,6 +132,12 @@ function renderProjects() {
           const statusBadge = project.status === 'in-progress'
             ? '<span class="project-status">진행중</span>'
             : '';
+          const periodText = project.period?.from
+            ? `${project.period.from} - ${project.period.to || '현재'}`
+            : '';
+          const periodHtml = periodText
+            ? `<span class="project-period">${periodText}</span>`
+            : '';
           const implementationsHtml = project.implementations?.length
             ? `<ul class="project-implementations">${project.implementations.map(s => `<li>${s}</li>`).join('')}</ul>`
             : '';
@@ -134,6 +145,7 @@ function renderProjects() {
             <article class="project-card">
               <div class="project-card-header">
                 <h3>${project.name}${statusBadge}</h3>
+                ${periodHtml}
               </div>
               <p>${project.description}</p>
               ${implementationsHtml}

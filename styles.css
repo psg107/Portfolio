@@ -477,6 +477,13 @@ section {
   margin-bottom: 0;
 }
 
+.project-period {
+  font-family: var(--font-mono);
+  font-size: var(--fz-xxs);
+  color: var(--slate);
+  white-space: nowrap;
+}
+
 .project-icon {
   display: none;
 }
@@ -594,4 +601,82 @@ footer a:hover {
 .social-link svg {
   width: 18px;
   height: 18px;
+}
+
+/* Print / PDF: light palette, single column (applied by page.pdf default print media) */
+@media print {
+  :root {
+    --navy: #ffffff;
+    --light-navy: #f4f6f9;
+    --lightest-navy: #dde3ec;
+    --slate: #475569;
+    --light-slate: #334155;
+    --lightest-slate: #111827;
+    --white: #0b1220;
+    --green: #0e7490;
+    --green-tint: rgba(14, 116, 144, 0.08);
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .layout {
+    flex-direction: column;
+    padding: 0 24px;
+    max-width: none;
+  }
+
+  .sidebar {
+    position: static;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    padding: 32px 0 8px;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .main {
+    padding: 24px 0 40px;
+  }
+
+  section {
+    margin-bottom: 40px;
+  }
+
+  .social-links {
+    display: block;
+    padding-top: 16px;
+  }
+
+  .social-links a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: auto;
+    height: auto;
+    border: none;
+    margin: 4px 0;
+  }
+
+  .social-links a::after {
+    content: attr(href);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--slate);
+  }
+}
+
+@media print {
+  .social-links a {
+    justify-content: flex-start;
+  }
+
+  .social-links a[href^="mailto"]::after {
+    content: "psg107@naver.com";
+  }
 }

@@ -89,8 +89,7 @@
     "description": "맥락+흐름을 담은 2~3문장 (카드에 바로 표시)",
     "implementations": ["기술적 구현 내용 (카드에 바로 표시)"],
     "period": { "from": "2024.10" },
-    "stack": ["Kotlin", "Spring Boot"],
-    "sourcePath": ["/로컬/소스/경로"]  // AI 소스 분석용, 렌더링 안 됨
+    "stack": ["Kotlin", "Spring Boot"]
   }],
   "contact": { "email", "github" }
 }
@@ -173,7 +172,20 @@
 
 ## 소스 확인 규칙 (중요!)
 
-**sourcePath가 있는 프로젝트는 반드시 소스를 확인한 후 내용 작성**
+**소스 경로가 있는 프로젝트는 반드시 소스를 확인한 후 내용 작성**
+
+소스 경로는 로컬 경로 유출 방지를 위해 portfolio.json에서 제거하고 여기서 관리한다 (2026-07-18).
+
+| 프로젝트 id | 소스 경로 (Mac 기준, Windows는 ~/source/repos/) |
+|---|---|
+| cm-package | ~/IdeaProjects/cm-package, ~/IdeaProjects/cm-package-admin |
+| package-supplier | ~/IdeaProjects/package-supplier |
+| package-hub | ~/IdeaProjects/package-hub |
+| package-reservation | ~/IdeaProjects/package-reservation |
+| package-product | ~/IdeaProjects/package-product |
+| package-admin | ~/IdeaProjects/package-platform-admin |
+| dynamic-package | ~/IdeaProjects/dynamic |
+| dynamic-package-idea-generator | ~/IdeaProjects/dynamic-package-idea-generator |
 
 ### 확인 프로세스
 1. 프로젝트 전체 구조 탐색 (서비스, 컨트롤러, 도메인)
