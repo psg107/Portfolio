@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>코드 리뷰 | Claude Code 작업 환경 | 박상곤</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../project.css">
+</head>
+<body class="has-tabs" data-root="../../" data-project="claude-config">
+  <div class="doc-layout">
+    <aside class="doc-side"></aside>
+    <main class="doc">
+      <a class="doc-back" href="../../index.html#projects">프로젝트 목록으로 이동</a>
+<nav class="top-nav">
+    
+      <div class="nav-links">
+        <a href="index.html">전체 구조</a>
+        <a href="topic.html">토픽</a>
+        <a href="design-verify.html">설계와 검증</a>
+        <a href="code-review.html" class="active">코드 리뷰</a>
+        <a href="polish.html">문장 검토</a>
+        <a href="autonomous-cycle.html">자율 구현</a>
+        <a href="knowledge.html">지식 수집</a>
+        <a href="rules-hooks.html">규칙과 훅</a>
+        <a href="worklog.html">업무일지</a>
+        <a href="mods-patch.html">모드와 cc-patch</a>
+      </div>
+  </nav>
+
+    <header class="doc-header">
+      <h1>코드 리뷰</h1>
+    </header>
+
+    <section class="section">
+      <h2 id="why">코드 리뷰란</h2>
+      <p>이 환경에서 에이전트는 코드 리뷰를 두 방향으로 수행한다.</p><ul class="rule-list"><li>리뷰하는 쪽에서는 팀원 PR이나 사용자의 PR을 검토해 지적을 PR 댓글로 게시한다.</li><li>리뷰받는 쪽에서는 사용자의 PR이 받은 지적이 맞는지 확인해 코드를 수정하거나 반박한다.</li></ul>
+      <p>두 방향마다 스킬이 하나씩 있다.</p><ul class="rule-list"><li>관점별 리뷰 스킬(<code>pr:nitpick</code>)은 PR의 변경을 정확성이나 성능 같은 관점마다 서브에이전트에게 배정해 검사하고, 지적을 기각하려면 반박 서브에이전트에게 그 지적을 옹호하게 한다.</li><li>리뷰 지적 처리 스킬(<code>pr:resolve</code>)은 받은 지적마다 같은 관점과 판정 규칙으로 근거를 다시 확인해 수용 여부를 판정한다.</li></ul>
+    </section>
+
+    <section class="section">
+      <h2 id="structure">구성</h2>
+      <p><code>pr:nitpick</code>은 PR을 리뷰해 지적을 PR 댓글로 게시하고, <code>pr:resolve</code>는 PR이 받은 지적을 처리한다. 사용자의 PR을 셀프 리뷰할 때는 두 스킬을 번갈아 실행하는 라운드를 반복하고, 다음 라운드의 <code>pr:nitpick</code>은 앞 라운드 답글이 반박 근거로 적은 명령을 다시 실행해 반박이 맞는지 확인한다.</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 920 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="두 코드 리뷰 스킬의 관계">
+<defs><marker id="cr0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-muted)"/></marker></defs>
+<rect x="250" y="20" width="650" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="575.0" y="44" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">관점 목록과 판정 규칙</text><text x="575.0" y="65" text-anchor="middle" font-size="13" fill="var(--d-muted)">두 스킬이 같은 기준을 사용</text>
+<rect x="20" y="130" width="180" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="110.0" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">변경</text><text x="110.0" y="175" text-anchor="middle" font-size="13" fill="var(--d-muted)">PR이나 로컬 변경</text>
+<rect x="250" y="130" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="345.0" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">pr:nitpick</text><text x="345.0" y="175" text-anchor="middle" font-size="13" fill="var(--d-muted)">관점별 서브에이전트 리뷰</text>
+<rect x="480" y="130" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="575.0" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">PR 리뷰 댓글</text><text x="575.0" y="175" text-anchor="middle" font-size="13" fill="var(--d-muted)">등급을 매긴 지적</text>
+<rect x="710" y="130" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="805.0" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">pr:resolve</text><text x="805.0" y="175" text-anchor="middle" font-size="13" fill="var(--d-muted)">지적마다 판정</text>
+<rect x="480" y="240" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="575.0" y="264" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">동료 리뷰어</text><text x="575.0" y="285" text-anchor="middle" font-size="13" fill="var(--d-muted)">사람이 남긴 지적</text>
+<rect x="710" y="240" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="805.0" y="264" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">수정 커밋과 답글</text><text x="805.0" y="285" text-anchor="middle" font-size="13" fill="var(--d-muted)">모든 지적에 답글</text>
+<line x1="200" y1="158" x2="246" y2="158" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr0)"/>
+<line x1="440" y1="158" x2="476" y2="158" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr0)"/>
+<line x1="670" y1="158" x2="706" y2="158" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr0)"/>
+<line x1="345" y1="76" x2="345" y2="126" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr0)"/>
+<line x1="805" y1="76" x2="805" y2="126" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr0)"/>
+<line x1="575" y1="240" x2="575" y2="190" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr0)"/>
+<line x1="805" y1="186" x2="805" y2="236" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr0)"/>
+<path d="M 805 296 L 805 326 L 110 326 L 110 190" fill="none" stroke="var(--d-muted)" stroke-width="1.3" stroke-dasharray="5 3" marker-end="url(#cr0)"/>
+<text x="124" y="316" font-size="13" fill="var(--d-muted)">셀프 리뷰의 다음 라운드</text>
+<rect x="20" y="364" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="40" y="376" font-size="13" fill="var(--d-muted)">입력과 결과</text>
+<rect x="150" y="364" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="170" y="376" font-size="13" fill="var(--d-muted)">스킬</text>
+</svg>
+        <p class="diagram-caption"><code>pr:nitpick</code>의 로컬 전용 모드는 자율 구현 스킬이 PR을 생성하기 전에 로컬 변경을 리뷰할 때 사용하는 모드이고, 지적을 PR 댓글 대신 로컬 파일에 기록한다.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="flow">관점별 리뷰</h2>
+      <p>에이전트 하나가 변경 전체를 한 번 읽고 리뷰하면 결함을 누락하거나, 찾은 결함을 문제가 아니라고 잘못 판정해 지적에서 제외(기각)한다. 실제로 <a href="autonomous-cycle.html">자율 구현</a> 스킬의 리뷰 에이전트가 기각한 지적 두 개를 다음 날 동료 리뷰어가 다시 지적했다.</p>
+      <p>그래서 <code>pr:nitpick</code>은 변경을 관점마다 서브에이전트에게 배정하고, 수집한 지적을 게시 전에 다시 검증한다. 지적을 기각하려면 반박 서브에이전트가 그 지적을 옹호해 보게 한다.</p>
+      <p>지적 등급은 높은 순서로 <code>blocker</code>와 <code>major</code>와 <code>minor</code>와 <code>nit</code>이다.</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 920 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="관점별 리뷰 흐름 도해"><defs><marker id="cr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-muted)"/></marker></defs><text x="20" y="22" text-anchor="start" font-size="13" font-weight="600" fill="var(--d-muted)">메인 에이전트</text><rect x="20" y="32" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="115.0" y="56.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">변경 diff</text><text x="115.0" y="75.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">PR이나 로컬 변경</text><rect x="250" y="32" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="345.0" y="56.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">PR 의도 목록</text><text x="345.0" y="75.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">의도한 변경은 지적 제외</text><rect x="480" y="32" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="575.0" y="56.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">파일 분할</text><text x="575.0" y="75.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">변경량 순 정렬</text><rect x="710" y="32" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="805.0" y="56.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">관점 선택</text><text x="805.0" y="75.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">변경 파일 종류 기준</text><path d="M 210 60 L 246 60" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 440 60 L 476 60" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 670 60 L 706 60" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><text x="20" y="106" text-anchor="start" font-size="13" font-weight="600" fill="var(--d-muted)">관점별 서브에이전트</text><path d="M 805 88 L 805 118" fill="none" stroke="var(--d-muted)" stroke-width="1.3"/><path d="M 102 118 L 818 118" fill="none" stroke="var(--d-muted)" stroke-width="1.3"/><path d="M 102 118 L 102 140" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 281 118 L 281 140" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 460 118 L 460 140" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 639 118 L 639 140" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 818 118 L 818 140" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><rect x="20" y="144" width="164" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="102.0" y="171.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">정확성</text><rect x="199" y="144" width="164" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="281.0" y="171.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">성능</text><rect x="378" y="144" width="164" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="460.0" y="171.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">이름</text><rect x="557" y="144" width="164" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="639.0" y="171.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">테스트</text><rect x="736" y="144" width="164" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="818.0" y="171.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">그 밖의 관점</text><path d="M 102 188 L 102 214" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 281 188 L 281 214" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 460 188 L 460 214" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 639 188 L 639 214" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 818 188 L 818 214" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><rect x="20" y="218" width="880" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="460.0" y="243.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">관점별 지적 파일</text><text x="20" y="290" text-anchor="start" font-size="13" font-weight="600" fill="var(--d-muted)">검증과 판정</text><rect x="20" y="300" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="115.0" y="324.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">작성자 반박 확인</text><text x="115.0" y="343.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">답글의 사실 재확인</text><rect x="250" y="300" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="345.0" y="324.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">검증 에이전트</text><text x="345.0" y="343.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">부재와 개수 재검색</text><rect x="480" y="300" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="575.0" y="324.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">메인 에이전트 판정</text><text x="575.0" y="343.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">삭제와 강등 결정</text><rect x="710" y="300" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="805.0" y="324.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">누락 점검</text><text x="805.0" y="343.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">지적 없는 관점 재실행</text><path d="M 115 258 L 115 296" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 210 328 L 246 328" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 440 328 L 476 328" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 670 328 L 706 328" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 900 328 L 912 328 L 912 166 L 904 166" fill="none" stroke="var(--d-muted)" stroke-width="1.3" stroke-dasharray="5 3" marker-end="url(#cr1)"/><text x="20" y="402" text-anchor="start" font-size="13" font-weight="600" fill="var(--d-muted)">게시</text><path d="M 805 356 L 805 384 L 115 384 L 115 408" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><rect x="20" y="412" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="115.0" y="436.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">종합과 등급</text><text x="115.0" y="455.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">중복 정리</text><rect x="250" y="412" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="345.0" y="436.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">문장 교정</text><text x="345.0" y="455.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">지적 수 유지</text><rect x="480" y="412" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="575.0" y="436.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">게시 또는 기록</text><text x="575.0" y="455.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">PR 댓글이나 로컬 파일</text><rect x="710" y="412" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="805.0" y="436.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">관점 회고</text><text x="805.0" y="455.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">누락한 유형을 스킬에 반영</text><path d="M 210 440 L 246 440" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 440 440 L 476 440" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/><path d="M 670 440 L 706 440" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr1)"/></svg>
+        <p class="diagram-caption">점선은 지적을 하나도 제기하지 않은 관점의 서브에이전트를 다시 실행하는 경로다.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="resolve-flow">지적 처리</h2>
+      <p>받은 지적은 맞는지 확인한 뒤에 수용하거나 반박해야 한다. 그래서 <code>pr:resolve</code>는 지적마다 리뷰 대상 브랜치의 최신 커밋(head)에서 근거를 다시 실행하고 판정을 하나 선택한다.</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 920 490" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="리뷰 지적 처리 흐름 도해"><defs><marker id="cr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-muted)"/></marker></defs><rect x="20" y="166" width="180" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="110.0" y="190.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">받은 지적</text><text x="110.0" y="209.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">인라인 댓글과 리뷰 본문</text><path d="M 200 194 L 236 194" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr2)"/><rect x="240" y="166" width="180" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="330.0" y="190.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">근거 재실행</text><text x="330.0" y="209.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">head 코드 기준</text><path d="M 420 194 L 440 194" fill="none" stroke="var(--d-muted)" stroke-width="1.3"/><path d="M 440 48 L 440 328" fill="none" stroke="var(--d-muted)" stroke-width="1.3"/><path d="M 440 48 L 466 48" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr2)"/><rect x="470" y="20" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="545.0" y="44.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">수용 수정</text><text x="545.0" y="63.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">지적이 모두 참</text><path d="M 440 118 L 466 118" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr2)"/><rect x="470" y="90" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="545.0" y="114.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">일부 수용</text><text x="545.0" y="133.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">일부만 참</text><path d="M 440 188 L 466 188" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr2)"/><rect x="470" y="160" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="545.0" y="184.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">비수용</text><text x="545.0" y="203.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">반증 있음</text><path d="M 440 258 L 466 258" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr2)"/><rect x="470" y="230" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="545.0" y="254.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">보류</text><text x="545.0" y="273.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">확인 불가</text><path d="M 440 328 L 466 328" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr2)"/><rect x="470" y="300" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="545.0" y="324.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">이미 해소</text><text x="545.0" y="343.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">해결 커밋 있음</text><rect x="700" y="62" width="200" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="800.0" y="86.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">수정 커밋</text><text x="800.0" y="105.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">가장 작은 수정</text><path d="M 620 48 L 660 48 L 660 118" fill="none" stroke="var(--d-muted)" stroke-width="1.3"/><path d="M 620 118 L 660 118" fill="none" stroke="var(--d-muted)" stroke-width="1.3"/><path d="M 660 90 L 696 90" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr2)"/><rect x="700" y="160" width="200" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="800.0" y="184.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">푸시 전 검증</text><text x="800.0" y="203.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">테스트 재실행</text><path d="M 800 118 L 800 156" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr2)"/><path d="M 620 188 L 645 188" fill="none" stroke="var(--d-muted)" stroke-width="1.3"/><path d="M 620 258 L 645 258" fill="none" stroke="var(--d-muted)" stroke-width="1.3"/><path d="M 620 328 L 645 328" fill="none" stroke="var(--d-muted)" stroke-width="1.3"/><path d="M 645 188 L 645 390" fill="none" stroke="var(--d-muted)" stroke-width="1.3"/><path d="M 800 216 L 800 390 L 115 390" fill="none" stroke="var(--d-muted)" stroke-width="1.3"/><path d="M 115 390 L 115 416" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr2)"/><rect x="20" y="420" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="115.0" y="444.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">항목별 답글</text><text x="115.0" y="463.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">근거 명령이나 위치 포함</text><rect x="250" y="420" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="345.0" y="444.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">스레드 정리</text><text x="345.0" y="463.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">보류 스레드는 유지</text><rect x="480" y="420" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="575.0" y="444.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">관점 회고</text><text x="575.0" y="463.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">PR 밖에 기록</text><rect x="710" y="420" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="805.0" y="444.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">스킬 설정 draft PR</text><text x="805.0" y="463.0" text-anchor="middle" font-size="13" fill="var(--d-muted)">수정할 축마다 PR 하나</text><path d="M 210 448 L 246 448" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr2)"/><path d="M 440 448 L 476 448" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr2)"/><path d="M 670 448 L 706 448" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#cr2)"/></svg>
+        <p class="diagram-caption"><code>pr:resolve</code>는 관점 회고 결과로 개인 설정 저장소에 draft PR을 생성한다.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="fp-rules">판정 규칙</h2>
+      <p>관점별 서브에이전트가 제기한 지적과 받은 지적에는 틀린 지적이 포함된다. 그래서 두 스킬은 아래 규칙에 따라 지적을 유지하거나 삭제한다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>대상</th><th>규칙</th></tr></thead>
+          <tbody>
+            <tr><td>틀린 지적</td><td><ul><li>사실이나 인과가 틀린 지적은 등급과 관계없이 삭제한다.</li></ul></td></tr>
+            <tr><td>사소한 지적</td><td><ul><li>사소하다는 이유로 삭제하지 않고 등급만 낮춘다.</li></ul></td></tr>
+            <tr><td>지적의 기각</td><td><ul><li>코드를 보며 지적을 옹호한 반박 서브에이전트가 실패한 경우에만 기각한다.</li></ul></td></tr>
+            <tr><td>부재와 개수 주장</td><td><ul><li>검색 결과를 근거로 한 지적은 메인 에이전트나 검증 에이전트가 검색을 다시 실행한다.</li><li>남은 지적이 약 80건을 초과하면 검색 재실행을 검증 에이전트 2~3개에 분배한다.</li></ul></td></tr>
+            <tr><td>작성자 반박</td><td><ul><li>답글이 확인할 수 있는 사실로 지적을 닫으면 그 확인 명령을 다시 실행한다.</li><li>반박이 반증되면 지적을 복원한다.</li><li>틀린 반박은 새 지적으로 게시한다.</li></ul></td></tr>
+            <tr><td>받은 지적의 비수용</td><td><ul><li>반증한 명령과 출력이나 코드 위치를 답글에 기록한다.</li><li>기록할 수 없으면 보류로 판정한다.</li></ul></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="lenses">관점 목록</h2>
+      <p>관점별 서브에이전트는 아래 관점 가운데 변경 내용에 맞는 것을 하나씩 담당한다.</p><ul class="rule-list"><li>기본 관점은 매번 실행하고, <code>L21~L24</code>만 정해진 조건이 맞을 때 실행한다.</li><li><code>L26</code>은 Kotlin 변경이 있을 때 함수마다 시그니처를 추출해 이름과 본문 동작을 대조하는 워크플로로 실행한다.</li></ul>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>번호</th><th>관점</th><th>확인하는 것</th></tr></thead>
+          <tbody>
+            <tr><td><code>L01</code></td><td>정확성</td><td>로직과 경계값, 같은 계열의 형제 경로 가운데 한쪽만 값을 검증하거나 변환하는 계약 불일치</td></tr>
+            <tr><td><code>L02</code></td><td>보안</td><td>권한, 주입, 로그의 개인정보</td></tr>
+            <tr><td><code>L03</code></td><td>성능</td><td>N+1 조회, 캐시 키, 계속 늘어나는 컬렉션의 무제한 조회</td></tr>
+            <tr><td><code>L04</code></td><td>동시성</td><td>경쟁 조건, 공유 가변 상태, 락 순서</td></tr>
+            <tr><td><code>L05</code></td><td>오류 처리</td><td>삼킨 예외, 모호한 메시지, 부분 실패</td></tr>
+            <tr><td><code>L06</code></td><td>테스트</td><td>약한 단언과 누락된 경계 사례</td></tr>
+            <tr><td><code>L07</code></td><td>설계</td><td>과한 추상화, 계층 위반, 중복 구현</td></tr>
+            <tr><td><code>L08</code></td><td>관례</td><td>대상 저장소에 실재하는 관례의 위반</td></tr>
+            <tr><td><code>L09</code></td><td>이름</td><td>변수와 함수의 이름, 약어, 오타</td></tr>
+            <tr><td><code>L10</code></td><td>서식</td><td>들여쓰기, 줄바꿈, 빈 줄</td></tr>
+            <tr><td><code>L11</code></td><td>공백</td><td>연산자와 괄호 주변의 공백</td></tr>
+            <tr><td><code>L12</code></td><td>import 순서</td><td>import 그룹, 정렬, 사용하지 않는 import</td></tr>
+            <tr><td><code>L13</code></td><td>주석과 문서</td><td>틀린 주석과 불필요한 주석</td></tr>
+            <tr><td><code>L14</code></td><td>API 호환</td><td>PR 의도 목록에 없는 필드 삭제와 경로 변경</td></tr>
+            <tr><td><code>L15</code></td><td>가독성</td><td>중첩 깊이, 함수 길이, 파라미터 수</td></tr>
+            <tr><td><code>L16</code></td><td>매직 값</td><td>하드코딩한 숫자와 문자열</td></tr>
+            <tr><td><code>L17</code></td><td>null과 타입</td><td>새로 추가한 <code>!!</code>(null 강제 해제)와 재할당하지 않는 <code>var</code>(가변 변수)</td></tr>
+            <tr><td><code>L18</code></td><td>로그와 관측</td><td>로그 수준과 신호 없는 실패 분기</td></tr>
+            <tr><td><code>L19</code></td><td>자원 수명</td><td>close, cancel, 누수</td></tr>
+            <tr><td><code>L20</code></td><td>git과 PR 정리</td><td>커밋 메시지, 범위 밖 파일, 남은 디버그 코드</td></tr>
+            <tr><td><code>L21</code></td><td>스크립트</td><td><code>*.sh</code>와 Makefile과 CI 스크립트가 호출하는 외부 명령의 설치 확인과 실패 처리 방식</td></tr>
+            <tr><td><code>L22</code></td><td>남은 이전 이름</td><td>삭제나 이름 변경 뒤 남은 이전 타입과 필드 이름</td></tr>
+            <tr><td><code>L23</code></td><td>문서와 코드 일치</td><td>README와 API 스키마가 head 코드와 일치하지 않는 곳</td></tr>
+            <tr><td><code>L24</code></td><td>이중 경로</td><td><code>@RequestMapping</code>의 이중 경로나 별칭 URL처럼 한 기능을 받는 경로 쌍에서 한쪽만 다루는 테스트와 문서</td></tr>
+            <tr><td><code>L25</code></td><td>이력 일관성</td><td>최근 커밋이나 머지된 PR과 겹치거나 되돌리는 변경</td></tr>
+            <tr><td><code>L26</code></td><td>이름과 동작 대조</td><td>이름에 드러나지 않은 동작을 하는 Kotlin 함수</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><code>pr:nitpick</code>은 확장 관점을 변경 내용에 따라 그룹 단위로 실행한다. 예를 들어 테스트 파일이 변경되면 테스트 깊이 그룹을 실행하고, <code>@Transactional</code>이나 <code>@Cacheable</code>이 변경되면 영속성 실행 그룹을 실행한다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>번호</th><th>관점 그룹</th><th>확인하는 것</th></tr></thead>
+          <tbody>
+            <tr><td><code>L27~L33</code></td><td>스키마</td><td>외래 키와 UNIQUE 제약, 컬럼 타입과 인덱스</td></tr>
+            <tr><td><code>L34~L36</code></td><td>마이그레이션과 배포</td><td>테이블 잠금을 일으키는 DDL, 컬럼 삭제와 코드 변경의 배포 순서, 기존 행 채우기</td></tr>
+            <tr><td><code>L37~L40</code></td><td>영속성 실행</td><td>트랜잭션 경계, JPA 지연 로딩, 캐시 키와 무효화, 저장된 값의 직렬화</td></tr>
+            <tr><td><code>L41~L45</code></td><td>분산과 운영</td><td>외부 클라이언트 타임아웃, 재시도의 멱등성, 이벤트 발행 시점, 스케줄 작업 중복 실행</td></tr>
+            <tr><td><code>L46~L50</code></td><td>보안 세부</td><td>호출자의 리소스 소유 검사, 서버 전용 필드 바인딩, 응답의 내부 정보 노출</td></tr>
+            <tr><td><code>L51~L54</code></td><td>API 계약</td><td>요청 검증 애너테이션, 응답 null 여부, 새 enum 값의 소비처, 시간대와 단위</td></tr>
+            <tr><td><code>L55~L58</code> <code>L79</code></td><td>테스트 깊이</td><td>테스트 독립성, 단언 품질, 새 분기의 경계 테스트, 실제와 같은 형태의 테스트 입력</td></tr>
+            <tr><td><code>L62</code></td><td>값 타입</td><td>동작 없는 클래스의 <code>data class</code> 여부, <code>equals</code>와 <code>hashCode</code> 짝</td></tr>
+            <tr><td><code>L64</code></td><td>코루틴</td><td><code>GlobalScope</code>와 <code>runBlocking</code> 사용, 취소 예외를 삼키는 <code>runCatching</code></td></tr>
+            <tr><td><code>L65~L68</code> <code>L78</code></td><td>도메인과 요구 추적</td><td>PR 본문 주장과 코드 대조, 경계 조건과 상태 전이, 티켓 요구와 코드 대조</td></tr>
+            <tr><td><code>L69~L74</code></td><td>아키텍처</td><td>계층 배치, 모듈 경계, 같은 목적의 중복 구현 방식, 외부 SDK 타입 노출</td></tr>
+            <tr><td><code>L80~L83</code></td><td>동시성, 금액, 마이그레이션 이력</td><td>한 행을 두 트랜잭션이 갱신하는 경쟁, 트랜잭션 안의 외부 호출, 금액 연산, 이미 적용된 마이그레이션 파일 수정</td></tr>
+            <tr><td><code>L84</code></td><td>패턴 제안</td><td>3회 이상 반복된 변형 축을 패턴 하나로 통합하는 제안</td></tr>
+            <tr><td><code>L85</code></td><td>전제와 비용</td><td>이 변경이 이미 부담하는 비용을 근거로 비용이 더 낮은 설계를 묻는 제안</td></tr>
+            <tr><td><code>L86</code></td><td>이름과 위치 대칭</td><td><code>enable</code>과 <code>disable</code>처럼 짝이 되는 연산의 누락, 형제 파일과 다른 이름 규칙</td></tr>
+            <tr><td><code>L87</code></td><td>리뷰 스레드 후속 확인</td><td>반영했다는 답글의 변경이 head 코드에 실제로 있는지</td></tr>
+            <tr><td><code>L88</code></td><td>설정 프로파일 대칭</td><td>코드가 읽는 설정 키가 프로파일 파일마다 있는지</td></tr>
+            <tr><td><code>L89</code></td><td>화면 렌더 계약</td><td>프런트엔드 훅 의존 배열과 렌더마다 새로 생성하는 객체</td></tr>
+            <tr><td><code>L92</code></td><td>죽은 테스트 대역</td><td>테스트가 선언했지만 대상 경로가 호출하지 않는 목 객체</td></tr>
+            <tr><td><code>L93</code></td><td>같은 축 중복 파라미터</td><td>날짜처럼 같은 축의 값을 두 개 받고 하나만 읽는 시그니처</td></tr>
+            <tr><td><code>L94</code></td><td>호출부의 이름 붙은 인자</td><td>인접한 같은 타입 인자나 <code>true</code> 리터럴을 이름 없이 전달하는 호출</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>PR을 리뷰할 때 <code>pr:nitpick</code>은 PR 제목과 본문이 저장소의 PR 템플릿을 따르는지도 확인하고, 게시하는 댓글에는 질문이나 제안 같은 의도 라벨을 추가한다.</p>
+    </section>
+
+    <footer class="page-footer">
+      <a href="design-verify.html">이전: 설계와 검증</a>
+      <a href="polish.html">다음: 문장 검토</a>
+    </footer>
+    </main>
+    <nav class="toc" aria-label="절 목록"></nav>
+  </div>
+  <script src="../../project.js" defer></script>
+</body>
+</html>

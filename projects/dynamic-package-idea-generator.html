@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>여행 서비스 아이디어 생성 시스템 | 박상곤</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../project.css">
+</head>
+<body data-root="../" data-project="dynamic-package-idea-generator">
+  <div class="doc-layout">
+    <aside class="doc-side"></aside>
+    <main class="doc">
+      <a class="doc-back" href="../index.html#projects">프로젝트 목록으로 이동</a>
+      <header class="doc-header">
+        <h1>여행 서비스 아이디어 생성 시스템</h1>
+        <p class="doc-meta">2026.01 · 단독 개발</p>
+        <div class="tech-tags"><span class="tech-tag">Kotlin</span><span class="tech-tag">Spring Boot</span><span class="tech-tag">JPA</span><span class="tech-tag">PostgreSQL</span><span class="tech-tag">Koog Agent</span><span class="tech-tag">Claude</span><span class="tech-tag">OpenAI Embeddings</span><span class="tech-tag">Thymeleaf</span></div>
+      </header>
+
+      <section class="section">
+        <h2 id="what">여행 서비스 아이디어 생성 시스템이란</h2>
+        <p>여행 서비스를 기획할 때는 후보 기능을 많이 모은 뒤 구현할 것을 선별해야 하고, 후보를 사람이 일일이 작성하고 평가하는 데 시간이 든다.</p>
+        <p>이 시스템은 LLM으로 기능 아이디어를 요구사항 문서(PRD) 형태로 주기적으로 생성하고, 평가 점수와 유사 아이디어를 함께 표시한다. 사용자가 즐겨찾기와 삭제로 선별한 결과는 다음 생성에 전달된다.</p>
+        <p>전신은 사내 AI 해커톤 팀의 아이디어 발굴용 생성기다. 이 시스템은 대상을 여행 서비스 기획으로 변경하고 중복 판정과 평가와 피드백 경로를 새로 갖춘다.</p>
+      </section>
+      <section class="section">
+        <h2 id="layout">구성</h2>
+        <p>생성 요청은 스케줄과 화면에서 발생하고 모두 작업으로 저장된다. 생성된 아이디어는 임베딩과 평가를 거쳐 상세 화면에 표시되고, 사용자의 선별 결과는 다음 생성에 전달된다.</p>
+        <div class="diagram-box">
+<svg viewBox="0 0 860 428" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="생성 요청부터 사용자 선별까지의 흐름">
+<defs><marker id="ig1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+<rect x="20" y="20" width="170" height="52" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="105" y="41" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">스케줄 실행</text>
+<text x="105" y="62" text-anchor="middle" font-size="13" fill="var(--d-muted)">10분 간격</text>
+<line x1="190" y1="46" x2="236" y2="46" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig1)"/>
+<rect x="20" y="78" width="170" height="52" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="105" y="99" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">수동 생성 요청</text>
+<text x="105" y="120" text-anchor="middle" font-size="13" fill="var(--d-muted)">사용자 입력 조건</text>
+<line x1="190" y1="104" x2="236" y2="104" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig1)"/>
+<rect x="20" y="136" width="170" height="52" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="105" y="157" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">다시 만들기 요청</text>
+<text x="105" y="178" text-anchor="middle" font-size="13" fill="var(--d-muted)">기존 아이디어 기반</text>
+<line x1="190" y1="162" x2="236" y2="162" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig1)"/>
+<rect x="240" y="20" width="150" height="168" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="315" y="99" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">작업 저장</text>
+<text x="315" y="120" text-anchor="middle" font-size="13" fill="var(--d-muted)">대기 상태 기록</text>
+<line x1="390" y1="104" x2="436" y2="104" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig1)"/>
+<rect x="440" y="76" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="525" y="109" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">에이전트 방식인가?</text>
+<polyline points="610,104 630,104" fill="none" stroke="var(--d-line)" stroke-width="1.3"/>
+<polyline points="630,104 630,52 646,52" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig1)"/>
+<polyline points="630,104 630,156 646,156" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig1)"/>
+<text x="622" y="72" text-anchor="end" font-size="13" fill="var(--d-muted)">예</text>
+<text x="622" y="150" text-anchor="end" font-size="13" fill="var(--d-muted)">아니요</text>
+<rect x="650" y="20" width="190" height="64" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="745" y="47" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">에이전트 방식 생성</text>
+<text x="745" y="68" text-anchor="middle" font-size="13" fill="var(--d-muted)">모델이 도구로 기존 제안 조회</text>
+<rect x="650" y="124" width="190" height="64" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="745" y="151" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">단순 방식 생성</text>
+<text x="745" y="172" text-anchor="middle" font-size="13" fill="var(--d-muted)">코드가 만든 프롬프트로 호출</text>
+<polyline points="840,52 852,52 852,214 745,214" fill="none" stroke="var(--d-line)" stroke-width="1.3"/>
+<polyline points="745,188 745,214" fill="none" stroke="var(--d-line)" stroke-width="1.3"/>
+<polyline points="745,214 110,214 110,236" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig1)"/>
+<rect x="20" y="240" width="190" height="64" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="115" y="267" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">아이디어 저장</text>
+<text x="115" y="288" text-anchor="middle" font-size="13" fill="var(--d-muted)">응답 JSON 파싱</text>
+<line x1="210" y1="272" x2="246" y2="272" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig1)"/>
+<rect x="250" y="240" width="180" height="64" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="340" y="267" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">임베딩 저장</text>
+<text x="340" y="288" text-anchor="middle" font-size="13" fill="var(--d-muted)">제목과 요약을 벡터로</text>
+<line x1="430" y1="272" x2="466" y2="272" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig1)"/>
+<rect x="470" y="240" width="170" height="64" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="555" y="267" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">LLM 평가</text>
+<text x="555" y="288" text-anchor="middle" font-size="13" fill="var(--d-muted)">1~10점과 장단점</text>
+<line x1="640" y1="272" x2="676" y2="272" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig1)"/>
+<rect x="680" y="240" width="160" height="64" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="760" y="267" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">상세 화면</text>
+<text x="760" y="288" text-anchor="middle" font-size="13" fill="var(--d-muted)">유사 아이디어 표시</text>
+<line x1="760" y1="304" x2="760" y2="340" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig1)"/>
+<rect x="680" y="344" width="160" height="64" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="760" y="371" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">사용자 선별</text>
+<text x="760" y="392" text-anchor="middle" font-size="13" fill="var(--d-muted)">즐겨찾기와 삭제</text>
+<line x1="680" y1="376" x2="644" y2="376" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig1)"/>
+<rect x="430" y="344" width="210" height="64" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="535" y="371" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">다음 생성에 전달</text>
+<text x="535" y="392" text-anchor="middle" font-size="13" fill="var(--d-muted)">에이전트 도구와 프롬프트</text>
+<rect x="20" y="368" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="40" y="380" font-size="13" fill="var(--d-muted)">아이디어 생성 시스템의 처리</text>
+<rect x="240" y="368" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="260" y="380" font-size="13" fill="var(--d-muted)">입력과 판단</text>
+</svg>
+          <p class="diagram-caption">스케줄 요청은 항상 에이전트 방식으로 생성한다.</p>
+        </div>
+      </section>
+      <section class="section">
+        <h2 id="modes">생성 방식</h2>
+        <p>두 방식은 기존 아이디어와 사용자의 선별 결과를 읽는 주체가 다르다. 에이전트 방식은 모델이 도구를 호출해 필요한 자료를 조회하고, 단순 방식은 코드가 자료를 프롬프트에 포함해 LLM을 직접 호출한다.</p>
+        <div class="table-wrap"><table><thead><tr><th>자료</th><th>에이전트 방식</th><th>단순 방식</th></tr></thead><tbody><tr><td>기존 아이디어</td><td>키워드 검색 도구와 의미 검색 도구로 조회한다.</td><td>최근 아이디어 목록을 프롬프트에 포함한다.</td></tr><tr><td>즐겨찾기</td><td>즐겨찾기 조회 도구로 최근 10건까지 읽는다.</td><td>전달되지 않는다.</td></tr><tr><td>저평가와 삭제</td><td>저평가 조회 도구로 5점 이하와 삭제 사례를 읽는다.</td><td>삭제 사례 20건까지 프롬프트에 포함한다.</td></tr><tr><td>저장 후 비교</td><td>최근 50건과 임베딩을 비교한다.</td><td>수행하지 않는다.</td></tr></tbody></table></div>
+        <p>화면 요청의 기본값은 단순 방식이고 사용자가 지정하면 에이전트 방식으로 생성한다.</p>
+        <p>에이전트 방식의 조회는 모델의 판단으로 일어나므로 프롬프트의 지시만으로 호출을 강제하지 못한다. 단순 방식은 자료의 전달이 코드로 보장되는 대신 전달 범위가 프롬프트에 포함한 최근 목록으로 제한된다.</p>
+      </section>
+      <section class="section">
+        <h2 id="dedupe">중복 판정</h2>
+        <p>주기적으로 생성하면 표현만 다른 제안이 반복된다. 예를 들어 "출장 동선 효율성 점수 표시 기능"과 "출장 동선효율 점수 시각화 기능"은 제목이 다르지만 같은 제안이다.</p>
+        <p>이 시스템은 제목과 요약의 임베딩을 PostgreSQL에 저장하고 애플리케이션에서 코사인 유사도를 계산한다. 의미가 같은 제안을 찾는 다른 방식과 비교하면 동작과 제약이 다음 표처럼 다르다.</p>
+        <div class="table-wrap"><table><thead><tr><th>방식</th><th>동작</th><th>제약</th></tr></thead><tbody><tr><td>프롬프트 목록</td><td>최근 제목과 요약을 프롬프트에 포함한다.</td><td>표현이 다른 중복의 판단을 모델에 의존한다.</td></tr><tr><td>벡터 DB</td><td>전용 저장소에서 유사 벡터를 검색한다.</td><td>저장소 서버를 함께 실행해야 한다.</td></tr><tr><td>코사인 비교</td><td>저장된 벡터를 읽어 애플리케이션에서 계산한다.</td><td>비교할 때마다 대상 벡터를 읽고 파싱한다.</td></tr></tbody></table></div>
+        <p>에이전트 방식의 판정은 생성 전과 생성 중과 저장 후로 나뉜다. 단순 방식은 저장 후 비교를 수행하지 않고 상세 화면의 구간 표시만 적용된다.</p>
+        <div class="diagram-box">
+<svg viewBox="0 0 860 382" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="생성 전과 생성 중과 저장 후에 중복을 판정하는 흐름">
+<defs><marker id="ig2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+<rect x="20" y="36" width="175" height="64" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="107.5" y="63" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">조건 순차 선택</text>
+<text x="107.5" y="84" text-anchor="middle" font-size="13" fill="var(--d-muted)">스케줄 실행에만 적용</text>
+<line x1="195" y1="68" x2="221" y2="68" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig2)"/>
+<rect x="225" y="36" width="220" height="64" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="335" y="63" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">의미 검색 도구</text>
+<text x="335" y="84" text-anchor="middle" font-size="13" fill="var(--d-muted)">최근 100건, 기준은 모델 지정</text>
+<line x1="445" y1="68" x2="471" y2="68" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig2)"/>
+<rect x="475" y="36" width="230" height="64" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="590" y="73" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">유사한 제안이 있는가?</text>
+<line x1="705" y1="68" x2="731" y2="68" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig2)"/>
+<text x="718" y="60" text-anchor="middle" font-size="13" fill="var(--d-muted)">예</text>
+<rect x="735" y="36" width="105" height="64" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="787.5" y="63" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">구상 수정</text>
+<text x="787.5" y="84" text-anchor="middle" font-size="13" fill="var(--d-muted)">프롬프트 지시</text>
+<polyline points="787,100 787,124 590,124" fill="none" stroke="var(--d-line)" stroke-width="1.3"/>
+<polyline points="590,100 590,124" fill="none" stroke="var(--d-line)" stroke-width="1.3"/>
+<text x="607" y="116" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+<polyline points="590,124 107,124 107,146" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig2)"/>
+<rect x="20" y="150" width="175" height="64" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="107.5" y="177" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">아이디어 저장</text>
+<text x="107.5" y="198" text-anchor="middle" font-size="13" fill="var(--d-muted)">PostgreSQL</text>
+<line x1="195" y1="182" x2="221" y2="182" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig2)"/>
+<rect x="225" y="150" width="220" height="64" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="335" y="177" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">임베딩 저장</text>
+<text x="335" y="198" text-anchor="middle" font-size="13" fill="var(--d-muted)">제목과 요약만 입력</text>
+<line x1="445" y1="182" x2="471" y2="182" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig2)"/>
+<rect x="475" y="150" width="230" height="64" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="590" y="187" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">최근 50건과 0.85 이상인가?</text>
+<line x1="705" y1="182" x2="731" y2="182" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig2)"/>
+<text x="718" y="174" text-anchor="middle" font-size="13" fill="var(--d-muted)">예</text>
+<rect x="735" y="150" width="105" height="64" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="787.5" y="177" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">경고 기록</text>
+<text x="787.5" y="198" text-anchor="middle" font-size="13" fill="var(--d-muted)">저장 유지</text>
+<polyline points="787,214 787,238 590,238" fill="none" stroke="var(--d-line)" stroke-width="1.3"/>
+<polyline points="590,214 590,238" fill="none" stroke="var(--d-line)" stroke-width="1.3"/>
+<text x="607" y="230" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+<polyline points="590,238 370,238 370,260" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig2)"/>
+<rect x="20" y="264" width="175" height="64" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="107.5" y="291" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">단순 방식 저장</text>
+<text x="107.5" y="312" text-anchor="middle" font-size="13" fill="var(--d-muted)">저장 후 비교 없음</text>
+<line x1="195" y1="296" x2="221" y2="296" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig2)"/>
+<rect x="225" y="264" width="290" height="64" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="370" y="291" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">상세 화면</text>
+<text x="370" y="312" text-anchor="middle" font-size="13" fill="var(--d-muted)">전체와 비교해 0.80, 0.65, 0.50 구간 표시</text>
+<line x1="515" y1="296" x2="541" y2="296" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig2)"/>
+<rect x="545" y="264" width="175" height="64" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="632.5" y="291" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">사용자 판단</text>
+<text x="632.5" y="312" text-anchor="middle" font-size="13" fill="var(--d-muted)">중복이면 삭제</text>
+<rect x="20" y="348" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="40" y="360" font-size="13" fill="var(--d-muted)">아이디어 생성 시스템의 처리</text>
+<rect x="240" y="348" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="260" y="360" font-size="13" fill="var(--d-muted)">입력과 판단</text>
+</svg>
+          <p class="diagram-caption">조건 순차 선택은 길이가 다른 고객 유형과 기획 단계와 주제와 불편 유형 목록을 순서대로 조합해 생성 조건을 코드에서 결정한다.</p>
+        </div>
+        <p>의미 검색의 유사도 기준은 도구 기본값이 0.7이고 모델이 호출할 때 지정하며, 기록이 남은 실행 구간의 호출은 모두 0.5에서 0.65를 지정한다. 저장 후 비교는 코드에 고정된 0.85 기준으로 동작한다.</p>
+        <p>0.85 이상이어도 저장을 차단하지 않으므로 표현만 다른 제안은 사용자가 삭제하기 전까지 남는다. 저장된 아이디어에서 추출한 유사 쌍 자료에는 0.85 이상인 쌍이 6개 있고 그중 1개는 제목까지 같다.</p>
+        <p>저장 후 비교와 의미 검색은 각각 최근 50건과 최근 100건만 대상으로 한다. 더 오래된 아이디어와의 중복은 자동으로 판정하지 못하고 상세 화면에서 사용자가 확인한다.</p>
+      </section>
+      <section class="section">
+        <h2 id="feedback">피드백 반영</h2>
+        <p>전신인 생성기는 사람이 프롬프트를 수정해 방향을 조정했고, 품질 평가 자동화와 피드백 기반 프롬프트 개선은 미해결 과제였다. 이 시스템은 즐겨찾기와 LLM 평가와 삭제 사유를 저장해 생성 방식별 경로로 다음 생성에 전달한다.</p>
+        <div class="diagram-box">
+<svg viewBox="0 0 860 372" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="즐겨찾기와 평가와 삭제가 다음 생성으로 전달되는 경로">
+<defs><marker id="ig3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+<rect x="20" y="30" width="120" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="80" y="53" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">즐겨찾기</text>
+<text x="80" y="74" text-anchor="middle" font-size="13" fill="var(--d-muted)">사용자 지정</text>
+<line x1="140" y1="58" x2="526" y2="58" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig3)"/>
+<rect x="530" y="30" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="615" y="53" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">즐겨찾기 조회 도구</text>
+<text x="615" y="74" text-anchor="middle" font-size="13" fill="var(--d-muted)">최근 10건</text>
+<rect x="20" y="100" width="120" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="80" y="123" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">LLM 평가</text>
+<text x="80" y="144" text-anchor="middle" font-size="13" fill="var(--d-muted)">점수와 단점</text>
+<line x1="140" y1="128" x2="526" y2="128" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig3)"/>
+<rect x="530" y="100" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="615" y="123" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">저평가 조회 도구</text>
+<text x="615" y="144" text-anchor="middle" font-size="13" fill="var(--d-muted)">5점 이하와 삭제 사례</text>
+<rect x="730" y="30" width="120" height="126" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="790" y="88" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">에이전트</text>
+<text x="790" y="108" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">방식 생성</text>
+<line x1="700" y1="58" x2="726" y2="58" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig3)"/>
+<line x1="700" y1="128" x2="726" y2="128" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig3)"/>
+<rect x="20" y="180" width="120" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="80" y="203" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">삭제</text>
+<text x="80" y="224" text-anchor="middle" font-size="13" fill="var(--d-muted)">복구 가능</text>
+<line x1="140" y1="208" x2="166" y2="208" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig3)"/>
+<rect x="170" y="180" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="255" y="213" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">사유를 입력했는가?</text>
+<line x1="340" y1="208" x2="366" y2="208" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig3)"/>
+<text x="353" y="200" text-anchor="middle" font-size="13" fill="var(--d-muted)">예</text>
+<rect x="370" y="180" width="130" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="435" y="213" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">삭제 사유 저장</text>
+<polyline points="500,208 515,208" fill="none" stroke="var(--d-line)" stroke-width="1.3"/>
+<polyline points="515,208 515,128" fill="none" stroke="var(--d-line)" stroke-width="1.3"/>
+<polyline points="515,208 515,296 526,296" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig3)"/>
+<line x1="255" y1="236" x2="255" y2="264" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig3)"/>
+<text x="277" y="254" text-anchor="middle" font-size="13" fill="var(--d-muted)">아니요</text>
+<rect x="170" y="268" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="255" y="291" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">사유 추론 작업</text>
+<text x="255" y="312" text-anchor="middle" font-size="13" fill="var(--d-muted)">LLM 호출, 30초 제한</text>
+<polyline points="340,296 435,296 435,240" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig3)"/>
+<rect x="530" y="268" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="615" y="291" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">생성 프롬프트</text>
+<text x="615" y="312" text-anchor="middle" font-size="13" fill="var(--d-muted)">삭제 사례 20건</text>
+<line x1="700" y1="296" x2="726" y2="296" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig3)"/>
+<rect x="730" y="268" width="120" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="790" y="291" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">단순</text>
+<text x="790" y="311" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">방식 생성</text>
+<rect x="20" y="342" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="40" y="354" font-size="13" fill="var(--d-muted)">아이디어 생성 시스템의 처리</text>
+<rect x="240" y="342" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="260" y="354" font-size="13" fill="var(--d-muted)">사용자 입력과 판단</text>
+</svg>
+        </div>
+        <p>삭제 사례는 사유가 있어야 다음 생성에 전달되고 사유 입력은 선택이다. 사유 없이 삭제하면 LLM이 최근 아이디어 목록과 비교해 중복이나 비현실성 같은 사유를 1~2문장으로 추론한다.</p>
+        <p>다음 생성은 추론한 사유와 사용자가 입력한 사유를 구분하지 않고 읽으므로 사용자의 실제 의도와 다른 사유가 전달될 수 있다. 평가도 제목과 요약과 분류 정보만 읽으므로 저평가 사례의 점수는 본문 품질을 반영하지 않는다.</p>
+        <p>에이전트 응답에서 JSON 블록 앞의 서술은 사고 과정으로 저장되고, 의미 검색 결과에 500자까지 포함되어 다음 에이전트에 전달된다. 피드백으로 생성 품질이 달라졌는지 전후로 측정한 기록은 없다.</p>
+      </section>
+      <section class="section">
+        <h2 id="jobs">생성 작업 상태</h2>
+        <p>기록이 남은 실행 구간에서 에이전트 생성은 건당 4분에서 11분이 소요되어 HTTP 요청을 유지한 채 처리하기 어렵다. 스케줄 실행에는 응답을 기다리는 호출자도 없다.</p>
+        <p>생성과 평가와 삭제 사유 추론은 작업 테이블에 상태와 함께 기록되고 코루틴에서 실행된다. 메시지 큐를 사용하면 브로커를 함께 실행해야 하고, 이 구성은 브로커 없이 PostgreSQL 작업 테이블로 상태를 관리한다.</p>
+        <div class="diagram-box">
+<svg viewBox="0 0 860 396" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="생성 작업의 상태 변화와 재시도와 재시작 복구 흐름">
+<defs><marker id="ig4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+<rect x="380" y="20" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="475" y="43" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">작업 워커</text>
+<text x="475" y="64" text-anchor="middle" font-size="13" fill="var(--d-muted)">10초마다 대기 작업 실행</text>
+<line x1="475" y1="76" x2="475" y2="106" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig4)"/>
+<polyline points="235,110 235,48 376,48" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig4)"/>
+<rect x="20" y="110" width="110" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="75" y="135" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">생성 요청</text>
+<text x="75" y="156" text-anchor="middle" font-size="13" fill="var(--d-muted)">화면, 스케줄</text>
+<line x1="130" y1="140" x2="166" y2="140" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig4)"/>
+<rect x="170" y="110" width="130" height="60" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="235" y="135" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">대기</text>
+<text x="235" y="156" text-anchor="middle" font-size="13" fill="var(--d-muted)">작업 저장</text>
+<line x1="300" y1="140" x2="376" y2="140" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig4)"/>
+<text x="338" y="132" text-anchor="middle" font-size="13" fill="var(--d-muted)">즉시 실행</text>
+<rect x="380" y="110" width="190" height="60" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="475" y="135" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">처리 중</text>
+<text x="475" y="156" text-anchor="middle" font-size="13" fill="var(--d-muted)">코루틴에서 LLM 호출</text>
+<line x1="570" y1="140" x2="606" y2="140" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig4)"/>
+<rect x="610" y="110" width="130" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="675" y="145" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">성공했는가?</text>
+<line x1="740" y1="140" x2="776" y2="140" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig4)"/>
+<text x="758" y="132" text-anchor="middle" font-size="13" fill="var(--d-muted)">예</text>
+<rect x="780" y="110" width="60" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="810" y="145" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">완료</text>
+<line x1="675" y1="170" x2="675" y2="206" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig4)"/>
+<text x="697" y="192" text-anchor="middle" font-size="13" fill="var(--d-muted)">아니요</text>
+<rect x="610" y="210" width="130" height="60" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+<text x="675" y="235" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-warn)">실패</text>
+<text x="675" y="256" text-anchor="middle" font-size="13" fill="var(--d-muted)">오류 메시지 저장</text>
+<line x1="610" y1="240" x2="574" y2="240" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig4)"/>
+<rect x="380" y="210" width="190" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="475" y="235" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">사용자 재시도</text>
+<text x="475" y="256" text-anchor="middle" font-size="13" fill="var(--d-muted)">작업 화면 버튼</text>
+<polyline points="380,240 265,240 265,174" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig4)"/>
+<rect x="20" y="310" width="110" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="75" y="345" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">서버 재시작</text>
+<line x1="130" y1="340" x2="166" y2="340" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig4)"/>
+<rect x="170" y="310" width="190" height="60" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="265" y="335" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">처리 중 작업 복구</text>
+<text x="265" y="356" text-anchor="middle" font-size="13" fill="var(--d-muted)">대기 상태로 변경</text>
+<line x1="205" y1="310" x2="205" y2="174" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#ig4)"/>
+<rect x="400" y="332" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="420" y="344" font-size="13" fill="var(--d-muted)">아이디어 생성 시스템의 처리</text>
+<rect x="620" y="332" width="14" height="14" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+<text x="640" y="344" font-size="13" fill="var(--d-muted)">실패</text>
+<rect x="690" y="332" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="710" y="344" font-size="13" fill="var(--d-muted)">입력과 판단</text>
+</svg>
+        </div>
+        <p>재시작 복구는 실행 중간 상태를 복원하지 않으므로 처리 중이던 생성 작업을 처음부터 다시 실행하고, 중단된 작업만큼 LLM 호출 비용이 다시 발생한다.</p>
+        <p>작업 상태는 조회 후 저장으로 변경되므로 서버를 여러 대로 늘리면 같은 작업을 중복 실행할 수 있다. 시스템은 PC 한 대에서 실행되고 이 범위 안에서 동작한다.</p>
+      </section>
+      <section class="section">
+        <h2 id="scope">맡은 범위</h2>
+        <p>시스템 전체를 단독으로 설계하고 개발했다. 다음 항목을 직접 개발했다.</p>
+        <ul class="rule-list"><li>사내 AI 해커톤용 전신 생성기를 먼저 개발했다.</li><li>에이전트 방식과 단순 방식의 생성 경로와 에이전트 도구 4개를 개발했다.</li><li>임베딩 유사도 비교와 유사 아이디어 구간 표시를 개발했다.</li><li>즐겨찾기와 평가와 삭제 사유를 다음 생성에 전달하는 경로를 개발했다.</li><li>PostgreSQL 작업 테이블과 재시작 복구와 웹 화면을 개발했다.</li></ul>
+      </section>
+    </main>
+    <nav class="toc" aria-label="절 목록"></nav>
+  </div>
+  <script src="../project.js" defer></script>
+</body>
+</html>

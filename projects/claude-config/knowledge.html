@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>지식 수집 | Claude Code 작업 환경 | 박상곤</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../project.css">
+</head>
+<body class="has-tabs" data-root="../../" data-project="claude-config">
+  <div class="doc-layout">
+    <aside class="doc-side"></aside>
+    <main class="doc">
+      <a class="doc-back" href="../../index.html#projects">프로젝트 목록으로 이동</a>
+<nav class="top-nav">
+    
+      <div class="nav-links">
+        <a href="index.html">전체 구조</a>
+        <a href="topic.html">토픽</a>
+        <a href="design-verify.html">설계와 검증</a>
+        <a href="code-review.html">코드 리뷰</a>
+        <a href="polish.html">문장 검토</a>
+        <a href="autonomous-cycle.html">자율 구현</a>
+        <a href="knowledge.html" class="active">지식 수집</a>
+        <a href="rules-hooks.html">규칙과 훅</a>
+        <a href="worklog.html">업무일지</a>
+        <a href="mods-patch.html">모드와 cc-patch</a>
+      </div>
+  </nav>
+
+    <header class="doc-header">
+      <h1>지식 수집</h1>
+    </header>
+
+    <section class="section">
+      <h2 id="what">지식 수집이란</h2>
+      <p>다이나믹 패키지의 정책과 합의는 여러 사내 기록에 나뉘어 있다.</p>
+      <ul class="rule-list"><li>Confluence 페이지</li><li>Jira 이슈</li><li>Slack 스레드</li><li>GitHub 리뷰 댓글</li><li><a href="topic.html#what">토픽</a> 상태 문서</li></ul>
+      <p>업무 질문에 답하려면 현재 사실을 한곳에서 조회하면서 사실마다 원본까지 거슬러 확인할 수 있어야 한다.</p>
+      <p>지식 수집(<code>knowledge</code>)은 사내 기록을 평일마다 수집해 정책과 합의를 개념별 노트로 정리하는 체계이고, 에이전트는 업무 질문에 답할 때 노트를 읽는다. 개념은 '도착지 검색 키워드 해석'처럼 다른 노트에서 링크할 만한 기능이나 정책 하나다.</p>
+      <p>언어 모델은 노트의 사실 항목마다 근거 문서를 가리키는 인용 표시를 기록한다. 노트는 언어 모델이 요약한 문서이므로 사용자가 검토하기 전에는 가설로 취급하고, 에이전트는 노트의 내용을 코드에서 다시 확인한다.</p>
+    </section>
+
+    <section class="section">
+      <h2 id="collect">구성</h2>
+      <p>수집에서 노트까지는 스크립트 단계와 언어 모델 단계로 나뉜다.</p><ul class="rule-list"><li>수집 스크립트(<code>ingest.py</code>)가 출처별 변경분을 원본 사본으로 저장한다.</li><li>정규화 스크립트(<code>normalize.py</code>)가 출처마다 다른 형식을 같은 머리 정보를 가진 마크다운 문서로 변환한다.</li><li>배치 스크립트(<code>batch.py</code>)가 언어 모델로 노트를 작성한다.</li><li>구조 검사 스크립트(<code>lint.py</code>)가 머리 정보와 인용 표시를 검사해, 가리키는 문서가 실제로 있는지 확인한다.</li></ul><p>검사를 통과한 문서만 처리 완료로 기록하므로 실패한 문서는 다음 배치가 다시 처리한다.</p>
+      <p>평일 아침마다 업무일지를 작성하는 <a href="worklog.html#flow">루틴</a>이 배치 스크립트도 함께 실행한다.</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 920 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="출처별 수집에서 정규화 문서와 노트 작성까지의 흐름">
+          <defs>
+            <marker id="arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-muted)"/>
+            </marker>
+          </defs>
+          <rect x="560" y="6" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="580" y="18" font-size="13" fill="var(--d-muted)">문서와 데이터</text>
+          <rect x="690" y="6" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="710" y="18" font-size="13" fill="var(--d-muted)">자동 실행 스크립트</text>
+
+          <rect x="10" y="40" width="150" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="85" y="65" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">토픽 <tspan font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13">CLAUDE.md</tspan></text>
+          <rect x="10" y="110" width="150" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="85" y="135" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">Confluence</text>
+          <rect x="10" y="160" width="150" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="85" y="185" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">Jira</text>
+          <rect x="10" y="210" width="150" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="85" y="235" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">Slack</text>
+          <rect x="10" y="260" width="150" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="85" y="285" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">GitHub</text>
+
+          <rect x="200" y="150" width="150" height="60" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="275" y="176" text-anchor="middle" font-size="13" font-weight="600" fill="var(--d-accent)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">ingest.py</text>
+          <text x="275" y="196" text-anchor="middle" font-size="13" fill="var(--d-muted)">변경분 수집</text>
+          <rect x="390" y="150" width="130" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="455" y="185" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">원본 사본</text>
+          <rect x="560" y="150" width="150" height="60" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="635" y="176" text-anchor="middle" font-size="13" font-weight="600" fill="var(--d-accent)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">normalize.py</text>
+          <text x="635" y="196" text-anchor="middle" font-size="13" fill="var(--d-muted)">정규화</text>
+          <rect x="750" y="150" width="160" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="830" y="185" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">정규화 문서</text>
+
+          <rect x="750" y="300" width="160" height="60" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="830" y="326" text-anchor="middle" font-size="13" font-weight="600" fill="var(--d-accent)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">batch.py</text>
+          <text x="830" y="346" text-anchor="middle" font-size="13" fill="var(--d-muted)">언어 모델 노트 작성</text>
+          <rect x="560" y="300" width="150" height="60" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="635" y="326" text-anchor="middle" font-size="13" font-weight="600" fill="var(--d-accent)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">lint.py</text>
+          <text x="635" y="346" text-anchor="middle" font-size="13" fill="var(--d-muted)">구조 검사</text>
+          <rect x="370" y="300" width="150" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="445" y="326" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">노트</text>
+          <text x="445" y="346" text-anchor="middle" font-size="13" fill="var(--d-muted)">사실마다 인용 표시</text>
+
+          <line x1="160" y1="130" x2="196" y2="168" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr1)"/>
+          <line x1="160" y1="180" x2="196" y2="180" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr1)"/>
+          <line x1="160" y1="230" x2="196" y2="192" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr1)"/>
+          <line x1="160" y1="280" x2="196" y2="204" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr1)"/>
+          <path d="M 160 60 L 635 60 L 635 146" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr1)"/>
+          <text x="400" y="52" text-anchor="middle" font-size="13" fill="var(--d-muted)">사본 없이 바로 정규화</text>
+          <line x1="350" y1="180" x2="386" y2="180" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr1)"/>
+          <line x1="520" y1="180" x2="556" y2="180" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr1)"/>
+          <line x1="710" y1="180" x2="746" y2="180" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr1)"/>
+          <line x1="830" y1="210" x2="830" y2="296" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr1)"/>
+          <line x1="750" y1="330" x2="714" y2="330" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr1)"/>
+          <line x1="560" y1="330" x2="524" y2="330" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr1)"/>
+        </svg>
+        <p class="diagram-caption">노트의 인용 표시는 정규화 문서를 가리키고 정규화 문서는 원본 사본을 가리켜, 노트의 사실에서 원본까지 거슬러 확인할 수 있다.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="sources">수집 범위</h2>
+      <p>출처마다 변경을 판단하는 방법이 달라, 수집 스크립트는 출처별로 수집 범위와 변경 판단 기준을 따로 정한다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>출처</th><th>수집 범위</th><th>변경 판단</th></tr></thead>
+          <tbody>
+            <tr><td>Confluence</td><td>팀 공간 등의 페이지 본문</td><td>페이지 버전 비교</td></tr>
+            <tr><td>Jira</td><td>팀 프로젝트의 이슈와 팀원이 담당한 이슈</td><td>마지막 갱신 시각 이후 변경분</td></tr>
+            <tr><td>Slack</td><td>지정 채널의 스레드와 답글</td><td>마지막 답글 시각 비교</td></tr>
+            <tr><td>GitHub</td><td>팀 저장소의 PR 본문과 리뷰</td><td>마지막 갱신 시각 이후 변경분</td></tr>
+            <tr><td>토픽</td><td>로컬에 있는 <a href="topic.html#layout">상태 문서</a>(<code>CLAUDE.md</code>)</td><td>원본 파일 해시 비교</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="rules">형식 규칙</h2>
+      <h3 id="rules-doc">정규화 문서 형식</h3>
+      <p>출처마다 원본 형식이 달라, 정규화 스크립트는 모든 출처의 문서를 같은 머리 정보와 출처별로 정해진 본문 섹션으로 변환한다. 정규화 문서는 스크립트만 생성하고, 사람과 언어 모델은 수정하지 않는다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>머리 정보</th><th>기록하는 것</th></tr></thead>
+          <tbody>
+            <tr><td><code>title</code> <code>source</code> <code>source_id</code></td><td>문서 제목, 출처 종류, 출처 안의 식별자</td></tr>
+            <tr><td><code>source_url</code></td><td>원본 주소</td></tr>
+            <tr><td><code>raw</code> 또는 <code>origin</code></td><td>원본 사본의 경로, 토픽처럼 로컬에 원본이 있으면 원본 파일의 경로</td></tr>
+            <tr><td><code>fetched</code> <code>origin_updated</code></td><td>수집 시각과 원본 갱신 시각</td></tr>
+            <tr><td><code>content_hash</code></td><td>원본 내용의 해시</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>출처</th><th>본문 섹션</th></tr></thead>
+          <tbody>
+            <tr><td>Jira</td><td><ul><li>제목 아래 상태, 담당, 생성과 갱신 시각 목록</li><li><code>Description</code></li><li><code>Comments</code></li></ul></td></tr>
+            <tr><td>GitHub</td><td><ul><li>제목 아래 상태, 작성자, 브랜치, 머지 시각 목록</li><li><code>본문</code></li><li><code>리뷰</code></li><li><code>코멘트</code></li></ul></td></tr>
+            <tr><td>Slack</td><td><ul><li>제목 아래 스레드 시작 시각과 메시지 수</li><li><code>대화</code></li></ul></td></tr>
+            <tr><td>Confluence</td><td><ul><li>제목 아래 페이지 위치</li><li>페이지 본문</li></ul></td></tr>
+            <tr><td>토픽</td><td><ul><li>제목 아래 상태 문서의 머리 정보 목록</li><li>상태 문서 본문</li></ul></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 id="rules-format">노트 형식</h3>
+      <p>노트 본문은 섹션 세 개로 나누고, 머리 정보에 인용한 문서와 버전을 기록한다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>위치</th><th>기록하는 것</th></tr></thead>
+          <tbody>
+            <tr><td><code>Summary</code></td><td>개념의 현재 상태 요약</td></tr>
+            <tr><td><code>Facts</code></td><td>인용 표시를 붙인 사실 항목</td></tr>
+            <tr><td><code>References</code></td><td>인용한 정규화 문서 목록</td></tr>
+            <tr><td>머리 정보</td><td>제목, 인용 문서 목록, 태그, 버전, 원본과 대조한 시각, 연관 토픽</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 id="rules-guide">지침 규칙</h3>
+      <p>노트는 언어 모델이 작성하므로, 정해 두지 않으면 출처 없는 사실이나 지난 주장이 노트에 남는다. 그래서 지식 수집 폴더의 규칙 문서(<code>CLAUDE.md</code>)가 아래 규칙을 정하고, 배치 스크립트가 실행한 언어 모델은 노트를 작성할 때마다 규칙 문서를 먼저 읽고 따른다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>대상</th><th>규칙</th></tr></thead>
+          <tbody>
+            <tr><td>노트 단위</td><td><ul><li>다른 노트에서 링크할 독립 개념일 때만 새 노트를 만든다.</li><li>그 밖에는 기존 노트를 갱신한다.</li></ul></td></tr>
+            <tr><td>본문</td><td><ul><li>현재 사실만 서술하고 변천사는 적지 않는다.</li><li>지금은 폐기되었지만 나중에 유효할 수 있는 주장은 별도 노트로 분리한다.</li><li>목록 항목만 둔다.</li></ul></td></tr>
+            <tr><td>인용</td><td><ul><li>정규화 문서만 인용하고 원본 사본이나 다른 노트는 인용하지 않는다.</li><li>Facts 항목마다 근거 문서를 가리키는 인용 표시를 기록한다.</li><li>출처를 제시할 수 없는 사실은 작성하지 않는다.</li></ul></td></tr>
+            <tr><td>충돌</td><td><ul><li>인용한 문서끼리 사실이 충돌하면 원본 갱신 시각이 늦은 쪽을 따른다.</li><li>시각으로 판단할 수 없으면 양쪽을 근거와 함께 기록한다.</li></ul></td></tr>
+            <tr><td>교정</td><td><ul><li>사용자는 폴더의 파일을 직접 수정하지 않고 틀린 사실을 에이전트에게 지적한다.</li><li>에이전트는 교정 기록을 작성한 뒤 노트를 다시 작성한다.</li><li>교정 기록은 충돌 규칙보다 우선한다.</li></ul></td></tr>
+            <tr><td>버전</td><td><ul><li>본문이 변경될 때마다 버전을 1씩 올리고, 내용이 같으면 저장하지 않는다.</li><li>검토는 특정 버전에 대한 판정이므로, 버전이 바뀌면 노트는 다시 가설로 인용된다.</li></ul></td></tr>
+            <tr><td>태그와 연관 토픽</td><td><ul><li>태그는 태그 목록(<code>tags.txt</code>)에 있는 것만 사용하고, 새 태그는 후보 파일에 기록한다.</li><li>연관 토픽은 티켓 키가 일치하는 것처럼 근거가 확실한 토픽만 연결한다.</li></ul></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 id="rules-lint">구조 검사기 규칙</h3>
+      <p>지침은 언어 모델이 읽고 따르는 문장이므로 규칙을 누락할 수 있다. 그래서 기계적으로 판단할 수 있는 규칙은 구조 검사 스크립트(<code>lint.py</code>)가 검사하고, 배치 스크립트는 위반이 하나라도 있으면 해당 배치의 문서를 처리 완료로 기록하지 않는다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>대상</th><th>조건</th><th>결과</th></tr></thead>
+          <tbody>
+            <tr><td>폴더</td><td><ul><li>토픽 전용 날짜 접두가 붙은 파일이나 폴더가 있다.</li><li>최상위에 정해진 폴더 외의 항목이 있다.</li></ul></td><td>오류</td></tr>
+            <tr><td>원본 사본</td><td><ul><li>파일 이름이 출처별 이름 규칙과 다르다.</li><li>수집 기록에 없거나 기록된 해시와 내용이 다르다.</li></ul></td><td>오류</td></tr>
+            <tr><td>정규화 문서</td><td><ul><li>필수 머리 정보가 없다.</li><li>가리키는 원본이 없거나 원본의 해시와 다르다.</li></ul></td><td>오류</td></tr>
+            <tr><td>노트 머리 정보</td><td><ul><li>필수 필드가 없다.</li><li>버전이 1 이상의 정수가 아니다.</li><li>인용 문서가 정규화 문서에 없다.</li><li>태그가 태그 목록에 없다.</li><li>연관 토픽이 없다.</li></ul></td><td>오류</td></tr>
+            <tr><td>노트 본문</td><td><ul><li>섹션이 Summary, Facts, References 순서의 세 개가 아니다.</li><li>Facts 항목에 인용 표시가 없다.</li><li>인용 표시가 머리 정보의 인용 문서나 교정 기록에 없다.</li></ul></td><td>오류</td></tr>
+            <tr><td>검토와 교정 기록</td><td><ul><li>기록을 읽을 수 없거나 값이 허용 범위 밖이다.</li><li>폐기한 노트의 파일이 남아 있다.</li></ul></td><td>오류</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="query">조회와 확인</h2>
+      <p>노트는 검토 전에는 틀릴 수 있어, 조회 스킬(<code>knowledge:query</code>)은 노트를 인용할 때 검토 여부를 함께 표시하고 에이전트가 사실을 다시 확인하게 한다.</p>
+      <p>조회 스킬은 다음 순서로 노트를 조회한다.</p>
+      <ul class="rule-list"><li>전체 노트의 제목 목록인 노트 목차에서 후보 노트를 선택한다.</li><li>후보 노트의 본문을 읽는다. 현재 사실을 정리한 문서는 노트뿐이므로 정규화 문서는 조회하지 않는다.</li><li>검토 기록을 확인해 노트를 검토됨이나 가설로 인용한다.</li></ul>
+      <p>조회 스킬은 검토된 노트도 코드에서 다시 확인할 사실로 인용한다. 원본이 노트보다 나중에 변경되었으면 원본이 더 최신일 수 있다고 표시한다.</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 920 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="노트 조회에서 검토 여부 표시와 코드 확인까지의 흐름">
+          <defs>
+            <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-muted)"/>
+            </marker>
+          </defs>
+          <rect x="10" y="62" width="130" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="75" y="95" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">질문</text>
+          <rect x="180" y="62" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="255" y="95" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">노트 목차</text>
+          <rect x="370" y="62" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="445" y="95" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">노트 본문</text>
+          <rect x="560" y="62" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="635" y="95" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">검토 기록 확인</text>
+          <rect x="750" y="14" width="130" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="815" y="41" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">검토됨으로 인용</text>
+          <rect x="750" y="122" width="130" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="815" y="149" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">가설로 인용</text>
+
+          <rect x="690" y="206" width="220" height="50" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="800" y="236" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">답과 조회 기록</text>
+          <rect x="430" y="206" width="220" height="50" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="540" y="236" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">코드와 운영 시스템 확인</text>
+          <rect x="10" y="206" width="320" height="50" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="170" y="236" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)"><tspan font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13">topic:query</tspan>나 실시간 조회 제안</text>
+
+          <line x1="140" y1="90" x2="176" y2="90" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr2)"/>
+          <line x1="330" y1="90" x2="366" y2="90" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr2)"/>
+          <line x1="520" y1="90" x2="556" y2="90" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr2)"/>
+          <line x1="710" y1="80" x2="746" y2="44" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr2)"/>
+          <line x1="710" y1="100" x2="746" y2="136" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr2)"/>
+          <path d="M 880 36 L 900 36 L 900 202" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr2)"/>
+          <line x1="815" y1="166" x2="815" y2="202" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr2)"/>
+          <line x1="690" y1="231" x2="654" y2="231" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr2)"/>
+          <path d="M 445 118 L 445 170 L 170 170 L 170 202" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#arr2)"/>
+          <text x="455" y="160" font-size="13" fill="var(--d-muted)">노트에 없음</text>
+        </svg>
+        <p class="diagram-caption">노트에 답이 없으면 조회 스킬은 토픽 기록을 조회하는 스킬 <code>topic:query</code>나 Jira와 Slack 직접 조회를 제안한다. 에이전트는 답을 작성한 뒤 코드와 운영 시스템에서 사실을 확인한다.</p>
+        <p class="diagram-caption">인용되었지만 검토되지 않은 노트는 검토 대기열 앞쪽으로 이동하므로 사용자가 먼저 판정한다.</p>
+      </div>
+    </section>
+
+
+    <footer class="page-footer">
+      <a href="autonomous-cycle.html">이전: 자율 구현</a>
+      <a href="rules-hooks.html">다음: 규칙과 훅</a>
+    </footer>
+    </main>
+    <nav class="toc" aria-label="절 목록"></nav>
+  </div>
+  <script src="../../project.js" defer></script>
+</body>
+</html>

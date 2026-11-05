@@ -514,6 +514,27 @@ section {
 }
 
 
+.project-title-link {
+  color: inherit;
+}
+
+.project-title-link:hover {
+  color: var(--green);
+  text-decoration: none;
+}
+
+.project-detail-link {
+  justify-self: start;
+  position: relative;
+  font-size: var(--fz-sm);
+  font-weight: 500;
+  color: var(--green);
+}
+
+.project-detail-link::after {
+  content: ' ▹';
+}
+
 .project-card p {
   font-size: var(--fz-sm);
   color: var(--slate);

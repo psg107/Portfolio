@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>업무일지 | Claude Code 작업 환경 | 박상곤</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../project.css">
+</head>
+<body class="has-tabs" data-root="../../" data-project="claude-config">
+  <div class="doc-layout">
+    <aside class="doc-side"></aside>
+    <main class="doc">
+      <a class="doc-back" href="../../index.html#projects">프로젝트 목록으로 이동</a>
+<nav class="top-nav">
+    
+      <div class="nav-links">
+        <a href="index.html">전체 구조</a>
+        <a href="topic.html">토픽</a>
+        <a href="design-verify.html">설계와 검증</a>
+        <a href="code-review.html">코드 리뷰</a>
+        <a href="polish.html">문장 검토</a>
+        <a href="autonomous-cycle.html">자율 구현</a>
+        <a href="knowledge.html">지식 수집</a>
+        <a href="rules-hooks.html">규칙과 훅</a>
+        <a href="worklog.html" class="active">업무일지</a>
+        <a href="mods-patch.html">모드와 cc-patch</a>
+      </div>
+  </nav>
+
+    <header class="doc-header">
+      <h1>업무일지</h1>
+    </header>
+
+    <section class="section">
+      <h2 id="what">업무일지란</h2>
+      <p>아침 스크럼 회의 전에는 전날 한 일을 정리하고, 주마다 한 주 업무를 보고로 정리해야 한다. Jira 티켓과 GitHub 커밋에서 한 일을 매번 다시 찾아야 하므로, 업무일지 스킬(<code>worklog</code>)이 두 작업을 에이전트가 처리하게 한다.</p>
+      <p>업무일지는 하루 동안 실제로 한 일을 날짜별 파일 하나에 작성한 일간 기록이다. 업무일지 스킬은 업무 기록을 읽어 일간 기록을 작성하고, 일간 기록을 근거로 스크럼 회의에서 읽을 스크럼 파일과 주간 보고를 생성한다.</p>
+      <p>Claude 데스크톱 앱이 평일 아침마다 실행하는 <a href="index.html#terms">루틴</a>(<code>worklog-daily</code>)이 업무일지 스킬로 파일을 생성하고, 스크럼 파일의 내용을 Google Docs에 있는 팀 스크럼 문서에 기입한다.</p>
+    </section>
+
+    <section class="section">
+      <h2 id="flow">아침 루틴</h2>
+      <p>업무일지 스킬은 <a href="knowledge.html#collect">지식 수집</a>이 Jira와 GitHub와 Slack에서 내려받은 저장본을 읽어 일간 기록을 작성한다. 수집에 실패한 출처가 있으면 루틴은 해당 날짜의 일간 기록을 보류로 보고하고, 다음 날 루틴이 다시 시도한다.</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 920 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="업무일지 아침 루틴 흐름">
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-muted)"/>
+            </marker>
+          </defs>
+          <rect x="600" y="6" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="620" y="18" font-size="13" fill="var(--d-muted)">문서와 데이터</text>
+          <rect x="730" y="6" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="750" y="18" font-size="13" fill="var(--d-muted)">자동 실행 스크립트</text>
+
+          <g font-size="14">
+            <rect x="20" y="40" width="300" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="170" y="63" text-anchor="middle" font-weight="600" fill="var(--d-accent)">루틴 시작</text>
+            <text x="170" y="84" text-anchor="middle" font-size="13" fill="var(--d-muted)">평일 아침</text>
+
+            <rect x="20" y="124" width="300" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="170" y="147" text-anchor="middle" font-weight="600" fill="var(--d-accent)">지식 수집 점검</text>
+            <text x="170" y="168" text-anchor="middle" font-size="13" fill="var(--d-muted)">남은 문서가 있으면 모두 처리</text>
+
+            <rect x="20" y="208" width="300" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="170" y="231" text-anchor="middle" font-weight="600" fill="var(--d-accent)">일간 기록 생성</text>
+            <text x="170" y="252" text-anchor="middle" font-size="13" fill="var(--d-muted)">마지막 기록 다음 날부터 직전 영업일까지</text>
+
+            <rect x="20" y="292" width="300" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="170" y="315" text-anchor="middle" font-weight="600" fill="var(--d-accent)">스크럼 파일 생성</text>
+            <text x="170" y="336" text-anchor="middle" font-size="13" fill="var(--d-muted)">일간 기록만 근거</text>
+
+            <rect x="20" y="376" width="300" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="170" y="399" text-anchor="middle" font-weight="600" fill="var(--d-accent)">형식 검사</text>
+            <text x="170" y="420" text-anchor="middle" font-size="13" fill="var(--d-muted)">오류가 있으면 저장하지 않고 보고</text>
+
+            <rect x="20" y="460" width="300" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="170" y="483" text-anchor="middle" font-weight="600" fill="var(--d-accent)">팀 문서 기입</text>
+            <text x="170" y="504" text-anchor="middle" font-size="13" fill="var(--d-muted)">scrum-post.py 실행</text>
+
+            <rect x="20" y="544" width="300" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="170" y="567" text-anchor="middle" font-weight="600" fill="var(--d-accent)">주간 보고 점검</text>
+            <text x="170" y="588" text-anchor="middle" font-size="13" fill="var(--d-muted)">월요일에 직전 주(월~일) 확인</text>
+
+            <rect x="20" y="628" width="300" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="170" y="651" text-anchor="middle" font-weight="600" fill="var(--d-accent)">완료 보고</text>
+            <text x="170" y="672" text-anchor="middle" font-size="13" fill="var(--d-muted)">데스크톱 앱 실행 결과에 한 줄</text>
+          </g>
+
+          <g stroke="var(--d-muted)" stroke-width="1.3">
+            <line x1="170" y1="96" x2="170" y2="120" marker-end="url(#arr)"/>
+            <line x1="170" y1="180" x2="170" y2="204" marker-end="url(#arr)"/>
+            <line x1="170" y1="264" x2="170" y2="288" marker-end="url(#arr)"/>
+            <line x1="170" y1="348" x2="170" y2="372" marker-end="url(#arr)"/>
+            <line x1="170" y1="432" x2="170" y2="456" marker-end="url(#arr)"/>
+            <line x1="170" y1="516" x2="170" y2="540" marker-end="url(#arr)"/>
+            <line x1="170" y1="600" x2="170" y2="624" marker-end="url(#arr)"/>
+            <line x1="320" y1="152" x2="596" y2="152" marker-end="url(#arr)"/>
+            <line x1="320" y1="236" x2="596" y2="236" marker-end="url(#arr)"/>
+            <line x1="320" y1="320" x2="596" y2="320" marker-end="url(#arr)"/>
+            <line x1="320" y1="488" x2="596" y2="488" marker-end="url(#arr)"/>
+            <line x1="320" y1="572" x2="596" y2="572" marker-end="url(#arr)"/>
+          </g>
+          <g font-size="13" fill="var(--d-muted)" text-anchor="middle">
+            <text x="458" y="144">변경분 저장</text>
+            <text x="458" y="228">날짜별 파일 작성</text>
+            <text x="458" y="312">오늘 날짜 파일 작성</text>
+            <text x="458" y="480">사용자 이름 줄 아래에 기록</text>
+            <text x="458" y="564">없거나 주 중간 생성본이면 재생성</text>
+          </g>
+
+          <g font-size="14">
+            <rect x="600" y="124" width="300" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+            <text x="750" y="147" text-anchor="middle" font-weight="600" fill="var(--d-ink)">지식 수집 저장본</text>
+            <text x="750" y="168" text-anchor="middle" font-size="13" fill="var(--d-muted)">Jira와 GitHub 등의 원본</text>
+            <rect x="600" y="208" width="300" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+            <text x="750" y="241" text-anchor="middle" font-weight="600" fill="var(--d-ink)">일간 기록 파일</text>
+            <rect x="600" y="292" width="300" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+            <text x="750" y="325" text-anchor="middle" font-weight="600" fill="var(--d-ink)">스크럼 파일</text>
+            <rect x="600" y="460" width="300" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+            <text x="750" y="493" text-anchor="middle" font-weight="600" fill="var(--d-ink)">팀 스크럼 문서</text>
+            <rect x="600" y="544" width="300" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+            <text x="750" y="567" text-anchor="middle" font-weight="600" fill="var(--d-ink)">주간 보고 파일</text>
+            <text x="750" y="588" text-anchor="middle" font-size="13" fill="var(--d-muted)">한 주 업무를 모은 보고</text>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="scrum">스크럼 파일</h2>
+      <p>일간 기록에는 에이전트 도구를 다룬 개인 작업처럼 팀 업무가 아닌 일도 기록된다. 그래서 업무일지 스킬은 일간 기록에서 팀 업무만 선택해 오늘 날짜의 스크럼 파일을 작성한다.</p>
+      <p>스크럼 파일도 일간 기록과 주간 보고처럼 형식 검사 스크립트(<code>worklog-lint.py</code>)를 통과해야 업무일지 폴더에 저장된다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>구분</th><th>규칙</th></tr></thead>
+          <tbody>
+            <tr><td>라벨</td><td><ul><li>항목을 어제 한 일, 오늘 할 일, 공유 라벨로 분류한다.</li></ul></td></tr>
+            <tr><td>포함</td><td><ul><li>다이나믹 패키지 업무를 기록한다.</li></ul></td></tr>
+            <tr><td>제외</td><td><ul><li>에이전트 도구를 다룬 개인 작업을 제외한다.</li><li>동료 PR 승인을 제외한다.</li></ul></td></tr>
+            <tr><td>형식 검사</td><td><ul><li>라벨 순서를 검사한다.</li><li>항목 형식을 검사한다.</li></ul></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="post">팀 문서 기입</h2>
+      <p>팀 스크럼 문서에는 회의 날짜마다 구역이 있고, 구역 안에 참석자 이름 줄이 있다. 날짜 구역과 이름 줄은 회의 전에 사람이 직접 작성한다.</p>
+      <p>기입 스크립트(<code>scrum-post.py</code>)는 Google Docs 기록 스크립트(<code>scrum-to-gdoc.py</code>)를 실행한다. 기록 스크립트는 Google Apps Script 웹 앱을 거쳐 사용자 이름 줄 아래에 스크럼 파일의 라벨과 항목을 한 번 기록한다.</p>
+      <p>다른 참석자도 같은 문서를 수정하므로, 기록 위치는 사용자 이름 줄 아래로 제한한다.</p>
+      <p>기입 스크립트는 기록 결과에 따라 아래와 같이 대응한다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>기록 결과</th><th>대응</th></tr></thead>
+          <tbody>
+            <tr><td>기록에 성공했다.</td><td><ul><li>기록한 라벨과 줄을 출력한다.</li></ul></td></tr>
+            <tr><td>그날 구역이 없거나 여러 개다.</td><td><ul><li>기입하지 않고 문서 맨 위 구역의 날짜를 알린다.</li><li>구역은 생성하지 않는다.</li></ul></td></tr>
+            <tr><td>사용자 이름 줄이 없거나 여러 개다.</td><td><ul><li>구역 제목이 팀 스크럼 제목이 아니면 대상 아님으로 판정하고 기입을 생략한다.</li><li>팀 스크럼 구역이면 기입하지 않는다.</li><li>이름 줄은 생성하지 않는다.</li></ul></td></tr>
+            <tr><td>문서를 읽은 뒤 쓰기 전에 다른 사람이 문서를 수정했다.</td><td><ul><li>문서를 다시 읽고 재시도한다.</li></ul></td></tr>
+            <tr><td>오류 문구가 일시 실패 문구와 일치한다.</td><td><ul><li>재시도한다.</li></ul></td></tr>
+            <tr><td>그 밖의 오류가 발생했다.</td><td><ul><li>실패로 종료한다.</li></ul></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>재시도는 다른 사람의 문서 수정과 일시 실패를 합쳐 최대 6회다. 대기 시간은 2초에서 시작해 시도마다 2배로 증가하고, 30초를 초과하지 않는다.</p>
+      <p>재시도 후에도 기입하지 못하면 루틴은 기입 스크립트가 출력한 첫 줄을 완료 보고에 그대로 포함한다.</p>
+      <p>일시 실패 문구는 아래 오류를 가리킨다.</p>
+      <ul class="rule-list"><li>권한 거절(<code>unauthorized</code>)</li><li>웹 앱 응답 파싱 실패</li><li>문서 요소 목록 요청 실패</li><li>Apps Script 호출 횟수 초과와 실행 시간 초과</li><li>내부 오류</li><li>502와 503과 504 응답</li><li>시간 초과</li></ul>
+      <p>권한 거절은 토큰 문제처럼 보이지만, 권한 거절로 실패한 요청을 같은 토큰으로 바로 다시 보내면 성공한다. 그래서 기입 스크립트는 권한 거절을 웹 앱의 일시 거절로 판단하고 재시도 대상에 포함한다.</p>
+    </section>
+
+    <footer class="page-footer">
+      <a href="rules-hooks.html">이전: 규칙과 훅</a>
+      <a href="mods-patch.html">다음: 모드와 cc-patch</a>
+    </footer>
+    </main>
+    <nav class="toc" aria-label="절 목록"></nav>
+  </div>
+  <script src="../../project.js" defer></script>
+</body>
+</html>

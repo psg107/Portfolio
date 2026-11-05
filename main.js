@@ -76,7 +76,7 @@ function renderProjects() {
     {
       key: 'dynamic-package',
       title: '다이나믹 패키지',
-      period: '2026.02 - 현재',
+      period: '2026.03 - 현재',
       tagline: '항공·숙소 등 여러 여행 상품을 조합하는 신규 서비스'
     },
     {
@@ -92,14 +92,9 @@ function renderProjects() {
     },
     {
       key: 'old-package',
-      title: '레거시 패키지 시스템',
+      title: '구패키지 시스템',
       period: '2021 - 2023',
       tagline: '20년 운영된 C# 시스템 운영·개선'
-    },
-    {
-      key: 'personal',
-      title: '개인 프로젝트',
-      tagline: '관심사·실무 문제를 직접 풀어본 작업'
     }
   ];
 
@@ -141,10 +136,16 @@ function renderProjects() {
           const implementationsHtml = project.implementations?.length
             ? `<ul class="project-implementations">${project.implementations.map(s => `<li>${s}</li>`).join('')}</ul>`
             : '';
+          const titleHtml = project.detailPage
+            ? `<a class="project-title-link" href="${project.detailPage}">${project.name}</a>`
+            : project.name;
+          const detailHtml = project.detailPage
+            ? `<a class="project-detail-link" href="${project.detailPage}">의도와 설계 보기</a>`
+            : '';
           return `
             <article class="project-card">
               <div class="project-card-header">
-                <h3>${project.name}${statusBadge}</h3>
+                <h3>${titleHtml}${statusBadge}</h3>
                 ${periodHtml}
               </div>
               <p>${project.description}</p>
@@ -152,6 +153,7 @@ function renderProjects() {
               <div class="tech-tags">
                 ${project.stack.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
               </div>
+              ${detailHtml}
             </article>
           `;
         }).join('')}
