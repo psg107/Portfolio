@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>규칙과 훅 | Claude Code 작업 환경 | 박상곤</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../project.css">
+</head>
+<body class="has-tabs" data-root="../../" data-project="claude-config">
+  <div class="doc-layout">
+    <aside class="doc-side"></aside>
+    <main class="doc">
+      <a class="doc-back" href="../../index.html#projects">프로젝트 목록으로 이동</a>
+<nav class="top-nav">
+    
+      <div class="nav-links">
+        <a href="index.html">전체 구조</a>
+        <a href="topic.html">토픽</a>
+        <a href="design-verify.html">설계와 검증</a>
+        <a href="code-review.html">코드 리뷰</a>
+        <a href="polish.html">문장 검토</a>
+        <a href="autonomous-cycle.html">자율 구현</a>
+        <a href="knowledge.html">지식 수집</a>
+        <a href="rules-hooks.html" class="active">규칙과 훅</a>
+        <a href="worklog.html">업무일지</a>
+        <a href="mods-patch.html">모드와 cc-patch</a>
+      </div>
+  </nav>
+
+    <header class="doc-header">
+      <h1>규칙과 훅</h1>
+    </header>
+
+    <section class="section">
+      <h2 id="concept">규칙과 훅이란</h2>
+      <p>이 환경에서 모든 세션이 지켜야 하는 작업 규칙은 전역 지침(<code>~/.claude/CLAUDE.md</code>)에 문장으로 정의되어 있다. 세션은 시작할 때 전역 지침을 읽고, 작업 중에는 에이전트가 스스로 판단해 규칙을 지킨다.</p>
+      <p>문장 규칙은 에이전트의 판단에 따라 지켜지므로 여러 세션이 같은 규칙을 반복해서 어길 수 있다. 예고만 하고 턴을 끝내지 않는다는 규칙이 전역 지침에 추가된 당일에도 한 세션이 다음 작업을 예고하고 턴을 끝내 약 9시간 동안 멈춰 있었다(<a href="#stop-judge">예고 후 중단 판정</a>).</p>
+      <p>그래서 반복해서 어겨지는 규칙은 훅이 실행 시점마다 검사한다. 훅의 검사는 에이전트의 판단과 관계없이 실행된다.</p>
+      <p>훅은 설정 파일(<code>~/.claude/settings.json</code>)에 실행 시점과 함께 등록되고, 전역 지침의 규칙 문장 옆에는 그 규칙을 검사하는 훅의 경로가 명시되어 있다.</p>
+    </section>
+
+    <section class="section">
+      <h2 id="timeline">실행 시점별 훅</h2>
+      <p>아래 도해에서 행은 훅의 실행 시점이고, 열은 훅이 실행된 결과다.</p><ul class="rule-list"><li>맥락 추가는 훅 출력을 에이전트의 다음 입력에 추가하는 일이다.</li><li>가드는 규칙에 어긋난 호출을 거부하는 훅이다.</li><li>'git 명령 가드'와 '파일 작성 가드'는 각각 가드 여러 개를 한 상자로 표시한 이름이다.</li><li>훅 상자의 첫 줄은 <code>~/.claude/hooks/</code> 기준 경로다.</li></ul>
+      <p>이 탭은 모든 세션에 적용되는 훅만 설명한다. 토픽 상태 문서를 갱신하게 하는 훅은 <a href="topic.html#session-flow">토픽 탭의 갱신 훅</a>에서 설명하고, 등록된 훅 전체 목록은 <a href="index.html#components">전체 구조 탭의 구성 요소 목록</a>에 있다.</p>
+      <div class="diagram-box">
+<svg viewBox="0 0 960 758" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="실행 시점별 훅">
+<defs><marker id="rh-a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-muted)"/></marker></defs>
+<rect x="10" y="8" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+<text x="30" y="20" text-anchor="start" font-size="13" fill="var(--d-muted)">문서와 데이터</text>
+<rect x="140" y="8" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="160" y="20" text-anchor="start" font-size="13" fill="var(--d-muted)">자동 실행 스크립트</text>
+<rect x="170" y="36" width="240" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+<text x="290.0" y="54" text-anchor="middle" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-weight="600" fill="var(--d-ink)">CLAUDE.md</text>
+<text x="290.0" y="72" text-anchor="middle" font-size="12.5" fill="var(--d-muted)">전역 지침</text>
+<line x1="290.0" y1="80" x2="290.0" y2="106" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a1)"/>
+<text x="300.0" y="98" text-anchor="start" font-size="12.5" fill="var(--d-muted)">반복해서 어겨지는 규칙은 아래 훅이 검사</text>
+<text x="290.0" y="126" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--d-ink)">거부나 종료 차단</text>
+<text x="560.0" y="126" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--d-ink)">맥락 추가</text>
+<text x="830.0" y="126" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--d-ink)">기록과 화면 표시</text>
+<line x1="10" y1="136" x2="950" y2="136" stroke="var(--d-border)" stroke-width="1"/>
+<text id="h-start" x="20" y="194.0" text-anchor="start" font-size="13.5" font-weight="600" fill="var(--d-ink)">세션 시작</text>
+<rect x="440" y="146" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="560.0" y="163" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">compaction/resume.py</text>
+<text x="560.0" y="179" text-anchor="middle" font-size="12" fill="var(--d-muted)">요약 후 사용자 요청 원문 복원</text>
+<rect x="440" y="192" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="560.0" y="209" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">git-state/claude-config-state.sh</text>
+<text x="560.0" y="225" text-anchor="middle" font-size="12" fill="var(--d-muted)">설정 폴더 git 상태 안내</text>
+<rect x="710" y="146" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="830.0" y="163" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">session/cmux-session-map.py</text>
+<text x="830.0" y="179" text-anchor="middle" font-size="12" fill="var(--d-muted)">cmux 탭과 세션 ID 기록</text>
+<line x1="10" y1="240" x2="950" y2="240" stroke="var(--d-border)" stroke-width="1"/>
+<text id="h-input" x="20" y="273.0" text-anchor="start" font-size="13.5" font-weight="600" fill="var(--d-ink)">요청 제출</text>
+<rect x="170" y="248" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="290.0" y="265" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">secrets/secrets.py</text>
+<text x="290.0" y="281" text-anchor="middle" font-size="12" fill="var(--d-muted)">비밀값 차단</text>
+<rect x="440" y="248" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="560.0" y="265" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">directives/directives.sh</text>
+<text x="560.0" y="281" text-anchor="middle" font-size="12" fill="var(--d-muted)">응답 지침</text>
+<rect x="710" y="248" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="830.0" y="265" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">lock/relock.py</text>
+<text x="830.0" y="281" text-anchor="middle" font-size="12" fill="var(--d-muted)">가드 해제 재잠금</text>
+<line x1="10" y1="296" x2="950" y2="296" stroke="var(--d-border)" stroke-width="1"/>
+<text id="h-pre" x="20" y="375.0" text-anchor="start" font-size="13.5" font-weight="600" fill="var(--d-ink)">도구 실행 전</text>
+<rect x="170" y="304" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="290.0" y="329" text-anchor="middle" font-size="13" fill="var(--d-accent)">git 명령 가드</text>
+<rect x="170" y="350" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="290.0" y="375" text-anchor="middle" font-size="13" fill="var(--d-accent)">파일 작성 가드</text>
+<rect x="170" y="396" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="290.0" y="413" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">narration/lock.py</text>
+<text x="290.0" y="429" text-anchor="middle" font-size="12" fill="var(--d-muted)">도구 사이 설명 금지</text>
+<rect x="440" y="304" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="560.0" y="321" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">git-state/git-source-state.sh</text>
+<text x="560.0" y="337" text-anchor="middle" font-size="12" fill="var(--d-muted)">저장소 상태 안내</text>
+<rect x="710" y="304" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="830.0" y="321" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">lock/turn_unlock.py</text>
+<text x="830.0" y="337" text-anchor="middle" font-size="12" fill="var(--d-muted)">가드 해제 명령 기록</text>
+<line x1="10" y1="444" x2="950" y2="444" stroke="var(--d-border)" stroke-width="1"/>
+<text id="h-post" x="20" y="500.0" text-anchor="start" font-size="13.5" font-weight="600" fill="var(--d-ink)">도구 실행 후</text>
+<rect x="440" y="452" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="560.0" y="469" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">config/notify.py</text>
+<text x="560.0" y="485" text-anchor="middle" font-size="12" fill="var(--d-muted)">설정 구조 검사</text>
+<rect x="440" y="498" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="560.0" y="515" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">style/register-notify.py</text>
+<text x="560.0" y="531" text-anchor="middle" font-size="12" fill="var(--d-muted)">문서의 구어 표현 알림</text>
+<rect x="710" y="452" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="830.0" y="469" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">ui/track-work-location.py</text>
+<text x="830.0" y="485" text-anchor="middle" font-size="12" fill="var(--d-muted)">작업 위치 기록</text>
+<line x1="10" y1="546" x2="950" y2="546" stroke="var(--d-border)" stroke-width="1"/>
+<text id="h-stop" x="20" y="625.0" text-anchor="start" font-size="13.5" font-weight="600" fill="var(--d-ink)">턴 종료</text>
+<rect x="170" y="554" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="290.0" y="571" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">finish/stop.py</text>
+<text x="290.0" y="587" text-anchor="middle" font-size="12" fill="var(--d-muted)">예고 후 중단</text>
+<rect x="170" y="600" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="290.0" y="617" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">askq/stop.py</text>
+<text x="290.0" y="633" text-anchor="middle" font-size="12" fill="var(--d-muted)">AskUserQuestion 미사용 점검</text>
+<rect x="170" y="646" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="290.0" y="663" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">style/register-warn.py</text>
+<text x="290.0" y="679" text-anchor="middle" font-size="12" fill="var(--d-muted)">응답의 구어 표현 경고</text>
+<rect x="710" y="554" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="830.0" y="571" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">session/archiver.py</text>
+<text x="830.0" y="587" text-anchor="middle" font-size="12" fill="var(--d-muted)">세션 기록 보관</text>
+<line x1="10" y1="694" x2="950" y2="694" stroke="var(--d-border)" stroke-width="1"/>
+<text id="h-end" x="20" y="727.0" text-anchor="start" font-size="13.5" font-weight="600" fill="var(--d-ink)">세션 종료</text>
+<rect x="710" y="702" width="240" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="830.0" y="719" text-anchor="middle" font-size="11.5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="var(--d-accent)">session/cmux-session-map.py</text>
+<text x="830.0" y="735" text-anchor="middle" font-size="12" fill="var(--d-muted)">cmux 탭과 세션 ID 삭제</text>
+<line x1="10" y1="750" x2="950" y2="750" stroke="var(--d-border)" stroke-width="1"/>
+<line x1="60" y1="201.0" x2="60" y2="254.0" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a1)"/>
+<line x1="60" y1="280.0" x2="60" y2="356.0" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a1)"/>
+<line x1="60" y1="382.0" x2="60" y2="481.0" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a1)"/>
+<line x1="60" y1="507.0" x2="60" y2="606.0" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a1)"/>
+<line x1="60" y1="632.0" x2="60" y2="708.0" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a1)"/>
+</svg>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="enforced">훅이 강제하는 규칙</h2>
+      <p>아래 규칙은 전역 지침에 문장으로 적혀 있고, 훅이 실행 시점마다 검사한다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>전역 지침 규칙</th><th>훅</th><th>결과</th><th>이유</th></tr></thead>
+          <tbody>
+            <tr><td>도구 호출 사이에 설명 문장을 작성하지 않는다.</td><td><code>narration/lock.py</code></td><td>거부</td><td>진행 설명이 화면을 어지럽힌다.</td></tr>
+            <tr><td>새 브랜치 이름은 <code>&lt;티켓 키&gt;#slug</code> 형식으로 정한다.</td><td><code>git-state/branch-name-guard.py</code></td><td>거부</td><td>브랜치 이름 형식을 통일한다.</td></tr>
+            <tr><td>PR 본문에 저장소 PR 양식을 유지한다.</td><td><code>git-state/pr-template-guard.py</code></td><td>거부</td><td>PR 본문 양식을 통일한다.</td></tr>
+            <tr><td>강제 푸시에는 <code>--force-with-lease</code> 와 <code>--force-if-includes</code> 를 함께 사용한다.</td><td><code>git-state/push-force-guard.py</code></td><td>거부</td><td>동료의 커밋이 사라질 수 있다.</td></tr>
+            <tr><td>검증을 생략한 푸시(<code>--no-verify</code>)를 하지 않는다.</td><td><code>git-state/push-no-verify-guard.py</code></td><td>거부</td><td>실패한 테스트가 CI를 실패시킬 수 있다.</td></tr>
+            <tr><td>설정 폴더 <code>~/.claude</code> 에서는 파일 이름을 지정해 스테이징한다.</td><td><code>git-state/add-scope-guard.py</code></td><td>거부</td><td>여러 세션이 설정 폴더를 함께 사용한다.</td></tr>
+            <tr><td>프론트엔드 저장소에서 원격 작업을 하지 않는다.</td><td><code>git-state/fe-remote-guard.py</code></td><td>거부</td><td>자율 구현이 프론트엔드 PR을 dev에 배포할 수 있다.</td></tr>
+            <tr><td>임시 파일 이름은 작성 시각 접두어로 시작한다.</td><td><code>tmp-guard/write-prefix-guard.py</code></td><td>거부</td><td>파일 이름순 정렬이 작성순과 같아진다.</td></tr>
+            <tr><td>설정 폴더 <code>~/.claude</code> 의 파일은 정해진 위치에 둔다.</td><td><code>config/notify.py</code></td><td>맥락 추가</td><td>설정 폴더의 파일 위치를 통일한다.</td></tr>
+            <tr><td><a href="index.html#terms">세션에 연결한 워크트리</a> 안에서 작업한다.</td><td><code>git-state/worktree-bind-guard.py</code></td><td>맥락 추가</td><td>상태 줄이 워크트리 연결 정보로 티켓과 PR을 표시한다.</td></tr>
+            <tr><td>예고만 하고 턴을 끝내지 않는다.</td><td><code>finish/stop.py</code></td><td>종료 차단</td><td><a href="#stop-judge">예고 후 턴을 끝낸 세션이 약 9시간 멈췄다.</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="deny">가드 해제</h2>
+      <p>가드는 규칙에 어긋난 호출을 모두 거부하므로, 사용자가 명시적으로 요청한 예외를 처리하려면 가드를 해제할 수 있어야 한다. 그래서 이 환경은 가드 해제 명령(<code>guard-unlock</code>)을 제공한다.</p>
+      <p>에이전트가 사용자 발화를 10자 이상 그대로 인용해 해제 명령을 실행하면 가드 하나가 해제된다. 해제는 해제 명령을 실행한 턴에서만 유효하다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>실행 시점</th><th>훅</th><th>하는 일</th></tr></thead>
+          <tbody>
+            <tr><td>도구 실행 전</td><td><code>lock/turn_unlock.py</code></td><td><ul><li>해제 명령의 인용이 10자보다 짧으면 해제 명령을 거부한다.</li><li>인용이 10자 이상이면 해제 상태를 세션별 해제 파일에 기록한다.</li></ul></td></tr>
+            <tr><td>턴 종료와 요청 제출</td><td><code>lock/relock.py</code></td><td><ul><li>해제 파일을 삭제해 가드를 다시 잠근다.</li></ul></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="stop-judge">예고 후 중단 판정</h2>
+      <p>턴이 끝나면 에이전트는 사용자가 다시 요청할 때까지 작업하지 않으므로, 할 일을 예고만 하고 턴을 끝낸 세션은 그대로 멈춘다.</p>
+      <p>턴 종료 훅 <code>finish/stop.py</code> 는 마지막 응답을 아래 도해 순서로 검사한다. 응답이 예고로 끝났으면 훅이 턴 종료를 막고 사유를 에이전트에 전달하므로, 에이전트는 같은 턴에서 작업을 이어 간다.</p>
+      <p>판정에는 아래 예외를 둔다.</p><ul class="rule-list"><li>인용 안의 예시 문구는 예고가 아니므로 판정에서 제외한다.</li><li>백그라운드 작업이 끝나면 완료 알림이 세션의 다음 턴을 시작하므로, 응답이 그 작업을 기다린다는 문장으로 끝나면 훅은 종료를 허용한다.</li><li>훅은 이미 한 번 막은 종료를 허용하므로, 종료 차단은 한 턴에 한 번만 일어난다.</li></ul>
+      <div class="diagram-box">
+<svg viewBox="0 0 920 618" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="예고 후 중단 훅의 판정 순서">
+<defs><marker id="rh-a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-muted)"/></marker></defs>
+<rect x="120" y="10" width="380" height="50" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+<text x="310.0" y="31.0" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--d-ink)">마지막 응답</text>
+<text x="310.0" y="49.0" text-anchor="middle" font-size="12.5" fill="var(--d-muted)">마지막 요청 뒤의 최종 응답</text>
+<line x1="310.0" y1="60" x2="310.0" y2="86" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a2)"/>
+<rect x="120" y="90" width="380" height="50" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="310.0" y="119.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--d-accent)">이미 막은 종료인가</text>
+<line x1="500" y1="115.0" x2="606" y2="115.0" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a2)"/>
+<text x="555.0" y="108.0" text-anchor="middle" font-size="12.5" fill="var(--d-muted)">예</text>
+<rect x="610" y="96" width="220" height="38" rx="4" fill="var(--d-subtle)" stroke="var(--d-line)" stroke-width="1.2"/>
+<text x="720.0" y="119.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--d-ink)">그대로 종료</text>
+<line x1="310.0" y1="140" x2="310.0" y2="166" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a2)"/>
+<text x="320.0" y="159" text-anchor="start" font-size="12.5" fill="var(--d-muted)">아니요</text>
+<rect x="120" y="170" width="380" height="50" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="310.0" y="199.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--d-accent)">빈 응답인가</text>
+<line x1="500" y1="195.0" x2="606" y2="195.0" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a2)"/>
+<text x="555.0" y="188.0" text-anchor="middle" font-size="12.5" fill="var(--d-muted)">예</text>
+<rect x="610" y="176" width="220" height="38" rx="4" fill="var(--d-subtle)" stroke="var(--d-line)" stroke-width="1.2"/>
+<text x="720.0" y="199.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--d-ink)">그대로 종료</text>
+<line x1="310.0" y1="220" x2="310.0" y2="246" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a2)"/>
+<text x="320.0" y="239" text-anchor="start" font-size="12.5" fill="var(--d-muted)">아니요</text>
+<rect x="120" y="250" width="380" height="50" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="310.0" y="271.0" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--d-accent)">끝 500자 추출</text>
+<text x="310.0" y="289.0" text-anchor="middle" font-size="12.5" fill="var(--d-muted)">인용한 예시 문구 제거</text>
+<line x1="310.0" y1="300" x2="310.0" y2="326" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a2)"/>
+<rect x="120" y="330" width="380" height="50" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="310.0" y="351.0" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--d-accent)">마지막 줄이 대기 문장인가</text>
+<text x="310.0" y="369.0" text-anchor="middle" font-size="12.5" fill="var(--d-muted)">&#x27;기다린다&#x27; &#x27;실행 중이다&#x27;</text>
+<line x1="500" y1="355.0" x2="606" y2="355.0" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a2)"/>
+<text x="555.0" y="348.0" text-anchor="middle" font-size="12.5" fill="var(--d-muted)">예</text>
+<rect x="610" y="336" width="220" height="38" rx="4" fill="var(--d-subtle)" stroke="var(--d-line)" stroke-width="1.2"/>
+<text x="720.0" y="359.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--d-ink)">그대로 종료</text>
+<line x1="310.0" y1="380" x2="310.0" y2="406" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a2)"/>
+<text x="320.0" y="399" text-anchor="start" font-size="12.5" fill="var(--d-muted)">아니요</text>
+<rect x="120" y="410" width="380" height="50" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="310.0" y="431.0" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--d-accent)">할 일을 말하는 어미가 있는가</text>
+<text x="310.0" y="449.0" text-anchor="middle" font-size="12.5" fill="var(--d-muted)">&#x27;하겠다&#x27; &#x27;보겠다&#x27;</text>
+<line x1="500" y1="435.0" x2="606" y2="435.0" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a2)"/>
+<text x="555.0" y="428.0" text-anchor="middle" font-size="12.5" fill="var(--d-muted)">예</text>
+<rect x="610" y="416" width="220" height="38" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+<text x="720.0" y="439.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--d-warn)">종료 차단</text>
+<line x1="310.0" y1="460" x2="310.0" y2="486" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a2)"/>
+<text x="320.0" y="479" text-anchor="start" font-size="12.5" fill="var(--d-muted)">아니요</text>
+<rect x="120" y="490" width="380" height="50" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="310.0" y="511.0" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--d-accent)">예고 표현이 있는가</text>
+<text x="310.0" y="529.0" text-anchor="middle" font-size="12.5" fill="var(--d-muted)">&#x27;다음 단계&#x27; &#x27;남은 작업&#x27;</text>
+<line x1="500" y1="515.0" x2="606" y2="515.0" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a2)"/>
+<text x="555.0" y="508.0" text-anchor="middle" font-size="12.5" fill="var(--d-muted)">예</text>
+<rect x="610" y="496" width="220" height="38" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+<text x="720.0" y="519.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--d-warn)">종료 차단</text>
+<line x1="310.0" y1="540" x2="310.0" y2="566" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#rh-a2)"/>
+<text x="320.0" y="559" text-anchor="start" font-size="12.5" fill="var(--d-muted)">아니요</text>
+<rect x="120" y="570" width="380" height="38" rx="4" fill="var(--d-subtle)" stroke="var(--d-line)" stroke-width="1.2"/>
+<text x="310.0" y="593.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--d-ink)">그대로 종료</text>
+</svg>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="lint">설정 검사기</h2>
+      <p>설정 폴더 <code>~/.claude</code> 는 여러 세션이 함께 사용하므로, 세션마다 정해지지 않은 위치에 메모나 스크립트를 작성하기 쉽다. 설정 검사기(<code>config/lint.py</code>)는 설정 폴더에 정해진 파일만 정해진 위치에 있는지 검사한다.</p>
+      <p>설정 폴더를 대상으로 한 도구 실행이 끝나면 훅 <code>config/notify.py</code> 가 설정 검사기를 실행한다. 훅은 오류가 있을 때만 검사 결과를 맥락에 추가한다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>검사</th><th>조건</th><th>결과</th></tr></thead>
+          <tbody>
+            <tr><td>루트 허용 목록</td><td><ul><li>설정 루트(<code>~/.claude</code> 바로 아래)에 허용 목록(<code>CLAUDE.md</code>, <code>skills/</code> 등) 밖의 파일이나 폴더가 있다.</li></ul></td><td>오류</td></tr>
+            <tr><td>공유 폴더</td><td><ul><li>공유 진입점만 두는 폴더(<code>bootstrap/</code> <code>statusline/</code> <code>scripts/</code>)에 정해진 파일 밖의 파일이나 폴더가 있다.</li></ul></td><td>오류</td></tr>
+            <tr><td>스킬 정의</td><td><ul><li>정의 파일의 <code>name</code> 이 폴더 이름과 다르다.</li></ul></td><td>오류</td></tr>
+            <tr><td>하위 스킬</td><td><ul><li>하위 스킬을 둔 스킬에 플러그인 설정(<code>.claude-plugin/plugin.json</code>)이 없다.</li><li>하위 스킬이 하나뿐이다.</li></ul></td><td>오류</td></tr>
+            <tr><td>훅 파일</td><td><ul><li>설정 파일에 적힌 훅 파일이 없다.</li><li>설정 파일에도 다른 훅 본문에도 이름이 언급되지 않는 훅 파일이 있다.</li></ul></td><td>오류</td></tr>
+            <tr><td>경로 환경 변수</td><td><ul><li>설정의 <code>env</code> 에 폴더 경로 키(<code>TMP_ROOT</code> 등)가 있다.</li></ul></td><td>오류</td></tr>
+            <tr><td>참조 경로</td><td><ul><li>문서에 적힌 스크립트 경로가 실제 파일이 아니다.</li></ul></td><td>오류</td></tr>
+            <tr><td>비밀값</td><td><ul><li>git이 추적하는 비밀값 파일이 있다.</li></ul></td><td>오류</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>검사기의 자가 시험(<code>--selftest</code>)은 일부러 규칙을 어긴 임시 폴더를 생성해 검사마다 위반을 검출하는지 확인한다.</p>
+    </section>
+
+    <section class="section">
+      <h2 id="skill-lint">스킬 작성 검사기</h2>
+      <p>설정 검사기는 스킬의 이름과 폴더 구조를 검사한다. 스킬 본문과 설명 형식은 스킬 작성 검사기(<code>skills/skill/scripts/skill-lint.py</code>)가 검사한다.</p>
+      <p>도구가 스킬 정의 문서를 수정하면 훅 <code>skill/notify.py</code> 가 하위 스킬을 포함한 스킬 폴더 전체에 스킬 작성 검사기를 실행한다. 스킬은 모델이 읽는 문서이므로 토큰이 적게 드는 영어로 작성한다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>검사</th><th>조건</th><th>결과</th></tr></thead>
+          <tbody>
+            <tr><td>머리 정보</td><td><ul><li>정의 파일(<code>SKILL.md</code>) 맨 위의 YAML 블록이 표준 YAML로 읽히지 않는다.</li><li><code>name</code> 이 폴더 이름과 다르다.</li></ul></td><td>오류</td></tr>
+            <tr><td>설명 형식</td><td><ul><li>설명에 한글이 있다.</li><li>사용 조건을 적는 <code>Use when:</code> 절이 없다.</li></ul></td><td>경고</td></tr>
+            <tr><td>H2 목록</td><td><ul><li>허용 목록(<code>Procedure</code>, <code>Output</code> 등) 밖의 H2가 있다.</li></ul></td><td>오류</td></tr>
+            <tr><td>본문 길이</td><td><ul><li>본문이 상한 300줄을 넘는다.</li></ul></td><td>오류</td></tr>
+            <tr><td>본문 언어</td><td><ul><li>본문 산문에 한글이 있다.</li><li>본문 산문에 금칙 문자(em dash와 화살표)가 있다.</li></ul></td><td>경고</td></tr>
+            <tr><td>하위 스킬 안내</td><td><ul><li>상위 스킬이 하위 스킬을 안내하는 위임 표에 누락된 하위 스킬이 있다.</li></ul></td><td>오류</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <a href="knowledge.html">이전: 지식 수집</a>
+      <a href="worklog.html">다음: 업무일지</a>
+    </footer>
+    </main>
+    <nav class="toc" aria-label="절 목록"></nav>
+  </div>
+  <script src="../../project.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>문장 검토 | Claude Code 작업 환경 | 박상곤</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../project.css">
+</head>
+<body class="has-tabs" data-root="../../" data-project="claude-config">
+  <div class="doc-layout">
+    <aside class="doc-side"></aside>
+    <main class="doc">
+      <a class="doc-back" href="../../index.html#projects">프로젝트 목록으로 이동</a>
+<nav class="top-nav">
+    
+      <div class="nav-links">
+        <a href="index.html">전체 구조</a>
+        <a href="topic.html">토픽</a>
+        <a href="design-verify.html">설계와 검증</a>
+        <a href="code-review.html">코드 리뷰</a>
+        <a href="polish.html" class="active">문장 검토</a>
+        <a href="autonomous-cycle.html">자율 구현</a>
+        <a href="knowledge.html">지식 수집</a>
+        <a href="rules-hooks.html">규칙과 훅</a>
+        <a href="worklog.html">업무일지</a>
+        <a href="mods-patch.html">모드와 cc-patch</a>
+      </div>
+  </nav>
+
+    <header class="doc-header">
+      <h1>문장 검토</h1>
+    </header>
+
+    <section class="section">
+      <h2 id="what">문장 검토란</h2>
+      <p>에이전트가 작성한 PR 본문, Jira 티켓, Slack 글, 설계 문서는 사용자 이름으로 팀에 게시된다. 그런데 에이전트의 초안에는 출처 없이 채운 세부, 항목을 나열하기만 한 구조, 입말 동사와 비유가 섞이고, 사용자는 같은 지적을 글마다 반복해야 했다.</p>
+      <p>문장 검토 스킬(<code>polish</code>)은 게시하기 직전의 한국어 글을 사실, 구조, 표현의 세 층 순서로 검토해 수정하는 스킬이다.</p>
+      <ul class="rule-list"><li>사실 층에서는 문장마다 원본 근거가 있는지 확인한다.</li><li>구조 층에서는 맥락을 모르는 독자가 항목마다 무엇을 왜 해야 하는지 알 수 있는지 확인한다.</li><li>표현 층에서는 문장이 매체에 맞는 문어인지 확인한다.</li></ul>
+      <p>사용자가 표현을 지적하면 에이전트는 그 지적을 예시 파일로 저장하고, 문장 검토 스킬은 실행할 때마다 예시 파일을 다시 읽는다. 그래서 한 번 받은 지적은 다음 글의 검토 기준이 된다.</p>
+    </section>
+
+    <section class="section">
+      <h2 id="structure">구성</h2>
+      <p><code>polish</code>는 게시할 글의 매체에 맞는 하위 스킬을 선택하고, 신호 체계와 예시 파일을 기준으로 세 층을 검토한다. 게시한 글에 사용자가 표현을 지적하면 <code>polish:capture</code>가 지적을 예시 파일로 저장한다.</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 920 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="문장 검토 스킬의 구성">
+<defs><marker id="pl0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-muted)"/></marker></defs>
+<rect x="250" y="20" width="650" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="575.0" y="44" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">신호 체계, 예시 파일, 응답 문체 규칙</text><text x="575.0" y="65" text-anchor="middle" font-size="13" fill="var(--d-muted)">실행할 때마다 디스크에서 다시 읽음</text>
+<rect x="20" y="130" width="180" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="110.0" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">게시할 글</text><text x="110.0" y="175" text-anchor="middle" font-size="13" fill="var(--d-muted)">에이전트가 작성한 초안</text>
+<rect x="250" y="130" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="345.0" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">polish</text><text x="345.0" y="175" text-anchor="middle" font-size="13" fill="var(--d-muted)">매체별 하위 스킬 선택</text>
+<rect x="480" y="130" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="575.0" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">세 층 검토</text><text x="575.0" y="175" text-anchor="middle" font-size="13" fill="var(--d-muted)">사실, 구조, 표현 순서</text>
+<rect x="710" y="130" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="805.0" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">게시한 글</text><text x="805.0" y="175" text-anchor="middle" font-size="13" fill="var(--d-muted)">PR, 티켓, Slack, 문서</text>
+<rect x="480" y="240" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="575.0" y="264" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">사용자 피드백</text><text x="575.0" y="285" text-anchor="middle" font-size="13" fill="var(--d-muted)">표현 지적이나 칭찬</text>
+<rect x="710" y="240" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="805.0" y="264" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">polish:capture</text><text x="805.0" y="285" text-anchor="middle" font-size="13" fill="var(--d-muted)">예시 파일로 저장</text>
+<line x1="200" y1="158" x2="246" y2="158" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pl0)"/>
+<line x1="440" y1="158" x2="476" y2="158" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pl0)"/>
+<line x1="670" y1="158" x2="706" y2="158" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pl0)"/>
+<line x1="345" y1="76" x2="345" y2="126" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pl0)"/>
+<line x1="575" y1="76" x2="575" y2="126" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pl0)"/>
+<path d="M 805 186 L 805 214 L 575 214 L 575 236" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pl0)"/>
+<line x1="670" y1="268" x2="706" y2="268" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pl0)"/>
+<path d="M 900 268 L 912 268 L 912 48 L 904 48" fill="none" stroke="var(--d-muted)" stroke-width="1.3" stroke-dasharray="5 3" marker-end="url(#pl0)"/>
+<text x="20" y="330" font-size="13" fill="var(--d-muted)">점선: 저장한 예시가 다음 검토의 기준이 되는 경로</text>
+<rect x="420" y="318" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="440" y="330" font-size="13" fill="var(--d-muted)">입력과 결과</text>
+<rect x="550" y="318" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="570" y="330" font-size="13" fill="var(--d-muted)">스킬과 동작</text>
+</svg>
+        <p class="diagram-caption">응답 문체 규칙은 에이전트가 사용자에게 응답할 때 따르는 문장 규칙이고, 문장 검토 스킬은 같은 규칙을 팀에 게시하는 글에도 적용한다.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="layers">세 층 검토</h2>
+      <p>내용이 틀린 문장의 표현만 다듬으면 틀린 내용이 더 그럴듯하게 읽힌다. 그래서 스킬은 사실 층을 먼저 통과한 문장만 구조 층과 표현 층으로 넘긴다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>층</th><th>판단 기준</th><th>잡아내는 문제</th></tr></thead>
+          <tbody>
+            <tr><td>사실</td><td>문장마다 원본 근거를 제시할 수 있는가</td><td><ul><li>출처 없이 채운 수치와 원인</li><li>확인하지 않은 검증 서술</li><li>기억으로 작성한 개수와 상태</li></ul></td></tr>
+            <tr><td>구조</td><td>맥락을 모르는 독자가 항목마다 무엇을 왜 해야 하는지 아는가</td><td><ul><li>한 문장에 세 개 이상 나열한 항목</li><li>원인과 결과를 같은 수준에 둔 목록</li><li>표의 내용을 다시 서술한 문장</li></ul></td></tr>
+            <tr><td>표현</td><td>매체에 맞는 문어로 정확한 용어를 사용하는가</td><td><ul><li>입말 동사와 비유</li><li>번역투와 판에 박힌 문형</li><li>화살표, 굵은 글씨, 이모지</li></ul></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>사실 층에서 원본으로 판단할 수 없는 문장은 표현을 다듬지 않고, 유지할지 삭제할지 사용자에게 한 문장씩 묻는다.</p>
+    </section>
+
+    <section class="section">
+      <h2 id="signals">신호 목록</h2>
+      <p>스킬은 검토에서 찾는 문제를 신호라고 부르고, 지적마다 신호 ID를 기록한다.</p>
+      <p>신호는 사실 층 8개와 구조 층 12개와 표현 층 9개로 모두 29개다. <code>A-주석필요성</code>은 소스 코드 주석을 검토하는 하위 스킬에서 사용한다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>층</th><th>신호</th><th>판단 기준</th></tr></thead>
+          <tbody>
+            <tr><td>사실</td><td><code>A-지어낸세부</code></td><td>원본에 없는 대안이나 수치나 원인을 그럴듯하게 채웠는가</td></tr>
+            <tr><td>사실</td><td><code>A-원인오귀속</code></td><td>원인이 여럿인데 아는 원인 하나를 전부처럼 서술했는가</td></tr>
+            <tr><td>사실</td><td><code>A-개념혼동</code></td><td>비슷한 두 개념을 섞어 서술해 글이 스스로 모순되어 보이는가</td></tr>
+            <tr><td>사실</td><td><code>A-근거없는검증서술</code></td><td>무엇을 어떻게 확인했는지 없이 확인했다고 서술했는가</td></tr>
+            <tr><td>사실</td><td><code>A-부정확한집계</code></td><td>개수와 상태를 원본과 대조하지 않고 기억으로 작성했는가</td></tr>
+            <tr><td>사실</td><td><code>A-원천데이터변형</code></td><td>사용자가 보려는 데이터를 요약하거나 행을 합치거나 일부만 옮겼는가</td></tr>
+            <tr><td>사실</td><td><code>A-근거없는합리화</code></td><td>원본과 코드로 확인하기 전에 그럴듯한 이유로 결론을 방어했는가</td></tr>
+            <tr><td>사실</td><td><code>A-주석필요성</code></td><td>소스 코드 주석을 정해진 사유 없이 추가했는가</td></tr>
+            <tr><td>구조</td><td><code>B-정보과밀</code></td><td>한 문장이나 한 목록 항목에 항목 셋 이상을 나열했는가</td></tr>
+            <tr><td>구조</td><td><code>B-산문나열</code></td><td>같은 형태의 항목을 산문으로 길게 나열하거나 표의 내용을 문장으로 반복했는가</td></tr>
+            <tr><td>구조</td><td><code>B-맥락없는서술</code></td><td>배경이 있어야 이해되는 항목에 배경이 없는가</td></tr>
+            <tr><td>구조</td><td><code>B-이유없는지시</code></td><td>독자에게 요구하는 항목에 이유가 없는가</td></tr>
+            <tr><td>구조</td><td><code>B-실행정보없는변경통지</code></td><td>독자가 대응해야 하는 변경을 항목 이름으로만 알렸는가</td></tr>
+            <tr><td>구조</td><td><code>B-회피문구</code></td><td>모든 정보를 포함해야 하는 매체에서 세부를 필요하면 알려 달라는 문장으로 대신했는가</td></tr>
+            <tr><td>구조</td><td><code>B-뻔한라벨</code></td><td>핵심이나 요약하면처럼 정보가 없는 수식어를 앞에 두었는가</td></tr>
+            <tr><td>구조</td><td><code>B-두괄요약</code></td><td>첫머리에 목적과 현재 상태를 밝힌 한 줄이 없는가</td></tr>
+            <tr><td>구조</td><td><code>B-약한섹션구분</code></td><td>절의 경계를 빈 줄로만 구분해 독자가 인식하지 못하는가</td></tr>
+            <tr><td>구조</td><td><code>B-헤더본문레지스터</code></td><td>제목과 칸 이름은 명사형이고 본문은 서술형인가</td></tr>
+            <tr><td>구조</td><td><code>B-병렬형식불일치</code></td><td>같은 종류의 항목을 항목마다 다른 형식으로 작성했는가</td></tr>
+            <tr><td>구조</td><td><code>B-도해시각화</code></td><td>도해가 상자 안의 문장이나 그림 밖의 설명에 의존하는가</td></tr>
+            <tr><td>표현</td><td><code>C-정밀용어환원</code></td><td>식별자와 약어를 독자가 아는 도메인 용어로 먼저 설명했는가</td></tr>
+            <tr><td>표현</td><td><code>C-비유절제</code></td><td>정확한 용어와 정의 대신 비유나 추상적인 이름을 사용했는가</td></tr>
+            <tr><td>표현</td><td><code>C-레지스터정합</code></td><td>서술어마다 매체의 목표 문체에 맞는가</td></tr>
+            <tr><td>표현</td><td><code>C-군더더기제거</code></td><td>삭제해도 뜻이 같은 수식어가 있는가</td></tr>
+            <tr><td>표현</td><td><code>C-표면복제금지</code></td><td>사용자 발화나 원본 문장을 뜻을 정리하지 않고 그대로 옮겼는가</td></tr>
+            <tr><td>표현</td><td><code>C-번역투억제</code></td><td>무생물 주어 피동문이나 겹친 수식어가 있는가</td></tr>
+            <tr><td>표현</td><td><code>C-정형문형억제</code></td><td>내용이 요구하지 않는 판에 박힌 문형을 반복했는가</td></tr>
+            <tr><td>표현</td><td><code>C-개조식침투</code></td><td>서술형 본문에 명사형 종결이나 개조식 콜론이 섞였는가</td></tr>
+            <tr><td>표현</td><td><code>C-기계신호</code></td><td>긴 대시와 화살표와 이모지와 장식용 굵은 글씨가 있는가</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="procedure">검토 절차</h2>
+      <p>검토자 한 명이 세 층을 모두 보면 자신이 수정한 문장을 다시 통과시키기 쉽다. 그래서 층마다 별도의 검토 서브에이전트가 같은 글을 검토하고, 앞 층을 통과해야 다음 층으로 넘어간다.</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 940 650" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="문장 검토의 검토 절차">
+<defs><marker id="pp0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-muted)"/></marker></defs>
+<rect x="10" y="100" width="900" height="100" rx="6" fill="var(--d-subtle)" stroke="var(--d-border)" stroke-width="1"/><text x="24" y="120" font-size="13" font-weight="600" fill="var(--d-muted)">사실 층</text>
+<rect x="10" y="210" width="900" height="100" rx="6" fill="var(--d-subtle)" stroke="var(--d-border)" stroke-width="1"/><text x="24" y="230" font-size="13" font-weight="600" fill="var(--d-muted)">구조 층</text>
+<rect x="10" y="320" width="900" height="100" rx="6" fill="var(--d-subtle)" stroke="var(--d-border)" stroke-width="1"/><text x="24" y="340" font-size="13" font-weight="600" fill="var(--d-muted)">표현 층</text>
+<rect x="20" y="20" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="115.0" y="44" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">게시할 글</text><text x="115.0" y="65" text-anchor="middle" font-size="13" fill="var(--d-muted)">에이전트가 작성한 초안</text>
+<rect x="250" y="20" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="345.0" y="44" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">규칙 다시 읽기</text><text x="345.0" y="65" text-anchor="middle" font-size="13" fill="var(--d-muted)">규칙 문서와 예시 파일</text>
+<rect x="130" y="132" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="225.0" y="156" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">사실 검토</text><text x="225.0" y="177" text-anchor="middle" font-size="13" fill="var(--d-muted)">검토 서브에이전트</text>
+<rect x="630" y="132" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="725.0" y="156" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">사용자 질문</text><text x="725.0" y="177" text-anchor="middle" font-size="13" fill="var(--d-muted)">판단할 수 없는 문장</text>
+<rect x="130" y="242" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="225.0" y="266" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">구조 검토</text><text x="225.0" y="287" text-anchor="middle" font-size="13" fill="var(--d-muted)">검토 서브에이전트</text>
+<rect x="380" y="242" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="475.0" y="266" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">구조 검사표</text><text x="475.0" y="287" text-anchor="middle" font-size="13" fill="var(--d-muted)">G1~G8 적용</text>
+<rect x="630" y="242" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="725.0" y="266" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">구조 재작성</text><text x="725.0" y="287" text-anchor="middle" font-size="13" fill="var(--d-muted)">불합격 항목 수정</text>
+<rect x="130" y="352" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="225.0" y="376" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">표현 검토</text><text x="225.0" y="397" text-anchor="middle" font-size="13" fill="var(--d-muted)">검토 서브에이전트</text>
+<rect x="380" y="352" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="475.0" y="376" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">서술어 판정표</text><text x="475.0" y="397" text-anchor="middle" font-size="13" fill="var(--d-muted)">입말을 문어로 교체</text>
+<rect x="630" y="352" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="725.0" y="376" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">표식 재검색</text><text x="725.0" y="397" text-anchor="middle" font-size="13" fill="var(--d-muted)">화살표와 굵은 글씨</text>
+<rect x="630" y="450" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="725.0" y="474" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">사용자 구간 확인</text><text x="725.0" y="495" text-anchor="middle" font-size="13" fill="var(--d-muted)">구간마다 확정</text>
+<rect x="380" y="450" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="475.0" y="474" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">확정 문장 잠금</text><text x="475.0" y="495" text-anchor="middle" font-size="13" fill="var(--d-muted)">이후 수정에서 제외</text>
+<rect x="130" y="450" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="225.0" y="474" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">게시한 글</text><text x="225.0" y="495" text-anchor="middle" font-size="13" fill="var(--d-muted)">PR, 티켓, Slack, 문서</text>
+<rect x="630" y="550" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="725.0" y="574" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">polish:capture</text><text x="725.0" y="595" text-anchor="middle" font-size="13" fill="var(--d-muted)">지적을 예시로 저장</text>
+<line x1="210" y1="48" x2="246" y2="48" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pp0)"/>
+<path d="M 345 76 L 345 90 L 225 90 L 225 128" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pp0)"/>
+<line x1="320" y1="152" x2="626" y2="152" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pp0)"/>
+<text x="473" y="146" text-anchor="middle" font-size="12" fill="var(--d-muted)">원본으로 판단할 수 없는 문장</text>
+<line x1="630" y1="172" x2="324" y2="172" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pp0)"/>
+<text x="473" y="186" text-anchor="middle" font-size="12" fill="var(--d-muted)">유지 또는 삭제 답변</text>
+<line x1="225" y1="188" x2="225" y2="238" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pp0)"/>
+<text x="232" y="226" text-anchor="start" font-size="12" fill="var(--d-muted)">사실 확정</text>
+<line x1="320" y1="270" x2="376" y2="270" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pp0)"/>
+<line x1="570" y1="262" x2="626" y2="262" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pp0)"/>
+<text x="598" y="256" text-anchor="middle" font-size="12" fill="var(--d-muted)">불합격</text>
+<line x1="630" y1="282" x2="574" y2="282" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pp0)"/>
+<text x="598" y="296" text-anchor="middle" font-size="12" fill="var(--d-muted)">재검사</text>
+<path d="M 475 298 L 475 314 L 225 314 L 225 348" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pp0)"/>
+<text x="482" y="312" text-anchor="start" font-size="12" fill="var(--d-muted)">통과</text>
+<line x1="320" y1="380" x2="376" y2="380" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pp0)"/>
+<line x1="570" y1="380" x2="626" y2="380" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pp0)"/>
+<line x1="725" y1="408" x2="725" y2="446" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pp0)"/>
+<line x1="630" y1="478" x2="574" y2="478" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pp0)"/>
+<text x="598" y="472" text-anchor="middle" font-size="12" fill="var(--d-muted)">확정</text>
+<line x1="380" y1="478" x2="324" y2="478" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pp0)"/>
+<path d="M 820 478 L 900 478 L 900 270 L 824 270" fill="none" stroke="var(--d-muted)" stroke-width="1.3" stroke-dasharray="5 3" marker-end="url(#pp0)"/>
+<text x="894" y="440" text-anchor="end" font-size="12" fill="var(--d-muted)">지적</text>
+<line x1="725" y1="506" x2="725" y2="546" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#pp0)"/>
+<text x="732" y="530" text-anchor="start" font-size="12" fill="var(--d-muted)">새 표현 지적</text>
+<text x="20" y="636" font-size="13" fill="var(--d-muted)">점선: 사용자 지적을 반영하고 구조 검사표부터 글 전체를 다시 검사하는 경로</text><rect x="560" y="624" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="580" y="636" font-size="13" fill="var(--d-muted)">글과 사용자</text><rect x="690" y="624" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="710" y="636" font-size="13" fill="var(--d-muted)">검토 단계</text>
+</svg>
+      </div>
+      <ul class="rule-list">
+        <li>사실 층은 원본으로 판단할 수 없는 문장을 사용자에게 한 문장씩 묻는다.</li>
+        <li>구조 층은 구조 검사표를 통과할 때까지 재작성과 재검사를 반복한다.</li>
+        <li>사용자가 구간을 확인하며 지적하면, 수정한 뒤 구조 검사표부터 글 전체를 다시 검사한다.</li>
+        <li>확정한 문장은 잠그고, 기존 예시에 없는 지적은 <code>polish:capture</code>가 예시 파일로 저장한다.</li>
+      </ul>
+      <p>자율 구현 스킬처럼 사람에게 묻지 않는 실행에서는 사용자 구간 확인만 생략하고 나머지 단계는 그대로 실행한다.</p>
+    </section>
+
+    <section class="section">
+      <h2 id="gate-b">구조 검사표</h2>
+      <p>구조 검사표는 PR 본문과 설계 근거와 상태 서술처럼 목록이나 빈 줄로 구조를 나타낸 글에 적용한다. 항목 하나라도 불합격이면 표현 층의 수정과 검토 완료 판정을 모두 막는다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>ID</th><th>검사</th><th>불합격 조건</th></tr></thead>
+          <tbody>
+            <tr><td>G1</td><td>항목 하나에 사실 하나</td><td>목록 항목 하나에 클래스와 경로와 호출 위치를 쉼표로 나열했다</td></tr>
+            <tr><td>G2</td><td>대등한 항목만 같은 수준</td><td>원인과 결과나 규칙과 예외를 같은 수준의 목록 항목으로 두었다</td></tr>
+            <tr><td>G3</td><td>빈 줄만으로 만든 계층 금지</td><td>제목이나 표나 대등한 목록 없이 빈 줄로만 절을 구분했다</td></tr>
+            <tr><td>G4</td><td>같은 내용의 중복 금지</td><td>같은 목록을 산문과 표로 두 번 작성하면서 판단을 추가하지 않았다</td></tr>
+            <tr><td>G5</td><td>변경 이유는 파일 목록이 아님</td><td>변경 이유의 대부분이 고장 난 동작 대신 파일과 클래스 목록이다</td></tr>
+            <tr><td>G6</td><td>맥락 없는 독자의 이해</td><td>독자가 10초 안에 무엇이 고장 났고 왜 변경이 필요한지 말할 수 없다</td></tr>
+            <tr><td>G7</td><td>구체성은 식별자 나열이 아님</td><td>구체적으로 수정했다면서 동작과 결과 없이 식별자만 추가했다</td></tr>
+            <tr><td>G8</td><td>서술 허용</td><td>훑어볼 같은 형태의 항목이 없는데도 서술을 가짜 목록으로 해체했다</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>불합격한 글을 재작성할 때는 글의 내용에 따라 형식을 선택한다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>글의 내용</th><th>선택하는 형식</th><th>예</th></tr></thead>
+          <tbody>
+            <tr><td>대등한 문제가 두세 개</td><td>같은 수준의 목록 항목</td><td>PR 변경 이유에 원인이 두 개 있으면 항목 두 개로 작성</td></tr>
+            <tr><td>동작 하나와 그 결과</td><td>짧은 서술 한 단락</td><td>억지로 목록 항목 네 개로 나누지 않음</td></tr>
+            <tr><td>같은 형태의 데이터 여러 개</td><td>표나 트리</td><td>코드 값이나 ID 목록</td></tr>
+            <tr><td>근거로 제시할 파일과 클래스 위치</td><td>본문 밖의 표나 부록</td><td>변경 이유 문장에는 위치 목록을 작성하지 않음</td></tr>
+            <tr><td>검사표를 이미 통과한 글</td><td>최소한의 수정</td><td>취향에 따른 재배치를 하지 않음</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="gate-c">서술어 판정표</h2>
+      <p>기계적 표식 검색은 화살표와 굵은 글씨 같은 표식만 찾는다. 그래서 검토자가 수정 대상으로 지목하지 않은 문장의 입말 동사는 예시 파일이 있는데도 반복해서 게시되었다.</p>
+      <p>서술어 판정표는 문장 끝 서술어와 목록 항목과 표 칸과 제목의 서술어를 빠짐없이 나열하고 하나씩 표시한다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>표시</th><th>뜻</th><th>처리</th></tr></thead>
+          <tbody>
+            <tr><td>문어</td><td>매체의 목표 문체에 맞음</td><td>유지</td></tr>
+            <tr><td>입말</td><td>입말 동사나 입말 관용구 또는 문어 대응어가 있는 짧은 동사</td><td>문어 서술어로 교체하고 문장을 다시 읽음</td></tr>
+            <tr><td>보존</td><td>사용자 문장이나 인용이나 보존 대상</td><td>유지하고 셋 중 무엇인지 밝힘</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>표시가 없는 서술어나 입말로 남은 서술어가 하나라도 있으면 불합격이다. 글마다 작성한 금지어 목록은 판정표를 대신하지 않는다. 목록은 검토자가 이미 의심한 단어만 포함하기 때문이다.</p>
+      <p>아래 대응표는 실제 결과물에 받은 사용자 피드백에서 정리한 시작점이다. 판정 기준은 대응표가 아니라 매체의 목표 문체이므로 대응표에 없는 입말 동사도 불합격이다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>입말</th><th>문어</th></tr></thead>
+          <tbody>
+            <tr><td><code>판다</code> <code>파는</code> <code>팔린다</code></td><td><code>판매한다</code> <code>판매하는</code> <code>판매된다</code></td></tr>
+            <tr><td><code>뺀다</code> <code>빼고</code> <code>빠진다</code></td><td><code>제외한다</code> <code>제외하고</code> <code>제외된다</code></td></tr>
+            <tr><td><code>준다</code> (응답 자리)</td><td><code>응답한다</code> <code>회신한다</code></td></tr>
+            <tr><td><code>넣는다</code> <code>붙인다</code></td><td><code>추가한다</code></td></tr>
+            <tr><td><code>지운다</code> <code>없앤다</code></td><td><code>삭제한다</code> <code>제거한다</code></td></tr>
+            <tr><td><code>고친다</code> <code>손본다</code> <code>만진다</code></td><td><code>수정한다</code> <code>교체한다</code> <code>재작성한다</code></td></tr>
+            <tr><td><code>띄운다</code></td><td><code>기동한다</code></td></tr>
+            <tr><td><code>나온다</code> (결과 자리)</td><td><code>노출된다</code></td></tr>
+            <tr><td><code>온다</code> <code>오면</code></td><td><code>전달된다</code> <code>전달되면</code></td></tr>
+            <tr><td><code>건다</code> (제약 자리)</td><td><code>적용한다</code></td></tr>
+            <tr><td><code>뗀다</code> <code>나눈다</code></td><td><code>분리한다</code></td></tr>
+            <tr><td><code>걷어낸다</code></td><td><code>제거한다</code></td></tr>
+            <tr><td><code>바꾼다</code></td><td><code>변경한다</code> <code>교체한다</code></td></tr>
+            <tr><td><code>잡는다</code> (검출 자리)</td><td><code>검출한다</code></td></tr>
+            <tr><td><code>푼다</code> (해석 자리)</td><td><code>해석한다</code></td></tr>
+            <tr><td><code>갈아끼운다</code></td><td><code>교체한다</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="no-fix">수정하지 않는 경우</h2>
+      <p>검토는 문제를 빠짐없이 찾되, 아래 경우는 신호로 기록만 하고 수정하지 않는다. 잘못 수정하면 원문이 손상되기 때문이다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>경우</th><th>처리</th></tr></thead>
+          <tbody>
+            <tr><td>보존 대상</td><td>코드와 수치와 날짜와 고유명사와 식별자와 인용은 수정하지 않는다.</td></tr>
+            <tr><td>사용자가 선택한 문체</td><td>매체의 목표 문체와 충돌할 때만 지적하고 결정은 사용자에게 맡긴다. 에이전트가 직접 작성한 초안은 보호 대상이 아니다.</td></tr>
+            <tr><td>원본 없는 추측 수정</td><td>사실이 불확실한 문장은 다듬지 않고 사실 층의 판단 불가 항목으로 올린다.</td></tr>
+            <tr><td>이미 읽히는 서술</td><td>맥락을 모르는 독자가 목적과 문제와 다음 단계를 이해하면 밀도만을 이유로 문장을 목록으로 해체하지 않는다.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 id="record">지적의 기록과 등급</h2>
+      <p>검토자는 지적마다 원문과 신호와 등급과 수정안과 이유를 기록한다. 사소한 지적도 삭제하지 않고 등급만 낮춘다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>등급</th><th>대상</th></tr></thead>
+          <tbody>
+            <tr><td>must</td><td>사실 오류와 독자의 오해와 기계적 표식 위반과 구조 검사표 불합격</td></tr>
+            <tr><td>minor</td><td>문체와 남은 구조의 어색함</td></tr>
+            <tr><td>nit</td><td>공백과 사소한 군더더기</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>한 문장에 여러 층의 신호가 함께 있으면 하나로 합치지 않고 층마다 따로 기록한다.</p>
+    </section>
+
+    <section class="section">
+      <h2 id="sub">매체별 하위 스킬</h2>
+      <p>매체마다 독자가 기대하는 형식이 달라, 하위 스킬은 공통 신호 체계 위에 매체별 규칙과 예시를 추가한다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>하위 스킬</th><th>대상</th><th>추가 규칙</th></tr></thead>
+          <tbody>
+            <tr><td><code>polish:share</code></td><td>진행 공유와 주간 보고</td><td>구간별 구조 규칙</td></tr>
+            <tr><td><code>polish:slack</code></td><td>Slack 게시 글</td><td>결론을 첫 줄에 두고 모바일에서 읽히는 배치</td></tr>
+            <tr><td><code>polish:ticket</code></td><td>Jira 티켓 제목과 본문</td><td>결과만 남기고 선후 관계는 티켓 번호로 연결</td></tr>
+            <tr><td><code>polish:comment</code></td><td>소스 코드 주석</td><td>정해진 네 가지 사유가 있을 때만 주석을 허용</td></tr>
+            <tr><td><code>polish:capture</code></td><td>사용자 피드백</td><td>지적이나 칭찬을 예시 파일로 저장</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>주석 가드 훅이 소스 파일에 주석을 추가하는 편집을 거부하면, 에이전트는 <code>polish:comment</code>로 주석이 필요한지 먼저 판단한다.</p>
+    </section>
+
+    <section class="section">
+      <h2 id="examples">예시 파일</h2>
+      <p>규칙 문장만으로는 어떤 표현이 문제인지 사람마다 다르게 판단한다. 그래서 스킬은 사용자가 실제로 지적하거나 칭찬한 문장을 예시 파일로 보관하고, 검토할 때마다 모든 예시 파일을 다시 읽는다.</p>
+      <ul class="rule-list">
+        <li>예시 파일 하나는 지적 하나를 다루고 아래 서식의 항목을 기록한다.</li>
+        <li>어떤 글에나 적용되는 예시는 공통 예시 폴더에, 특정 매체에서만 성립하는 예시는 해당 하위 스킬의 예시 폴더에 둔다.</li>
+        <li>입말 동사를 알리는 훅은 예시 파일에 기록된 입말 목록을 기준으로 게시 명령과 응답을 검사한다.</li>
+      </ul>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>항목</th><th>기록하는 내용</th></tr></thead>
+          <tbody>
+            <tr><td>판정</td><td>좋음이나 나쁨이나 미해결</td></tr>
+            <tr><td>신호</td><td>신호 목록의 ID</td></tr>
+            <tr><td>구간</td><td>도입부나 본문 일반처럼 글에서 표현이 놓인 위치</td></tr>
+            <tr><td>매체</td><td>문서나 Slack 진행 공유나 보고나 Jira 티켓</td></tr>
+            <tr><td>맥락</td><td>표현이 어디서 왜 나왔는지</td></tr>
+            <tr><td>표현</td><td>실제 문장의 인용</td></tr>
+            <tr><td>피드백</td><td>좋거나 나쁜 이유와 사용자 피드백의 요지</td></tr>
+            <tr><td>개선</td><td>수정한 문장이고 좋음이면 유지라고 기록</td></tr>
+            <tr><td>원칙</td><td>일반화한 한 줄 규칙</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>파일 이름은 <code>NN-판정-구간-제목.md</code> 형식이다. 미해결은 사실이 확정되지 않아 개선문을 작성할 수 없는 예시이고, 사실이 확정되면 나쁨으로 갱신한다.</p>
+      <p>예시는 정답이 아니라 참고 자료이므로 검토자는 문장을 그대로 옮기지 않고 구조와 원칙만 적용한다. 예시 파일은 공통 예시 74개와 하위 스킬 예시 19개다.</p>
+    </section>
+
+    <section class="section">
+      <h2 id="eval">검토 방법의 평가 기록</h2>
+      <p>지금의 검토 절차는 2026-07-31에 검토 방법 후보를 1단계부터 3단계까지 비교해 선택했다. 모든 단계는 같은 평가용 글과 같은 채점 기준을 사용했다.</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 940 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="검토 방법 평가의 진행 순서">
+<defs><marker id="ev0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-muted)"/></marker></defs>
+<rect x="20" y="40" width="200" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="120.0" y="65" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">평가용 글</text><text x="120.0" y="86" text-anchor="middle" font-size="13" fill="var(--d-muted)">PR 변경 이유 변형 6개</text>
+<rect x="260" y="40" width="200" height="60" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="360.0" y="65" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">1단계 후보 비교</text><text x="360.0" y="86" text-anchor="middle" font-size="13" fill="var(--d-muted)">최대 10라운드</text>
+<polygon points="600,36 695,70 600,104 505,70" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/><text x="600" y="75" text-anchor="middle" font-size="13" font-weight="600" fill="var(--d-ink)">종료 기준 충족</text>
+<rect x="500" y="150" width="200" height="60" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="600.0" y="175" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">후보 수정</text><text x="600.0" y="196" text-anchor="middle" font-size="13" fill="var(--d-muted)">남은 위험을 다음 라운드에 시험</text>
+<rect x="740" y="40" width="180" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="830.0" y="65" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">H2b 선택</text><text x="830.0" y="86" text-anchor="middle" font-size="13" fill="var(--d-muted)">5라운드에서 기준 충족</text>
+<rect x="740" y="270" width="180" height="60" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="830.0" y="295" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">2단계 에이전트 비교</text><text x="830.0" y="316" text-anchor="middle" font-size="13" fill="var(--d-muted)">작성 10개, 채점 20개</text>
+<rect x="480" y="270" width="200" height="60" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="580.0" y="295" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">3단계 자동 비교</text><text x="580.0" y="316" text-anchor="middle" font-size="13" fill="var(--d-muted)">규칙 기반 300라운드</text>
+<rect x="20" y="270" width="400" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="220.0" y="295" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">최종 형식 선택</text><text x="220.0" y="316" text-anchor="middle" font-size="13" fill="var(--d-muted)">대등한 축 2~3개는 목록, 동작 하나는 서술</text>
+<line x1="220" y1="70" x2="256" y2="70" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ev0)"/>
+<line x1="460" y1="70" x2="501" y2="70" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ev0)"/>
+<line x1="695" y1="70" x2="736" y2="70" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ev0)"/>
+<text x="716" y="62" text-anchor="middle" font-size="12" fill="var(--d-muted)">예</text>
+<line x1="600" y1="104" x2="600" y2="146" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ev0)"/>
+<text x="608" y="130" text-anchor="start" font-size="12" fill="var(--d-muted)">아니오</text>
+<path d="M 500 180 L 360 180 L 360 104" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ev0)"/>
+<text x="430" y="172" text-anchor="middle" font-size="12" fill="var(--d-muted)">다음 라운드</text>
+<line x1="830" y1="100" x2="830" y2="266" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ev0)"/>
+<line x1="740" y1="300" x2="684" y2="300" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ev0)"/>
+<line x1="480" y1="300" x2="424" y2="300" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ev0)"/>
+<text x="830" y="352" text-anchor="middle" font-size="12" fill="var(--d-muted)">문단형 39.4, 대등 목록형 39.1</text>
+<text x="580" y="352" text-anchor="middle" font-size="12" fill="var(--d-muted)">문단형 40점, 대등 목록형도 최고점</text>
+<text x="220" y="352" text-anchor="middle" font-size="12" fill="var(--d-muted)">사용자가 받아들인 PR 본문 형식 기준</text>
+<rect x="20" y="398" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/><text x="40" y="410" font-size="13" fill="var(--d-muted)">글과 결과</text>
+<rect x="140" y="398" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/><text x="160" y="410" font-size="13" fill="var(--d-muted)">비교 단계</text>
+<polygon points="277,398 287,405 277,412 267,405" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/><text x="294" y="410" font-size="13" fill="var(--d-muted)">판단</text>
+<text x="360" y="410" font-size="13" fill="var(--d-muted)">상자 아래 문구: 단계별 1위 점수와 판단 근거</text>
+</svg>
+      </div>
+      <p>평가용 글은 PR 본문의 변경 이유 절을 결함 유형별로 변형한 여섯 개다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>변형</th><th>결함</th></tr></thead>
+          <tbody>
+            <tr><td>V0</td><td>추상적인 서술</td></tr>
+            <tr><td>V1</td><td>목록 항목 안의 식별자 나열</td></tr>
+            <tr><td>V2</td><td>대등하지 않은 항목을 같은 수준에 둔 목록</td></tr>
+            <tr><td>V3</td><td>산문과 표의 중복</td></tr>
+            <tr><td>V4</td><td>빈 줄만으로 구분한 구조</td></tr>
+            <tr><td>V5</td><td>결함 없는 서술</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>채점은 8개 항목에 40점 만점이다. V1부터 V4까지의 수정본이 32점 이상이면서 V5가 28점 이상을 유지하면 종료하고, 항목 R2와 R4와 R5와 R7은 각각 4점 이상이어야 한다.</p>
+      <p>1단계는 라운드마다 후보를 비교하고, 1위 후보에 남은 위험을 다음 라운드 후보로 시험했다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>라운드</th><th>후보</th><th>선택</th><th>점수 (V1~V4 / V5)</th><th>판단</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>M1 검사표 중심과 M2 반례 목록과 M3 판단 순서도</td><td>M1과 M3을 합친 H1</td><td>약 36 / 38</td><td>표현만 정리하고 완료로 판정할 위험과 V5를 과도하게 목록으로 만들 위험이 남아 계속</td></tr>
+            <tr><td>2</td><td>H1과 재검사 추가안과 신호 확장안</td><td>H2</td><td>약 36 / 38</td><td>과도한 구조화를 시험하려고 계속</td></tr>
+            <tr><td>3</td><td>H2와 목록을 강제한 H2a와 대등한 목록이 없으면 서술을 우선하는 H2b</td><td>H2b</td><td>36 / 38</td><td>H2a는 V5를 약 24점으로 낮춤</td></tr>
+            <tr><td>4</td><td>H2b와 국소 피드백 뒤 구조 검사표를 전체에 다시 적용하는 안</td><td>H2b와 재검사</td><td>36~37 / 38</td><td>표현만 수정한 국소 수정을 검사표가 거부</td></tr>
+            <tr><td>5</td><td>H2b 최종 문구</td><td>H2b 최종</td><td>V1 37과 V2 36과 V3 35와 V4 36 / 38</td><td>기준을 충족해 종료하고 6~10라운드는 실행하지 않음</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>선택한 H2b는 표현 검토 전에 구조 검사표를 적용하고, 국소 피드백 뒤에는 구조 검사표를 글 전체에 다시 적용한다. 이 결정은 스킬 문서의 구조 검토 설명과 수정하지 않는 경우와 검토 절차에 반영되었다.</p>
+      <p>2단계는 작성 에이전트 10개와 채점 에이전트 20개로 검토 방법 다섯 개를 다시 비교했다. 작성 에이전트는 방법 하나를 두 개씩 맡아 여섯 글을 수정했고, 채점 에이전트는 수정본을 R1~R8 기준으로 채점했다.</p>
+      <p>두 에이전트는 같은 사실 목록과 구조 검사표 G1~G8과 고정된 출력 형식을 사용했다. V0~V4 점수는 변형별 중앙값의 평균이고, V5 점수는 중앙값이다.</p>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead><tr><th>검토 방법</th><th>V0~V4 점수</th><th>V5 점수</th></tr></thead>
+          <tbody>
+            <tr><td>문단형</td><td>39.4</td><td>39.0</td></tr>
+            <tr><td>최소 수정 뒤 목록</td><td>39.3</td><td>39.0</td></tr>
+            <tr><td>대등 목록형</td><td>39.1</td><td>39.5</td></tr>
+            <tr><td>표</td><td>37.9</td><td>39.0</td></tr>
+            <tr><td>방법 없음</td><td>34.2</td><td>38.5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>3단계는 규칙으로 수정본을 만드는 작성기와 규칙 기반 채점기로 300라운드를 실행했다. 라운드마다 검토 방법의 설정값을 바꾼 후보를 만들어 채점했다.</p>
+      <p>마지막 라운드의 1위는 목록 선호와 표 강제 같은 설정을 모두 끈 문단형이었고, 여섯 글 모두 40점이었다. 대등 목록형과 최소 수정형도 최고점에 도달했다.</p>
+      <p>자동 채점에서는 빈 줄로 나눈 문단형이 높은 점수를 받았지만, 문단형은 사용자가 받아들인 PR 변경 이유 형식과 맞지 않았다. 그래서 스킬은 대등한 축이 두세 개이면 목록을 선택하고, 동작 하나를 설명하면 서술을 선택한다.</p>
+      <p>V1을 최종 형식으로 수정한 결과는 다음과 같다. 클래스 이름은 일반화했다.</p>
+      <div class="doc-excerpt">
+        <div class="doc-excerpt-header">수정 전</div>
+        <pre>- main 기준 프로덕션 곳곳에서 LocalDateTime.now() 와 UUID.randomUUID() 를 직접 호출한다. 예: EntityA 만료 시각 기본값, ForkSupport fork 시각·새 식별자, ServiceA 생성, ServiceB 목록 기준 시각, ClientA 추적 식별자, DisplayerA·CacheA 캐시 시각, ServiceC 추천 키, AuditCallback·DbConfig 감사 시각.
+- ServiceD 는 ServiceA 를 @Lazy 로 받아 조립 순환을 숨긴다.
+- 위 값들을 코드가 스스로 만들면 단위 테스트에서 시각·식별자를 고정하기 어렵고, 같은 패턴의 신규 코드가 계속 쌓여도 막을 규칙이 없다.</pre>
+      </div>
+      <div class="doc-excerpt">
+        <div class="doc-excerpt-header">수정 후 (최종 형식)</div>
+        <pre>- 세션·캐시·외부 연동마다 시각과 식별자 원천이 흩어져 있다. 테스트에서 값을 고정하기 어렵고, 같은 직접 호출을 막는 빌드 규칙도 없다.
+- 한 서비스가 다른 서비스를 @Lazy 로 받아 조립 순환을 감춘다.
+- 이 PR은 원천을 configuration 주입으로 모으고, 순환을 구조로 끊은 뒤, 재발을 규칙으로 막는다.</pre>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <a href="code-review.html">이전: 코드 리뷰</a>
+      <a href="autonomous-cycle.html">다음: 자율 구현</a>
+    </footer>
+    </main>
+    <nav class="toc" aria-label="절 목록"></nav>
+  </div>
+  <script src="../../project.js" defer></script>
+</body>
+</html>

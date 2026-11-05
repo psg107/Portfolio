@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>전체 구조 | Claude Code 작업 환경 | 박상곤</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../project.css">
+</head>
+<body class="has-tabs" data-root="../../" data-project="claude-config">
+  <div class="doc-layout">
+    <aside class="doc-side"></aside>
+    <main class="doc">
+      <a class="doc-back" href="../../index.html#projects">프로젝트 목록으로 이동</a>
+<nav class="top-nav">
+    
+      <div class="nav-links">
+        <a href="index.html" class="active">전체 구조</a>
+        <a href="topic.html">토픽</a>
+        <a href="design-verify.html">설계와 검증</a>
+        <a href="code-review.html">코드 리뷰</a>
+        <a href="polish.html">문장 검토</a>
+        <a href="autonomous-cycle.html">자율 구현</a>
+        <a href="knowledge.html">지식 수집</a>
+        <a href="rules-hooks.html">규칙과 훅</a>
+        <a href="worklog.html">업무일지</a>
+        <a href="mods-patch.html">모드와 cc-patch</a>
+      </div>
+  </nav>
+
+    <header class="doc-header">
+      <h1>전체 구조</h1>
+      <p class="lead">로컬 에이전트 작업 환경은 항공과 숙소를 조합해 판매하는 다이나믹 패키지의 백엔드 업무에 사용하는 Claude Code 환경이다. 이 탭은 환경을 이루는 구성 요소 전체를 종류별로 나열한다.</p>
+    </header>
+
+    <section class="section">
+      <h2 id="terms">용어</h2>
+      <div class="table-wrap">
+        <table class="tab-col spec-table">
+          <thead><tr><th>종류</th><th>이름</th><th>뜻</th><th>설명 탭</th></tr></thead>
+          <tbody>
+            <tr><td rowspan="3">규칙 문서</td><td>설정 폴더 <code>~/.claude</code></td><td>스킬과 훅과 규칙 문서를 보관하는 git 저장소</td><td><a href="rules-hooks.html#concept">규칙과 훅</a></td></tr>
+            <tr><td>전역 지침</td><td>모든 세션이 시작할 때 읽는 규칙 문서</td><td><a href="rules-hooks.html#concept">규칙과 훅</a></td></tr>
+            <tr><td>응답 형식과 응답 지침</td><td>응답 형식을 정한 문서와 요청마다 추가하는 지침 문서</td><td><a href="rules-hooks.html#h-input">규칙과 훅</a></td></tr>
+            <tr><td rowspan="1">루틴</td><td>루틴</td><td>데스크톱 앱이 정해진 시각에 실행하는 프롬프트</td><td><a href="worklog.html#flow">업무일지</a></td></tr>
+            <tr><td rowspan="1">Slack 봇</td><td><code>bridge</code></td><td>Slack 스레드에서 세션을 실행하는 봇</td><td><a href="#components">구성 요소 목록</a></td></tr>
+            <tr><td rowspan="1">스킬</td><td>스킬</td><td>상위 스킬 아래의 하위 스킬을 '상위:하위'로 표기하는 업무 절차 문서 폴더</td><td><a href="#skill-table">구성 요소 목록</a></td></tr>
+            <tr><td rowspan="2">훅</td><td>가드</td><td>도구 호출을 거부하는 훅</td><td><a href="rules-hooks.html#timeline">규칙과 훅</a></td></tr>
+            <tr><td>검사기</td><td>문서 형식 위반 목록을 출력하는 스크립트</td><td><a href="rules-hooks.html#lint">규칙과 훅</a></td></tr>
+            <tr><td rowspan="3">기록 저장소</td><td>토픽</td><td>업무마다 만드는 노트 폴더와 상태 문서</td><td><a href="topic.html#what">토픽</a></td></tr>
+            <tr><td>바인딩</td><td>세션에 토픽 폴더와 브랜치를 연결하는 명령</td><td><a href="rules-hooks.html#h-pre">규칙과 훅</a></td></tr>
+            <tr><td>코드 그래프</td><td>코드 파일과 호출 관계를 저장한 그래프</td><td><a href="#components">구성 요소 목록</a></td></tr>
+            <tr><td rowspan="2">Claude Code 앱</td><td>상태 줄</td><td>터미널 아래에 모델과 사용률, 토픽과 git 브랜치와 PR 상태를 표시하는 줄</td><td><a href="#components">구성 요소 목록</a></td></tr>
+            <tr><td>모드와 <code>cc-patch</code></td><td>화면 표시를 변경하는 확장과 실행 파일 패치</td><td><a href="mods-patch.html#what">모드와 cc-patch</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+
+      <h2 id="map">전체 구성도</h2>
+      <div class="diagram-box">
+        <svg viewBox="0 0 920 734" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="로컬 에이전트 작업 환경의 전체 구성도">
+          <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-muted)"/></marker></defs>
+          <rect x="600" y="6" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="620" y="18" font-size="12.5" fill="var(--d-muted)">문서와 데이터</text>
+          <rect x="725" y="6" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="745" y="18" font-size="12.5" fill="var(--d-muted)">자동 실행 스크립트</text>
+          <rect x="20" y="34" width="150" height="40" rx="6" fill="none" stroke="var(--d-border)" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="95" y="59" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--d-ink)">사용자</text>
+          <path d="M 95 74 L 95 102" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ar)"/>
+          <g transform="translate(0,70)">
+          <rect x="20" y="34" width="150" height="100" rx="6" fill="none" stroke="var(--d-border)" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="30" y="52" font-size="13" font-weight="600" fill="var(--d-ink)">Claude Code 앱</text>
+          <a href="#components">
+          <rect x="30" y="58" width="130" height="22" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="95.0" y="73" text-anchor="middle" font-size="11.5" fill="var(--d-accent)" text-decoration="underline">statusline</text>
+          </a>
+          <a href="mods-patch.html#blocks">
+          <rect x="30" y="84" width="130" height="22" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="95.0" y="99" text-anchor="middle" font-size="11.5" fill="var(--d-accent)" text-decoration="underline">code-block-box</text>
+          </a>
+          <a href="mods-patch.html#paths">
+          <rect x="30" y="110" width="130" height="22" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="95.0" y="125" text-anchor="middle" font-size="11.5" fill="var(--d-accent)" text-decoration="underline">cc-patch</text>
+          </a>
+          <rect x="185" y="34" width="290" height="100" rx="6" fill="none" stroke="var(--d-border)" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="197" y="54" font-size="13.5" font-weight="600" fill="var(--d-ink)">루틴</text>
+          <a href="worklog.html#flow">
+          <rect x="197" y="62" width="128" height="30" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="261.0" y="81" text-anchor="middle" font-size="12" fill="var(--d-accent)" text-decoration="underline">worklog-daily</text>
+          </a>
+          <a href="#components">
+          <rect x="335" y="62" width="128" height="30" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="399.0" y="81" text-anchor="middle" font-size="12" fill="var(--d-accent)" text-decoration="underline">식단표</text>
+          </a>
+          <rect x="490" y="34" width="150" height="100" rx="6" fill="none" stroke="var(--d-border)" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="502" y="54" font-size="13.5" font-weight="600" fill="var(--d-ink)">Slack 봇</text>
+          <a href="#components">
+          <rect x="502" y="70" width="126" height="44" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="565.0" y="89" text-anchor="middle" font-size="12.5" fill="var(--d-accent)" text-decoration="underline">bridge</text><text x="565.0" y="105" text-anchor="middle" font-size="11" fill="var(--d-muted)">스레드에서 세션 실행</text>
+          </a>
+          <rect x="655" y="34" width="245" height="100" rx="6" fill="none" stroke="var(--d-border)" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="667" y="54" font-size="13.5" font-weight="600" fill="var(--d-ink)">규칙 문서</text>
+          <a href="rules-hooks.html#concept">
+          <rect x="667" y="70" width="71" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="702.5" y="89" text-anchor="middle" font-size="11.5" fill="var(--d-ink)" text-decoration="underline">CLAUDE.md</text><text x="702.5" y="105" text-anchor="middle" font-size="11" fill="var(--d-muted)">전역 지침</text>
+          </a>
+          <a href="rules-hooks.html#concept">
+          <rect x="744" y="70" width="71" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="779.5" y="89" text-anchor="middle" font-size="11.5" fill="var(--d-ink)" text-decoration="underline">output style</text><text x="779.5" y="105" text-anchor="middle" font-size="11" fill="var(--d-muted)">응답 형식</text>
+          </a>
+          <a href="rules-hooks.html#h-input">
+          <rect x="821" y="70" width="71" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="856.5" y="89" text-anchor="middle" font-size="11.5" fill="var(--d-ink)" text-decoration="underline">directives</text><text x="856.5" y="105" text-anchor="middle" font-size="11" fill="var(--d-muted)">응답 지침</text>
+          </a>
+          <rect x="20" y="190" width="880" height="56" rx="6" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="2"/>
+          <text x="460" y="215" text-anchor="middle" font-size="16" font-weight="700" fill="var(--d-ink)">세션</text>
+          <text x="460" y="234" text-anchor="middle" font-size="12.5" fill="var(--d-muted)">Claude Code 에이전트</text>
+          <path d="M 95 134 L 95 188" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ar)"/>
+          <text x="102" y="166" text-anchor="start" font-size="12" fill="var(--d-muted)">직접 지시</text>
+          <path d="M 330 134 L 330 188" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ar)"/>
+          <text x="337" y="166" text-anchor="start" font-size="12" fill="var(--d-muted)">정해진 시각</text>
+          <path d="M 565 134 L 565 188" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ar)"/>
+          <text x="572" y="166" text-anchor="start" font-size="12" fill="var(--d-muted)">스레드 호출</text>
+          <path d="M 777 134 L 777 188" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ar)"/>
+          <text x="784" y="166" text-anchor="start" font-size="12" fill="var(--d-muted)">시작할 때 읽음</text>
+          <rect x="20" y="290" width="560" height="204" rx="6" fill="none" stroke="var(--d-border)" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="32" y="310" font-size="13.5" font-weight="600" fill="var(--d-ink)">스킬</text>
+          <a href="topic.html#what">
+          <rect x="32" y="318" width="172" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="118.0" y="333" text-anchor="middle" font-size="12.5" fill="var(--d-ink)" text-decoration="underline">topic</text><text x="118.0" y="347" text-anchor="middle" font-size="11" fill="var(--d-muted)">토픽 관리</text>
+          </a>
+          <a href="design-verify.html#design">
+          <rect x="212" y="318" width="172" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="298.0" y="333" text-anchor="middle" font-size="12.5" fill="var(--d-ink)" text-decoration="underline">topic:design</text><text x="298.0" y="347" text-anchor="middle" font-size="11" fill="var(--d-muted)">설계 문서 작성</text>
+          </a>
+          <a href="design-verify.html#cases">
+          <rect x="392" y="318" width="172" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="478.0" y="333" text-anchor="middle" font-size="12.5" fill="var(--d-ink)" text-decoration="underline">topic:cases</text><text x="478.0" y="347" text-anchor="middle" font-size="11" fill="var(--d-muted)">검증 케이스 작성</text>
+          </a>
+          <a href="autonomous-cycle.html#why">
+          <rect x="32" y="362" width="172" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="118.0" y="377" text-anchor="middle" font-size="12.5" fill="var(--d-ink)" text-decoration="underline">자율 구현 스킬</text><text x="118.0" y="391" text-anchor="middle" font-size="11" fill="var(--d-muted)">티켓 조사부터 개발 환경 검증까지</text>
+          </a>
+          <a href="code-review.html#why">
+          <rect x="212" y="362" width="172" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="298.0" y="377" text-anchor="middle" font-size="12.5" fill="var(--d-ink)" text-decoration="underline">pr:nitpick</text><text x="298.0" y="391" text-anchor="middle" font-size="11" fill="var(--d-muted)">관점별 서브에이전트 리뷰</text>
+          </a>
+          <a href="code-review.html#resolve-flow">
+          <rect x="392" y="362" width="172" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="478.0" y="377" text-anchor="middle" font-size="12.5" fill="var(--d-ink)" text-decoration="underline">pr:resolve</text><text x="478.0" y="391" text-anchor="middle" font-size="11" fill="var(--d-muted)">받은 지적 처리</text>
+          </a>
+          <a href="knowledge.html#what">
+          <rect x="32" y="406" width="172" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="118.0" y="421" text-anchor="middle" font-size="12.5" fill="var(--d-ink)" text-decoration="underline">knowledge</text><text x="118.0" y="435" text-anchor="middle" font-size="11" fill="var(--d-muted)">사내 기록을 노트로 정리</text>
+          </a>
+          <a href="worklog.html#what">
+          <rect x="212" y="406" width="172" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="298.0" y="421" text-anchor="middle" font-size="12.5" fill="var(--d-ink)" text-decoration="underline">worklog</text><text x="298.0" y="435" text-anchor="middle" font-size="11" fill="var(--d-muted)">업무일지 작성</text>
+          </a>
+          <a href="#skill-table">
+          <rect x="392" y="406" width="172" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="478.0" y="430.5" text-anchor="middle" font-size="13" fill="var(--d-ink)" text-decoration="underline">그 밖의 스킬</text>
+          </a>
+          <a href="polish.html#what">
+          <rect x="32" y="450" width="172" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="118.0" y="465" text-anchor="middle" font-size="12.5" fill="var(--d-ink)" text-decoration="underline">polish</text><text x="118.0" y="479" text-anchor="middle" font-size="11" fill="var(--d-muted)">게시 전 문장 검토</text>
+          </a>
+          <rect x="640" y="290" width="260" height="160" rx="6" fill="none" stroke="var(--d-border)" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="652" y="310" font-size="13.5" font-weight="600" fill="var(--d-ink)">훅</text>
+          <text x="888" y="310" text-anchor="end" font-size="12" fill="var(--d-muted)">실행 시점</text>
+          <a href="rules-hooks.html#h-start">
+          <rect x="652" y="320" width="116" height="34" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="710.0" y="341.5" text-anchor="middle" font-size="13" fill="var(--d-accent)" text-decoration="underline">세션 시작</text>
+          </a>
+          <a href="rules-hooks.html#h-input">
+          <rect x="776" y="320" width="116" height="34" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="834.0" y="341.5" text-anchor="middle" font-size="13" fill="var(--d-accent)" text-decoration="underline">요청 제출</text>
+          </a>
+          <a href="rules-hooks.html#h-pre">
+          <rect x="652" y="362" width="116" height="34" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="710.0" y="383.5" text-anchor="middle" font-size="13" fill="var(--d-accent)" text-decoration="underline">도구 실행 전</text>
+          </a>
+          <a href="rules-hooks.html#h-post">
+          <rect x="776" y="362" width="116" height="34" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="834.0" y="383.5" text-anchor="middle" font-size="13" fill="var(--d-accent)" text-decoration="underline">도구 실행 후</text>
+          </a>
+          <a href="rules-hooks.html#h-stop">
+          <rect x="652" y="404" width="116" height="34" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="710.0" y="425.5" text-anchor="middle" font-size="13" fill="var(--d-accent)" text-decoration="underline">턴 종료</text>
+          </a>
+          <a href="rules-hooks.html#h-end">
+          <rect x="776" y="404" width="116" height="34" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="834.0" y="425.5" text-anchor="middle" font-size="13" fill="var(--d-accent)" text-decoration="underline">세션 종료</text>
+          </a>
+          <path d="M 300 246 L 300 288" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ar)"/>
+          <text x="307" y="273" text-anchor="start" font-size="12" fill="var(--d-muted)">세션이 요청에 맞는 스킬을 읽음</text>
+          <path d="M 770 246 L 770 288" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ar)"/>
+          <text x="777" y="273" text-anchor="start" font-size="12" fill="var(--d-muted)">시점마다 실행</text>
+          <rect x="20" y="534" width="560" height="100" rx="6" fill="none" stroke="var(--d-border)" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="32" y="554" font-size="13.5" font-weight="600" fill="var(--d-ink)">기록 저장소</text>
+          <text x="568" y="554" text-anchor="end" font-size="12" fill="var(--d-muted)">세션이 읽고 작성</text>
+          <a href="topic.html#what">
+          <rect x="32" y="572" width="100" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="82.0" y="598.5" text-anchor="middle" font-size="12.5" fill="var(--d-ink)" text-decoration="underline">토픽</text>
+          </a>
+          <a href="knowledge.html#what">
+          <rect x="140" y="572" width="100" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="190.0" y="598.5" text-anchor="middle" font-size="12.5" fill="var(--d-ink)" text-decoration="underline">지식 수집 노트</text>
+          </a>
+          <a href="worklog.html#what">
+          <rect x="248" y="572" width="100" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="298.0" y="598.5" text-anchor="middle" font-size="12.5" fill="var(--d-ink)" text-decoration="underline">업무일지</text>
+          </a>
+          <a href="rules-hooks.html#h-stop">
+          <rect x="356" y="572" width="100" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="406.0" y="598.5" text-anchor="middle" font-size="12.5" fill="var(--d-ink)" text-decoration="underline">세션 기록</text>
+          </a>
+          <a href="#components">
+          <rect x="464" y="572" width="100" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-ink)" stroke-width="1.2"/>
+          <text x="514.0" y="598.5" text-anchor="middle" font-size="12.5" fill="var(--d-ink)" text-decoration="underline">코드 그래프</text>
+          </a>
+          <path d="M 610 246 L 610 594" fill="none" stroke="var(--d-muted)" stroke-width="1.3"/>
+          <path d="M 610 594 L 582 594" fill="none" stroke="var(--d-muted)" stroke-width="1.3" marker-end="url(#ar)"/>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <section class="section">
+
+      <h2 id="components">구성 요소 목록</h2>
+        <h3>규칙 문서</h3>
+        <p>규칙 문서는 세션이 시작할 때 읽거나 요청마다 추가되는 지침 문서다.</p>
+        <div class="table-wrap">
+          <table class="tab-col spec-table">
+            <thead><tr><th>이름</th><th>하는 일</th><th>설명 탭</th></tr></thead>
+            <tbody>
+              <tr><td><code>CLAUDE.md</code> 전역 지침</td><td>모든 세션이 지킬 규칙과 규칙마다 정한 사유를 기록한다.</td><td><a href="rules-hooks.html#concept">규칙과 훅</a></td></tr>
+              <tr><td><code>output style</code> 응답 형식</td><td>응답의 형식과 어조를 정한다.</td><td><a href="rules-hooks.html#concept">규칙과 훅</a></td></tr>
+              <tr><td><code>directives</code> 응답 지침</td><td>설정에서 활성화한 지침 문서를 요청 제출 훅이 요청마다 추가한다.</td><td><a href="rules-hooks.html#h-input">규칙과 훅</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>루틴</h3>
+        <p>루틴은 Claude 데스크톱 앱이 정해진 시각에 세션을 시작해 실행하는 프롬프트다.</p>
+        <div class="table-wrap">
+          <table class="tab-col spec-table">
+            <thead><tr><th>이름</th><th>하는 일</th><th>설명 탭</th></tr></thead>
+            <tbody>
+              <tr><td><code>worklog-daily</code></td><td>평일마다 일간 기록의 근거인 지식 수집 원본을 최신 상태로 갱신한 뒤 일간 기록과 스크럼 문서를 작성한다.</td><td><a href="worklog.html#flow">업무일지</a></td></tr>
+              <tr><td><code>식단표</code></td><td>평일 오전에 사내식당의 오늘 메뉴를 팀 Slack 채널에 <code>bridge</code> 봇 계정으로 게시한다.</td><td>없음</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Slack 봇</h3>
+        <p>Slack 봇은 Slack 스레드의 호출로 세션을 실행하는 앱이다.</p>
+        <div class="table-wrap">
+          <table class="tab-col spec-table">
+            <thead><tr><th>이름</th><th>하는 일</th><th>설명 탭</th></tr></thead>
+            <tbody>
+              <tr><td><code>bridge</code></td><td>허용 목록에 등록된 사용자가 스레드에서 호출하면 화면 없는 세션을 실행하고 최종 응답을 같은 스레드에 게시한다.</td><td>없음</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3 id="skill-table">스킬</h3>
+        <p>아래 표는 설정 폴더 <code>skills/</code> 아래 스킬을 하는 일에 따라 분류하고, 분류 안에서는 이름순으로 나열한다.</p>
+        <div class="table-wrap">
+          <table class="tab-col spec-table">
+            <thead><tr><th>분류</th><th>이름</th><th>하는 일</th><th>하위 스킬</th><th>설명 탭</th></tr></thead>
+            <tbody>
+              <tr><td rowspan="5">개발</td><td>다이나믹 패키지 스킬</td><td>다이나믹 패키지 업무 요청을 알맞은 하위 스킬에 전달한다.</td><td><code>context</code> <code>db</code> <code>investigate</code> <code>local-up</code> <code>ship</code> <code>swagger</code></td><td><a href="autonomous-cycle.html#why">자율 구현</a></td></tr>
+              <tr><td><code>flow-map</code></td><td>API 호출 흐름의 단계마다 발생할 수 있는 결과를 모두 나열해 분기 트리로 그린다.</td><td></td><td></td></tr>
+              <tr><td><code>git</code></td><td>로컬 git 작업과 개발 서버 배포를 수행한다.</td><td><code>cd-monitor</code> <code>cherry-pick</code> <code>ci-monitor</code> <code>deploy-dev</code> <code>overview</code> <code>rebase</code> <code>setup-worktree</code></td><td></td></tr>
+              <tr><td><code>http-format</code></td><td>curl 명령이나 URL을 실행할 수 있는 .http 파일로 변환한다.</td><td></td><td></td></tr>
+              <tr><td><code>pr</code></td><td>PR을 생성하고 리뷰한다.</td><td><code>artifact-lock</code> <code>create</code> <code>merge-open</code> <code>nitpick</code> <code>praise</code> <code>resolve</code> <code>review-request</code> <code>split</code> <code>survey</code></td><td><a href="code-review.html#why">코드 리뷰</a></td></tr>
+              <tr><td rowspan="6">조회</td><td><code>datadog</code></td><td>Datadog의 로그와 APM 구간과 지표를 조회한다.</td><td></td><td></td></tr>
+              <tr><td><code>figma</code></td><td>Slack이나 Figma 링크에서 화면 프레임을 조회하고 화면 글자를 추출한다.</td><td></td><td></td></tr>
+              <tr><td><code>playwright-cli</code></td><td>브라우저를 조작해 웹 화면 내용을 조회하고 폼에 값을 입력한다.</td><td></td><td></td></tr>
+              <tr><td>사내 서버 접속 인증</td><td>사내 서버 접속용 인증 세션을 확인하고 다시 로그인한다.</td><td><code>check</code> <code>login</code></td><td></td></tr>
+              <tr><td>비밀값 조회</td><td>개발 서버의 비밀값을 사내 비밀값 저장소에서 조회해 로컬 값과 비교한다.</td><td></td><td></td></tr>
+              <tr><td><code>vpn</code></td><td>VPN 연결 상태를 확인하고 연결하거나 해제한다.</td><td><code>check</code> <code>connect</code> <code>disconnect</code></td><td></td></tr>
+              <tr><td rowspan="2">협업</td><td><code>jira</code></td><td>Jira 이슈를 조회하고 생성하고 이동하며, Confluence 문서와 마크다운을 서로 변환한다.</td><td><code>confluence-to-md</code> <code>issue</code> <code>md-to-confluence</code> <code>move</code> <code>task-creator</code></td><td></td></tr>
+              <tr><td><code>slack</code></td><td>Slack 메시지를 전송하고 검색하고 채널 내용을 마크다운 파일로 변환해 저장한다.</td><td><code>export</code> <code>lookup</code> <code>search</code> <code>send</code></td><td></td></tr>
+              <tr><td rowspan="4">문서</td><td><code>diagram</code></td><td>설명 그림과 mermaid 도해를 작성하고 PNG로 변환한다.</td><td><code>design</code> <code>diagram-design</code> <code>to-image</code> <code>write</code></td><td></td></tr>
+              <tr><td><code>doc</code></td><td>문서 형식을 변환하고 회사 구글 문서를 편집한다.</td><td><code>build</code> <code>convert</code> <code>gdocs</code> <code>read</code></td><td></td></tr>
+              <tr><td><code>meeting</code></td><td>회사 회의실을 예약하고 빈 시간을 조회한다.</td><td></td><td></td></tr>
+              <tr><td><code>polish</code></td><td>팀에 내보낼 한국어 글을 게시 직전에 검토한다.</td><td><code>capture</code> <code>comment</code> <code>share</code> <code>slack</code> <code>ticket</code></td><td><a href="polish.html">문장 검토</a></td></tr>
+              <tr><td rowspan="7">기록</td><td><code>graphify</code></td><td>파일 폴더에서 지식 그래프를 생성하고 조회한다.</td><td></td><td></td></tr>
+              <tr><td><code>knowledge</code></td><td>사내 기록을 수집해 출처가 달린 노트로 정리하고 조회한다.</td><td><code>query</code> <code>review</code> <code>run</code> <code>state</code></td><td><a href="knowledge.html#what">지식 수집</a></td></tr>
+              <tr><td><code>lemonbase-goals</code></td><td>팀의 레몬베이스 목표를 계층으로 출력한다.</td><td></td><td></td></tr>
+              <tr><td><code>notebooklm</code></td><td>NotebookLM 노트북과 소스를 생성하고 질의한다.</td><td></td><td></td></tr>
+              <tr><td><code>tmp-save</code></td><td>임시 메모를 생성 시각 접두어가 있는 파일로 저장한다.</td><td></td><td></td></tr>
+              <tr><td><code>topic</code></td><td>토픽을 저장하고 검사하며 설계 문서와 검증 케이스도 작성한다.</td><td><code>bind</code> <code>bindings</code> <code>board</code> <code>cases</code> <code>design</code> <code>done</code> <code>handoff</code> <code>jump</code> <code>lint</code> <code>list</code> <code>query</code> <code>save</code> <code>sync</code> <code>unbind</code></td><td><a href="topic.html#what">토픽</a></td></tr>
+              <tr><td><code>worklog</code></td><td>업무 기록으로 일간 기록과 스크럼 문서와 주간 보고를 작성한다.</td><td><code>daily</code> <code>lint</code> <code>scrum</code> <code>scrum-post</code> <code>weekly</code></td><td><a href="worklog.html#what">업무일지</a></td></tr>
+              <tr><td rowspan="7">사고</td><td><code>directive</code></td><td>응답 지침을 활성화하거나 비활성화한다.</td><td></td><td><a href="rules-hooks.html#h-input">규칙과 훅</a></td></tr>
+              <tr><td><code>goal-prompt</code></td><td>Claude Code 명령 /goal의 완료 조건 문구를 작성한다.</td><td></td><td></td></tr>
+              <tr><td><code>grok</code></td><td>다른 모델인 grok의 CLI에 프롬프트를 전달해 응답을 교차 확인한다.</td><td></td><td></td></tr>
+              <tr><td><code>lateral</code></td><td>해법을 찾지 못한 문제에 수평적 사고 기법을 적용한다.</td><td><code>analogy</code> <code>concept-fan</code> <code>inversion</code> <code>provocation</code> <code>random-stimulus</code> <code>scamper</code> <code>six-hats</code> <code>worst-idea</code></td><td></td></tr>
+              <tr><td><code>prompt-improver</code></td><td>더 나은 응답을 얻도록 프롬프트를 수정한다.</td><td></td><td></td></tr>
+              <tr><td><code>response</code></td><td>예와 아니오 한 줄 같은 짧은 형식으로 응답하게 한다.</td><td><code>ask-one</code> <code>one</code> <code>where</code> <code>yn</code></td><td></td></tr>
+              <tr><td><code>think</code></td><td>주제를 깊게 분석하거나 사용자의 계획을 질문으로 검증한다.</td><td><code>deep</code> <code>grill</code> <code>groundup</code></td><td></td></tr>
+              <tr><td rowspan="11">설정</td><td><code>cc-patch</code></td><td>Claude Code 실행 파일 패치를 적용하고 업데이트 뒤 복구한다.</td><td></td><td><a href="mods-patch.html#what">모드와 cc-patch</a></td></tr>
+              <tr><td><code>cmux</code></td><td>터미널 프로그램 cmux의 새 탭에서 세션을 시작하거나 실행 중인 세션에 지시한다.</td><td><code>attach</code> <code>spawn</code> <code>task</code></td><td></td></tr>
+              <tr><td><code>find-session</code></td><td>지난 세션을 키워드나 브랜치로 검색해 새 탭에서 재개한다.</td><td></td><td></td></tr>
+              <tr><td><code>guard-unlock</code></td><td>사용자가 명시적으로 요청한 호출에 한해 가드 하나를 그 턴에만 해제한다.</td><td></td><td><a href="rules-hooks.html#deny">규칙과 훅</a></td></tr>
+              <tr><td><code>mcp-fix</code></td><td>응답하지 않는 MCP 서버 연결의 원인을 진단하고 복구한다.</td><td></td><td></td></tr>
+              <tr><td><code>propose</code></td><td>설정 저장소에 대한 요청 하나를 검토할 수 있는 PR로 생성한다.</td><td></td><td></td></tr>
+              <tr><td><code>self-inject</code></td><td>현재 세션의 입력 대기열에 명령을 추가해 지금 턴이 끝난 뒤 실행되게 한다.</td><td></td><td></td></tr>
+              <tr><td><code>skill</code></td><td>새 스킬을 생성하고 스킬 문서를 작성 기준으로 검사한다.</td><td><code>group</code> <code>lint</code> <code>new</code></td><td><a href="rules-hooks.html#skill-lint">규칙과 훅</a></td></tr>
+              <tr><td><code>smack</code></td><td>사용자가 불만을 표현하면 원인이 된 행동과 변경할 행동 하나를 응답한다.</td><td></td><td></td></tr>
+              <tr><td><code>tune</code></td><td>시험 요청의 답을 평가 에이전트가 채점한 결과로 지침 문서를 수정하는 라운드를 반복한다.</td><td></td><td></td></tr>
+              <tr><td><code>usage-report</code></td><td>로컬 대화 기록으로 사용량 HTML 보고서를 생성한다.</td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>훅</h3>
+        <p>아래 표는 설정 폴더 <code>hooks/</code> 아래 훅을 하는 일에 따라 분류하고, 분류 안에서는 경로순으로 나열한다.</p>
+        <div class="table-wrap">
+          <table class="tab-col spec-table">
+            <thead><tr><th>분류</th><th>이름</th><th>실행 시점</th><th>하는 일</th><th>설명 탭</th></tr></thead>
+            <tbody>
+              <tr><td rowspan="14">가드</td><td><code>browser/playwright-open-guard.py</code></td><td>도구 실행 전</td><td>playwright-cli가 새 브라우저를 실행하는 호출을 거부한다.</td><td><a href="rules-hooks.html#h-pre">규칙과 훅</a></td></tr>
+              <tr><td><code>comment-guard/comment-guard.py</code></td><td>도구 실행 전</td><td>소스 파일에 주석 줄을 추가하는 편집을 거부한다.</td><td><a href="rules-hooks.html#h-pre">규칙과 훅</a></td></tr>
+              <tr><td><code>git-state/add-scope-guard.py</code></td><td>도구 실행 전</td><td>설정 폴더에서 파일을 지정하지 않은 스테이징을 거부한다.</td><td><a href="rules-hooks.html#h-pre">규칙과 훅</a></td></tr>
+              <tr><td><code>git-state/branch-name-guard.py</code></td><td>도구 실행 전</td><td>&lt;티켓 키&gt;#slug 형식이 아닌 새 브랜치 이름을 거부한다.</td><td><a href="rules-hooks.html#h-pre">규칙과 훅</a></td></tr>
+              <tr><td><code>git-state/fe-remote-guard.py</code></td><td>도구 실행 전</td><td>프론트엔드 저장소의 푸시와 PR 생성 같은 원격 작업을 거부한다.</td><td><a href="rules-hooks.html#h-pre">규칙과 훅</a></td></tr>
+              <tr><td><code>git-state/pr-template-guard.py</code></td><td>도구 실행 전</td><td>저장소 PR 양식의 섹션 제목이 없는 본문을 거부한다.</td><td><a href="rules-hooks.html#h-pre">규칙과 훅</a></td></tr>
+              <tr><td><code>git-state/push-force-guard.py</code></td><td>도구 실행 전</td><td>--force-with-lease와 --force-if-includes를 함께 지정하지 않은 강제 푸시를 거부한다.</td><td><a href="rules-hooks.html#h-pre">규칙과 훅</a></td></tr>
+              <tr><td><code>git-state/push-no-verify-guard.py</code></td><td>도구 실행 전</td><td>--no-verify 푸시를 거부한다.</td><td><a href="rules-hooks.html#h-pre">규칙과 훅</a></td></tr>
+              <tr><td><code>lock/relock.py</code></td><td>요청 제출<br>턴 종료</td><td>가드 해제 파일을 삭제해 가드를 다시 잠근다.</td><td><a href="rules-hooks.html#h-input">규칙과 훅</a></td></tr>
+              <tr><td><code>lock/turn_unlock.py</code></td><td>도구 실행 전</td><td>가드 해제 명령에 사용자 발화 인용이 있는지 검사하고 그 턴에만 가드를 해제한다.</td><td><a href="rules-hooks.html#h-pre">규칙과 훅</a></td></tr>
+              <tr><td><code>narration/lock.py</code></td><td>도구 실행 전</td><td>직전 도구 호출 뒤에 설명 문장이 있으면 이번 호출을 거부한다.</td><td><a href="rules-hooks.html#h-pre">규칙과 훅</a></td></tr>
+              <tr><td><code>secrets/secrets.py</code></td><td>요청 제출</td><td>토큰이나 키 형태의 문자열이 있는 입력을 모델에 전송하기 전에 차단한다.</td><td><a href="rules-hooks.html#h-input">규칙과 훅</a></td></tr>
+              <tr><td><code>tmp-guard/write-prefix-guard.py</code></td><td>도구 실행 전</td><td>임시 폴더에 작성 시각 접두어가 없는 파일을 작성하는 호출을 거부한다.</td><td><a href="rules-hooks.html#h-pre">규칙과 훅</a></td></tr>
+              <tr><td><code>topic/work-root-guard.py</code></td><td>도구 실행 전</td><td>토픽 work 폴더 바로 아래의 파일 작성을 거부한다.</td><td><a href="topic.html#session-flow">토픽</a></td></tr>
+              <tr><td rowspan="6">안내</td><td><code>directives/directives.sh</code></td><td>요청 제출</td><td>설정에서 켠 응답 지침 문서를 요청 뒤에 추가한다.</td><td><a href="rules-hooks.html#h-input">규칙과 훅</a></td></tr>
+              <tr><td><code>git-state/claude-config-state.sh</code></td><td>세션 시작<br>도구 실행 전</td><td>설정 폴더의 git 저장소가 main이 아니거나 원격과 차이가 있으면 경고한다.</td><td><a href="rules-hooks.html#h-start">규칙과 훅</a></td></tr>
+              <tr><td><code>git-state/git-source-state.sh</code></td><td>도구 실행 전</td><td>도구 대상 저장소의 브랜치와 원격 차이를 맥락에 추가한다.</td><td><a href="rules-hooks.html#h-pre">규칙과 훅</a></td></tr>
+              <tr><td><code>git-state/push-ci-reminder.sh</code></td><td>도구 실행 후</td><td>git push 뒤에 CI 감시 스킬의 명령을 안내한다.</td><td><a href="rules-hooks.html#h-post">규칙과 훅</a></td></tr>
+              <tr><td><code>git-state/worktree-bind-guard.py</code></td><td>도구 실행 전</td><td>세션에 연결한 워크트리 밖을 수정하면 알린다.</td><td><a href="rules-hooks.html#h-pre">규칙과 훅</a></td></tr>
+              <tr><td><code>graphify/state.sh</code></td><td>세션 시작<br>도구 실행 전</td><td>graphify에 등록한 저장소의 코드 구조 그래프가 최신인지 알린다.</td><td><a href="rules-hooks.html#h-start">규칙과 훅</a></td></tr>
+              <tr><td rowspan="4">검사</td><td><code>config/notify.py</code></td><td>도구 실행 후</td><td>설정 폴더를 대상으로 한 도구 호출 뒤에 설정 검사기를 실행한다.</td><td><a href="rules-hooks.html#h-post">규칙과 훅</a></td></tr>
+              <tr><td><code>skill/notify.py</code></td><td>도구 실행 후</td><td>스킬 정의 문서를 수정하면 스킬 작성 검사기를 실행한다.</td><td><a href="rules-hooks.html#h-post">규칙과 훅</a></td></tr>
+              <tr><td><code>style/register-notify.py</code></td><td>도구 실행 후</td><td>게시 명령의 본문에 구어 표현이 있으면 문어 대체어와 함께 알린다.</td><td><a href="rules-hooks.html#h-post">규칙과 훅</a></td></tr>
+              <tr><td><code>topic/write-notify.py</code></td><td>요청 제출<br>도구 실행 후</td><td>토픽이 연결된 세션에서 파일을 작성하면 토픽 상태 문서 갱신을 알린다.</td><td><a href="topic.html#session-flow">토픽</a></td></tr>
+              <tr><td rowspan="4">응답</td><td><code>askq/stop.py</code></td><td>턴 종료</td><td>응답 끝이 사용자의 결정을 기다리는데 질문 도구 AskUserQuestion을 호출하지 않았으면 턴 종료를 막고 사유를 에이전트에 전달한다.</td><td><a href="rules-hooks.html#h-stop">규칙과 훅</a></td></tr>
+              <tr><td><code>finish/stop.py</code></td><td>턴 종료</td><td>응답 끝이 하지 않은 일의 예고면 턴 종료를 막고 사유를 에이전트에 전달한다.</td><td><a href="rules-hooks.html#h-stop">규칙과 훅</a></td></tr>
+              <tr><td><code>style/quote-block-warn.py</code></td><td>턴 종료</td><td>요청 인용 블록 하나에 요청이 여러 개면 블록을 분리하라고 전달한다.</td><td><a href="rules-hooks.html#h-stop">규칙과 훅</a></td></tr>
+              <tr><td><code>style/register-warn.py</code></td><td>턴 종료</td><td>응답에 구어 표현이 있으면 응답 전체를 다시 작성하라고 전달한다.</td><td><a href="rules-hooks.html#h-stop">규칙과 훅</a></td></tr>
+              <tr><td rowspan="6">세션</td><td><code>compaction/resume.py</code></td><td>세션 시작</td><td>자동 요약으로 다시 시작한 세션에 요약 직전의 사용자 요청을 다시 추가한다.</td><td><a href="rules-hooks.html#h-start">규칙과 훅</a></td></tr>
+              <tr><td><code>compaction/warn.py</code></td><td>요청 제출<br>도구 실행 후</td><td>자동 요약이 가까우면 작업 상태를 토픽 CLAUDE.md에 저장하라고 경고한다.</td><td><a href="topic.html#session-flow">토픽</a></td></tr>
+              <tr><td><code>session/cmux-session-map.py</code></td><td>세션 시작<br>세션 종료</td><td>cmux 탭과 세션 ID의 연결을 기록하고 세션 종료 때 삭제한다.</td><td><a href="rules-hooks.html#h-start">규칙과 훅</a></td></tr>
+              <tr><td><code>session/session-title.py</code></td><td>세션 시작</td><td>토픽 폴더에서 시작하면 토픽 제목을 세션 제목으로 정한다.</td><td><a href="topic.html#session-flow">토픽</a></td></tr>
+              <tr><td><code>topic/bind-warn.py</code></td><td>요청 제출<br>도구 실행 후</td><td>대화가 길어졌는데 세션에 토픽이 없으면 토픽 연결을 요구한다.</td><td><a href="topic.html#session-flow">토픽</a></td></tr>
+              <tr><td><code>topic/session-topic-linker.py</code></td><td>세션 시작</td><td>토픽 CLAUDE.md의 세션 목록에 세션 ID를 기록하고 세션에 토픽을 연결한다.</td><td><a href="topic.html#session-flow">토픽</a></td></tr>
+              <tr><td rowspan="3">기록</td><td><code>knowledge/publish.py</code></td><td>턴 종료</td><td>지식 수집 폴더의 변경을 GitHub 저장소에 커밋하고 PR로 병합한다.</td><td><a href="knowledge.html#collect">지식 수집</a></td></tr>
+              <tr><td><code>session/archiver.py</code></td><td>턴 종료</td><td>대화 원본을 보관 폴더에 복사하고 마크다운으로 변환한다.</td><td><a href="rules-hooks.html#h-stop">규칙과 훅</a></td></tr>
+              <tr><td><code>topic/regen-index.py</code></td><td>턴 종료</td><td>토픽 목록 표 INDEX.md를 다시 생성한다.</td><td><a href="topic.html#session-flow">토픽</a></td></tr>
+              <tr><td rowspan="3">화면</td><td><code>ui/timestamp-systemmessage.sh</code></td><td>요청 제출</td><td>요청 시각을 터미널 화면에만 표시한다.</td><td><a href="rules-hooks.html#h-input">규칙과 훅</a></td></tr>
+              <tr><td><code>ui/timestamp-worklog.py</code></td><td>턴 종료</td><td>응답 완료 시각을 터미널 화면에만 표시한다.</td><td><a href="rules-hooks.html#h-stop">규칙과 훅</a></td></tr>
+              <tr><td><code>ui/track-work-location.py</code></td><td>도구 실행 후</td><td>도구 호출의 대상이 된 토픽이나 저장소 이름을 상태 줄 표시용으로 저장한다.</td><td><a href="rules-hooks.html#h-post">규칙과 훅</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>기록 저장소</h3>
+        <p>기록 저장소는 세션이 읽고 작성하는 파일 보관 위치다.</p>
+        <div class="table-wrap">
+          <table class="tab-col spec-table">
+            <thead><tr><th>이름</th><th>하는 일</th><th>설명 탭</th></tr></thead>
+            <tbody>
+              <tr><td>토픽</td><td>업무마다 상태 문서와 작업 파일을 보관한다.</td><td><a href="topic.html#what">토픽</a></td></tr>
+              <tr><td>지식 수집 노트</td><td>Confluence와 Jira와 Slack의 원문을 개념별 노트로 정리해 보관한다.</td><td><a href="knowledge.html#what">지식 수집</a></td></tr>
+              <tr><td>업무일지</td><td>날짜별 일간 기록과 스크럼 문서와 주간 보고를 보관한다.</td><td><a href="worklog.html#what">업무일지</a></td></tr>
+              <tr><td>세션 기록</td><td>턴 종료 훅이 턴마다 대화 원본 사본과 그 마크다운 변환본을 보관한다.</td><td><a href="rules-hooks.html#h-stop">규칙과 훅</a></td></tr>
+              <tr><td>코드 그래프</td><td>등록한 코드 저장소의 구조를 그래프로 보관하고 그래프가 최신이 아니면 훅이 백그라운드에서 재생성한다.</td><td>없음</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Claude Code 앱</h3>
+        <p>아래 장치는 Claude Code 앱 터미널 화면의 표시와 입력 동작을 변경한다.</p>
+        <div class="table-wrap">
+          <table class="tab-col spec-table">
+            <thead><tr><th>이름</th><th>하는 일</th><th>설명 탭</th></tr></thead>
+            <tbody>
+              <tr><td><code>statusline</code></td><td>터미널 아래에 모델과 사용률, 토픽과 git 브랜치와 PR 상태를 표시한다.</td><td>없음</td></tr>
+              <tr><td><code>code-block-box</code></td><td>응답 안의 코드 블록과 인용 블록을 터미널 화면에 상자로 그린다.</td><td><a href="mods-patch.html#blocks">모드와 cc-patch</a></td></tr>
+              <tr><td><code>cc-patch</code></td><td>Claude Code 실행 파일을 패치해 모드로 변경할 수 없는 화면 표시와 입력 동작을 변경한다.</td><td><a href="mods-patch.html#paths">모드와 cc-patch</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+    </section>
+
+    <footer class="page-footer">
+      <span></span>
+      <a href="mods-patch.html">이전: 모드와 cc-patch</a>
+      <a href="topic.html">다음: 토픽</a>
+    </footer>
+    </main>
+    <nav class="toc" aria-label="절 목록"></nav>
+  </div>
+  <script src="../../project.js" defer></script>
+</body>
+</html>
