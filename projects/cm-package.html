@@ -16,333 +16,292 @@
       <header class="doc-header">
         <h1>법인단체 패키지 관리 서비스</h1>
         <p class="doc-meta">2025.10 - 2026.02 · 공동 개발</p>
-        <div class="tech-tags"><span class="tech-tag">Kotlin</span><span class="tech-tag">Spring Boot</span><span class="tech-tag">JPA</span><span class="tech-tag">MySQL</span><span class="tech-tag">Kinesis</span><span class="tech-tag">React</span><span class="tech-tag">Next.js</span></div>
+        <div class="tech-tags"><span class="tech-tag">Kotlin</span><span class="tech-tag">Spring Boot</span><span class="tech-tag">JPA</span><span class="tech-tag">MySQL</span><span class="tech-tag">React</span><span class="tech-tag">Next.js</span></div>
       </header>
 
       <section class="section">
         <h2 id="what">법인단체 패키지 관리 서비스란</h2>
-        <p>기업과 단체가 의뢰하는 맞춤 여행은 고객사마다 일정과 구성 항목이 다르고, 출발 뒤에도 현지 비용이 추가되어 금액이 변경된다. 법인단체 패키지 관리 서비스는 이런 단체 여행을 담당자가 직접 등록하고 관리하는 업무 시스템이다.</p>
-        <p>이 업무는 구패키지 시스템에서 담당자가 입력하는 수기 예약으로 처리되었다. 신규 패키지 시스템은 미리 구성한 상품의 자동 판매를 전제로 하므로 맞춤 일정과 실계좌 현금 결제를 지원하지 않아, 기획 단계에서 별도 시스템 개발이 결정되었다.</p>
-        <p>단체 여행 1건은 행사로 등록되고, 행사는 출발일이 다른 출발그룹 여러 개로 나뉜다. 담당자는 출발그룹마다 다음 업무를 처리한다.</p>
-        <ul class="rule-list">
-          <li>여행자 명단 등록과 변경</li>
-          <li>항공과 숙소와 투어 항목의 원가 입력</li>
-          <li>입금 확인과 결제 요청</li>
-          <li>여행자 보험 가입과 취소</li>
-        </ul>
+        <p>법인단체 패키지 관리 서비스는 기업과 단체가 의뢰한 맞춤 여행을 담당자가 직접 등록하고 관리하는 업무 시스템이다. 고객사마다 일정과 구성 항목이 다르고 출발 뒤에도 비용이 추가되어 금액이 변경되므로, 미리 구성한 상품을 자동 판매하는 신규 패키지 시스템과 별도로 개발되었다.</p>
+        <p>단체 여행 1건은 행사로 등록되고, 담당자는 출발일이 다른 출발그룹마다 업무를 처리한다.</p>
+        <div class="diagram-box">
+          <svg viewBox="0 0 860 246" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="행사 아래에 출발일별 출발그룹이 있고 출발그룹마다 명단, 원가, 입금, 보험 업무를 처리하는 구조">
+<defs><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+<rect x="20" y="95" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="105" y="119" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">행사</text>
+<text x="105" y="140" text-anchor="middle" font-size="13" fill="var(--d-muted)">단체 여행 1건</text>
+<rect x="240" y="95" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="335" y="119" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">출발그룹</text>
+<text x="335" y="140" text-anchor="middle" font-size="13" fill="var(--d-muted)">출발일마다 1개</text>
+<line x1="190" y1="123" x2="236" y2="123" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
+<path d="M 430 123 L 465 123" fill="none" stroke="var(--d-line)" stroke-width="1.3"/>
+<path d="M 465 42 L 465 204" fill="none" stroke="var(--d-line)" stroke-width="1.3"/>
+<rect x="500" y="20" width="340" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="670" y="47" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">여행자 명단 등록과 변경</text>
+<line x1="465" y1="42" x2="496" y2="42" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
+<rect x="500" y="74" width="340" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="670" y="101" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">항공, 숙소, 투어 항목의 원가 입력</text>
+<line x1="465" y1="96" x2="496" y2="96" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
+<rect x="500" y="128" width="340" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="670" y="155" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">입금 확인과 결제 요청</text>
+<line x1="465" y1="150" x2="496" y2="150" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
+<rect x="500" y="182" width="340" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="670" y="209" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">여행자 보험 가입과 취소</text>
+<line x1="465" y1="204" x2="496" y2="204" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
+</svg>
+        </div>
       </section>
 
       <section class="section">
         <h2 id="layout">구성</h2>
-        <p>관리 서버는 행사와 명단과 결제 기록을 자체 MySQL에 저장한다. 보험 가입과 입금 확인과 항공 예약은 외부 시스템을 호출해 처리하므로, 외부 호출이 실패할 때의 처리가 주된 설계 문제다.</p>
+        <p>관리 서비스는 업무 기록을 자체 MySQL에 저장하고, 보험 가입이나 입금 확인 같은 일은 외부 시스템을 호출해 처리한다.</p>
         <div class="diagram-box">
-          <svg viewBox="0 0 860 482" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="담당자는 어드민 화면으로, 고객사 담당자는 고객사 결제 화면으로 관리 서버를 사용하고 관리 서버가 MySQL과 외부 시스템을 호출하는 구성">
-            <defs><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
-            <rect x="20" y="193" width="130" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="85" y="217" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">담당자</text>
-            <text x="85" y="238" text-anchor="middle" font-size="13" fill="var(--d-muted)">행사와 명단 관리</text>
-            <rect x="20" y="330" width="130" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="85" y="354" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">고객사 담당자</text>
-            <text x="85" y="375" text-anchor="middle" font-size="13" fill="var(--d-muted)">안내 링크로 진입</text>
-            <rect x="185" y="193" width="160" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="265" y="217" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">어드민 화면</text>
-            <text x="265" y="238" text-anchor="middle" font-size="13" fill="var(--d-muted)">Next.js</text>
-            <rect x="185" y="330" width="160" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="265" y="354" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">고객사 결제 화면</text>
-            <text x="265" y="375" text-anchor="middle" font-size="13" fill="var(--d-muted)">이메일 인증 후 결제</text>
-            <rect x="385" y="181" width="150" height="80" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="460" y="216" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">관리 서버</text>
-            <text x="460" y="237" text-anchor="middle" font-size="13" fill="var(--d-muted)">Kotlin, Spring Boot</text>
-            <rect x="385" y="60" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="460" y="84" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">MySQL</text>
-            <text x="460" y="105" text-anchor="middle" font-size="13" fill="var(--d-muted)">행사, 명단, 결제</text>
-            <line x1="150" y1="221" x2="181" y2="221" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
-            <line x1="345" y1="221" x2="381" y2="221" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
-            <line x1="150" y1="358" x2="181" y2="358" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
-            <path d="M 345 358 L 460 358 L 460 265" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
-            <line x1="460" y1="181" x2="460" y2="120" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
-            <line x1="535" y1="221" x2="575" y2="221" stroke="var(--d-line)" stroke-width="1.3"/>
-            <line x1="575" y1="44" x2="575" y2="398" stroke="var(--d-line)" stroke-width="1.3"/>
-            <rect x="620" y="20" width="220" height="48" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="730" y="39" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">보험사 2개사</text>
-            <text x="730" y="58" text-anchor="middle" font-size="13" fill="var(--d-muted)">가입과 취소</text>
-            <line x1="575" y1="44" x2="616" y2="44" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
-            <rect x="620" y="79" width="220" height="48" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="730" y="98" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">정산 시스템</text>
-            <text x="730" y="117" text-anchor="middle" font-size="13" fill="var(--d-muted)">입금 내역 조회와 매칭</text>
-            <line x1="575" y1="103" x2="616" y2="103" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
-            <rect x="620" y="138" width="220" height="48" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="730" y="157" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">결제 시스템</text>
-            <text x="730" y="176" text-anchor="middle" font-size="13" fill="var(--d-muted)">카드와 가상계좌 결제</text>
-            <line x1="575" y1="162" x2="616" y2="162" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
-            <rect x="620" y="197" width="220" height="48" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="730" y="216" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">그룹 항공 시스템</text>
-            <text x="730" y="235" text-anchor="middle" font-size="13" fill="var(--d-muted)">예약과 Kinesis 이벤트</text>
-            <line x1="575" y1="221" x2="616" y2="221" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
-            <rect x="620" y="256" width="220" height="48" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="730" y="275" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">숙소 시스템</text>
-            <text x="730" y="294" text-anchor="middle" font-size="13" fill="var(--d-muted)">예약 동기화</text>
-            <line x1="575" y1="280" x2="616" y2="280" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
-            <rect x="620" y="315" width="220" height="48" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="730" y="334" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">메일과 알림톡</text>
-            <text x="730" y="353" text-anchor="middle" font-size="13" fill="var(--d-muted)">인증 코드와 안내 발송</text>
-            <line x1="575" y1="339" x2="616" y2="339" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
-            <rect x="620" y="374" width="220" height="48" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="730" y="393" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">관리자 인증</text>
-            <text x="730" y="412" text-anchor="middle" font-size="13" fill="var(--d-muted)">담당자 권한 조회</text>
-            <line x1="575" y1="398" x2="616" y2="398" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a1)"/>
-            <rect x="20" y="448" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="40" y="460" font-size="13" fill="var(--d-muted)">법인단체 패키지 관리 서비스의 처리</text>
-            <rect x="290" y="448" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="310" y="460" font-size="13" fill="var(--d-muted)">사용자, 화면, 저장소, 외부 시스템</text>
-          </svg>
-          <p class="diagram-caption">결제 시스템과 그룹 항공 시스템은 호출을 처리하고 상태 변경을 관리 서버로 통지한다.</p>
+          <svg viewBox="0 0 860 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="담당자는 어드민 화면으로, 고객사 담당자는 고객사 결제 화면으로 서버를 사용하고, 서버는 MySQL과 외부 시스템을 호출하며 결제 시스템과 그룹 항공 시스템은 상태를 통지하는 구성">
+<defs><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+<rect x="20" y="193" width="130" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="85" y="217" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">담당자</text>
+<text x="85" y="238" text-anchor="middle" font-size="13" fill="var(--d-muted)">행사와 명단 관리</text>
+<rect x="20" y="330" width="130" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="85" y="354" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">고객사 담당자</text>
+<text x="85" y="375" text-anchor="middle" font-size="13" fill="var(--d-muted)">행사 대금 결제</text>
+<rect x="185" y="193" width="160" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="265" y="217" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">어드민 화면</text>
+<text x="265" y="238" text-anchor="middle" font-size="13" fill="var(--d-muted)">Next.js</text>
+<rect x="185" y="330" width="160" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="265" y="363" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">고객사 결제 화면</text>
+<rect x="385" y="181" width="150" height="80" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="460" y="217" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">서버</text>
+<text x="460" y="238" text-anchor="middle" font-size="13" fill="var(--d-muted)">Kotlin, Spring Boot</text>
+<rect x="385" y="60" width="150" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="460" y="84" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">MySQL</text>
+<text x="460" y="105" text-anchor="middle" font-size="13" fill="var(--d-muted)">행사, 명단, 결제</text>
+<line x1="150" y1="221" x2="181" y2="221" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)"/>
+<line x1="345" y1="221" x2="381" y2="221" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)"/>
+<line x1="150" y1="358" x2="181" y2="358" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)"/>
+<path d="M 345 358 L 460 358 L 460 265" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)"/>
+<line x1="460" y1="181" x2="460" y2="120" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)"/>
+<line x1="539" y1="221" x2="575" y2="221" stroke="var(--d-line)" stroke-width="1.3" marker-start="url(#a2)"/>
+<path d="M 575 44 L 575 339" fill="none" stroke="var(--d-line)" stroke-width="1.3"/>
+<rect x="620" y="20" width="220" height="48" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="730" y="40" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">보험사 2개사</text>
+<text x="730" y="61" text-anchor="middle" font-size="13" fill="var(--d-muted)">가입과 취소</text>
+<line x1="575" y1="44" x2="616" y2="44" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)"/>
+<rect x="620" y="79" width="220" height="48" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="730" y="99" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">정산 시스템</text>
+<text x="730" y="120" text-anchor="middle" font-size="13" fill="var(--d-muted)">입금 내역 조회와 매칭</text>
+<line x1="575" y1="103" x2="616" y2="103" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)"/>
+<rect x="620" y="138" width="220" height="48" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="730" y="158" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">결제 시스템</text>
+<text x="730" y="179" text-anchor="middle" font-size="13" fill="var(--d-muted)">결제 요청과 상태 통지</text>
+<line x1="579" y1="162" x2="616" y2="162" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)" marker-start="url(#a2)"/>
+<rect x="620" y="197" width="220" height="48" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="730" y="217" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">그룹 항공 시스템</text>
+<text x="730" y="238" text-anchor="middle" font-size="13" fill="var(--d-muted)">예약과 상태 이벤트</text>
+<line x1="579" y1="221" x2="616" y2="221" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)" marker-start="url(#a2)"/>
+<rect x="620" y="256" width="220" height="48" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="730" y="276" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">숙소 시스템</text>
+<text x="730" y="297" text-anchor="middle" font-size="13" fill="var(--d-muted)">예약 동기화</text>
+<line x1="575" y1="280" x2="616" y2="280" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)"/>
+<rect x="620" y="315" width="220" height="48" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="730" y="335" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">메일과 알림톡</text>
+<text x="730" y="356" text-anchor="middle" font-size="13" fill="var(--d-muted)">안내 발송</text>
+<line x1="575" y1="339" x2="616" y2="339" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)"/>
+<rect x="20" y="406" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="40" y="418" font-size="13" fill="var(--d-muted)">법인단체 패키지 관리 서비스의 처리</text>
+<rect x="301" y="406" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="321" y="418" font-size="13" fill="var(--d-muted)">외부 대상</text>
+</svg>
         </div>
       </section>
 
       <section class="section">
-        <h2 id="bulk">여행자 일괄 등록</h2>
-        <p>단체 명단은 규모가 커서 담당자가 엑셀 파일로 등록한다. 일부 행에 오류가 있으면 정상 행만 저장할지 파일 전체를 거부할지 결정해야 한다.</p>
-        <p>정상 행만 저장하는 방식과 비교하면, 파일 전체를 거부하는 방식에서는 담당자가 저장된 행을 구분해 나머지 행만 다시 업로드할 필요가 없다. 관리 서버는 저장 전에 행을 순서대로 검증하고, 오류가 없는 파일만 한 트랜잭션에서 전부 저장한다.</p>
-        <div class="diagram-box">
-          <svg viewBox="0 0 860 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="엑셀 파일의 행을 순서대로 검증하고 오류 행에서 행 번호와 사유를 반환하며 모든 행이 유효하면 한 트랜잭션으로 저장하는 흐름">
-            <defs><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
-            <rect x="20" y="40" width="140" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="90" y="64" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">엑셀 파일</text>
-            <text x="90" y="85" text-anchor="middle" font-size="13" fill="var(--d-muted)">담당자가 업로드</text>
-            <rect x="190" y="40" width="140" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="260" y="64" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">다음 행 읽기</text>
-            <text x="260" y="85" text-anchor="middle" font-size="13" fill="var(--d-muted)">값 검증과 변환</text>
-            <rect x="370" y="40" width="220" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="480" y="73" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">이 행의 값이 유효한가?</text>
-            <rect x="640" y="40" width="200" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="740" y="73" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">남은 행이 있는가?</text>
-            <line x1="160" y1="68" x2="186" y2="68" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)"/>
-            <line x1="330" y1="68" x2="366" y2="68" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)"/>
-            <line x1="590" y1="68" x2="636" y2="68" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)"/>
-            <text x="613" y="60" text-anchor="middle" font-size="13" fill="var(--d-muted)">예</text>
-            <path d="M 740 40 L 740 18 L 260 18 L 260 36" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)"/>
-            <text x="752" y="33" font-size="13" fill="var(--d-muted)">예</text>
-            <line x1="480" y1="96" x2="480" y2="146" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)"/>
-            <text x="490" y="126" font-size="13" fill="var(--d-muted)">아니요</text>
-            <rect x="370" y="150" width="220" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-            <text x="480" y="174" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">행 번호와 사유 반환</text>
-            <text x="480" y="195" text-anchor="middle" font-size="13" fill="var(--d-muted)">저장하는 여행자 없음</text>
-            <line x1="740" y1="96" x2="740" y2="146" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a2)"/>
-            <text x="750" y="126" font-size="13" fill="var(--d-muted)">아니요</text>
-            <rect x="640" y="150" width="200" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="740" y="174" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">전체 행 저장</text>
-            <text x="740" y="195" text-anchor="middle" font-size="13" fill="var(--d-muted)">한 트랜잭션으로 처리</text>
-            <rect x="20" y="226" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="40" y="238" font-size="13" fill="var(--d-muted)">법인단체 패키지 관리 서비스의 처리</text>
-            <rect x="290" y="226" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="310" y="238" font-size="13" fill="var(--d-muted)">입력과 판단</text>
-            <rect x="410" y="226" width="14" height="14" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-            <text x="430" y="238" font-size="13" fill="var(--d-muted)">실패</text>
-          </svg>
+        <h2 id="failure">외부 호출과 실패 범위</h2>
+        <p>외부 시스템에서 완료된 처리는 DB 트랜잭션으로 되돌릴 수 없다. 외부 호출의 단위가 다른 기능은 실패 범위도 다르다.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>기능</th><th>외부 호출</th><th>실패 범위</th></tr></thead>
+            <tbody>
+              <tr><td>명단 일괄 등록</td><td>없음</td><td>파일 전체</td></tr>
+              <tr><td>보험 가입</td><td>여행자마다</td><td>해당 여행자</td></tr>
+              <tr><td>입금 매칭</td><td>요청마다 한 번</td><td>해당 출발그룹</td></tr>
+            </tbody>
+          </table>
         </div>
-        <p>이 등록 경로는 외부 시스템을 호출하지 않으므로 저장 중 실패도 트랜잭션 되돌림으로 처리가 끝난다. 검증은 첫 오류 행에서 중단되므로 오류가 여러 건이면 담당자가 업로드를 반복해야 하지만, 다시 업로드할 범위는 파일 전체로 명확하다.</p>
+        <p>명단 일괄 등록은 저장 전에 행을 순서대로 검증하고 오류가 없는 파일만 한 트랜잭션에서 저장하므로 담당자가 저장된 행을 구분할 필요가 없다. 검증은 첫 오류 행의 번호와 사유를 반환하고 중단하므로 오류가 여러 건이면 담당자가 업로드를 반복한다.</p>
       </section>
 
       <section class="section">
         <h2 id="insurance">보험 가입 실패 격리</h2>
-        <p>담당자는 여행자 여러 명을 선택해 보험 가입을 한 번에 요청하고, 관리 서버는 여행자마다 보험사 API를 호출한다. 보험사 호출은 느려지거나 실패할 수 있고 이미 완료된 가입은 DB 트랜잭션으로 되돌릴 수 없다.</p>
-        <p>전체를 한 트랜잭션으로 묶으면 1명의 실패가 다른 여행자의 저장 결과까지 되돌리고 실패 기록도 함께 사라진다. 그 결과 보험사에는 가입되어 있는데 관리 서버에는 기록이 없는 상태가 발생한다.</p>
-        <p>관리 서버는 다음 방식으로 실패 범위를 여행자 1명으로 제한한다.</p>
-        <ul class="rule-list">
-          <li>호출 구간에 트랜잭션을 두지 않고 호출 전에 진행 중 상태를 커밋한 뒤 호출 후에 결과를 저장한다.</li>
-          <li>여행자별 작업을 병렬로 실행하고 예외를 각 작업 안에서 처리한다.</li>
-          <li>보험사마다 서비스와 클라이언트와 저장 테이블을 분리하고 클라이언트마다 응답 대기 한도를 지정한다.</li>
-        </ul>
+        <p>여행자 전체를 한 트랜잭션으로 묶으면 1명의 실패로 다른 여행자의 저장 결과가 되돌아가 보험사에는 가입되어 있는데 기록이 없는 상태가 발생한다. 여행자마다 보험사 API를 호출하면 실패가 해당 여행자의 기록에만 남는다.</p>
         <div class="diagram-box">
-          <svg viewBox="0 20 860 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="여행자별로 상태를 확인하고 진행 중 상태를 저장한 뒤 보험사를 호출해 결과를 저장하고 여행자별 결과 목록을 반환하는 흐름">
-            <defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
-            <rect x="20" y="40" width="160" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="100" y="64" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">선택한 여행자 목록</text>
-            <text x="100" y="85" text-anchor="middle" font-size="13" fill="var(--d-muted)">보험사 1개사 지정</text>
-            <rect x="210" y="40" width="160" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="290" y="64" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">여행자별 병렬 실행</text>
-            <text x="290" y="85" text-anchor="middle" font-size="13" fill="var(--d-muted)">이하 1명 기준</text>
-            <rect x="400" y="40" width="220" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="510" y="73" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">가입 가능한 상태인가?</text>
-            <rect x="670" y="40" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="755" y="64" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">진행 중 상태 저장</text>
-            <text x="755" y="85" text-anchor="middle" font-size="13" fill="var(--d-muted)">호출 전에 커밋</text>
-            <line x1="180" y1="68" x2="206" y2="68" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a3)"/>
-            <line x1="370" y1="68" x2="396" y2="68" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a3)"/>
-            <line x1="620" y1="68" x2="666" y2="68" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a3)"/>
-            <text x="643" y="60" text-anchor="middle" font-size="13" fill="var(--d-muted)">예</text>
-            <line x1="510" y1="96" x2="510" y2="166" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a3)"/>
-            <text x="520" y="136" font-size="13" fill="var(--d-muted)">아니요</text>
-            <rect x="400" y="170" width="220" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-            <text x="510" y="194" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">이 여행자만 실패 처리</text>
-            <text x="510" y="215" text-anchor="middle" font-size="13" fill="var(--d-muted)">호출하지 않음</text>
-            <line x1="755" y1="96" x2="755" y2="166" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a3)"/>
-            <rect x="670" y="170" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="755" y="194" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">보험사 호출</text>
-            <text x="755" y="215" text-anchor="middle" font-size="13" fill="var(--d-muted)">트랜잭션 밖에서 대기</text>
-            <line x1="755" y1="226" x2="755" y2="266" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a3)"/>
-            <rect x="655" y="270" width="200" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="755" y="303" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">호출이 성공했는가?</text>
-            <line x1="655" y1="298" x2="594" y2="298" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a3)"/>
-            <text x="624" y="288" text-anchor="middle" font-size="13" fill="var(--d-muted)">아니요</text>
-            <rect x="400" y="270" width="190" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-            <text x="495" y="294" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">실패 사유 저장</text>
-            <text x="495" y="315" text-anchor="middle" font-size="13" fill="var(--d-muted)">재시도 대상</text>
-            <line x1="755" y1="326" x2="755" y2="366" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a3)"/>
-            <text x="765" y="352" font-size="13" fill="var(--d-muted)">예</text>
-            <rect x="655" y="370" width="200" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="755" y="394" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">완료와 증권 정보 저장</text>
-            <text x="755" y="415" text-anchor="middle" font-size="13" fill="var(--d-muted)">상태를 완료로 변경</text>
-            <rect x="60" y="370" width="250" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="185" y="394" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">여행자별 성공과 실패 목록</text>
-            <text x="185" y="415" text-anchor="middle" font-size="13" fill="var(--d-muted)">담당자에게 건수와 함께 표시</text>
-            <line x1="655" y1="398" x2="314" y2="398" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a3)"/>
-            <line x1="495" y1="326" x2="495" y2="398" stroke="var(--d-line)" stroke-width="1.3"/>
-            <path d="M 400 198 L 185 198 L 185 366" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a3)"/>
-            <rect x="20" y="446" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="40" y="458" font-size="13" fill="var(--d-muted)">법인단체 패키지 관리 서비스의 처리</text>
-            <rect x="290" y="446" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="310" y="458" font-size="13" fill="var(--d-muted)">입력, 판단, 외부 시스템</text>
-            <rect x="480" y="446" width="14" height="14" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-            <text x="500" y="458" font-size="13" fill="var(--d-muted)">실패</text>
-          </svg>
+          <svg viewBox="0 0 860 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="가입 요청과 재시도 요청을 각각 판단해 거부하거나 기록을 사용하고 보험사를 호출한 뒤 결과를 저장해 여행자별 목록으로 표시하는 흐름">
+<defs><marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+<rect x="20" y="32" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="95" y="56" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">가입 요청</text>
+<text x="95" y="77" text-anchor="middle" font-size="13" fill="var(--d-muted)">여행자마다 병렬 실행</text>
+<line x1="170" y1="60" x2="186" y2="60" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
+<polygon points="190,60 340,20 490,60 340,100" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="340" y="65" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">기록이 없거나 취소 완료인가?</text>
+<rect x="20" y="232" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="95" y="256" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">재시도 요청</text>
+<text x="95" y="277" text-anchor="middle" font-size="13" fill="var(--d-muted)">여행자마다 병렬 실행</text>
+<line x1="170" y1="260" x2="186" y2="260" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
+<polygon points="190,260 340,220 490,260 340,300" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="340" y="265" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">실패나 시간 초과 기록인가?</text>
+<rect x="240" y="130" width="200" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+<text x="340" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-warn)">이 여행자만 거부</text>
+<text x="340" y="175" text-anchor="middle" font-size="13" fill="var(--d-muted)">호출 없이 실패로 표시</text>
+<line x1="340" y1="100" x2="340" y2="126" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
+<text x="350" y="118" font-size="13" fill="var(--d-muted)">아니요</text>
+<line x1="340" y1="220" x2="340" y2="190" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
+<text x="350" y="210" font-size="13" fill="var(--d-muted)">아니요</text>
+<line x1="490" y1="60" x2="516" y2="60" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
+<text x="503" y="50" text-anchor="middle" font-size="13" fill="var(--d-muted)">예</text>
+<line x1="490" y1="260" x2="516" y2="260" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
+<text x="503" y="250" text-anchor="middle" font-size="13" fill="var(--d-muted)">예</text>
+<rect x="520" y="32" width="180" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="610" y="56" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">새 보험 기록 생성</text>
+<text x="610" y="77" text-anchor="middle" font-size="13" fill="var(--d-muted)">진행 중 상태 커밋</text>
+<rect x="520" y="232" width="180" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="610" y="256" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">기존 보험 기록 사용</text>
+<text x="610" y="277" text-anchor="middle" font-size="13" fill="var(--d-muted)">진행 중 상태 커밋</text>
+<path d="M 700 60 L 770 60 L 770 326" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
+<path d="M 700 260 L 770 260" fill="none" stroke="var(--d-line)" stroke-width="1.3"/>
+<rect x="700" y="330" width="140" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="770" y="363" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">보험사 호출</text>
+<line x1="700" y1="358" x2="654" y2="358" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
+<polygon points="430,358 540,322 650,358 540,394" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="540" y="363" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">호출이 성공했는가?</text>
+<line x1="430" y1="358" x2="264" y2="358" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
+<text x="347" y="350" text-anchor="middle" font-size="13" fill="var(--d-muted)">예</text>
+<rect x="40" y="330" width="220" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="150" y="354" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">완료와 증권 정보 저장</text>
+<text x="150" y="375" text-anchor="middle" font-size="13" fill="var(--d-muted)">상태를 완료로 변경</text>
+<line x1="540" y1="394" x2="540" y2="426" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
+<text x="550" y="415" font-size="13" fill="var(--d-muted)">아니요</text>
+<rect x="440" y="430" width="200" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+<text x="540" y="454" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-warn)">실패 사유 저장</text>
+<text x="540" y="475" text-anchor="middle" font-size="13" fill="var(--d-muted)">재시도 요청 대상</text>
+<line x1="150" y1="386" x2="150" y2="426" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
+<line x1="440" y1="458" x2="264" y2="458" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
+<rect x="40" y="430" width="220" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="150" y="454" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">여행자별 성공과 실패 목록</text>
+<text x="150" y="475" text-anchor="middle" font-size="13" fill="var(--d-muted)">어드민 화면에 표시</text>
+<path d="M 240 158 L 10 158 L 10 458 L 36 458" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
+<rect x="20" y="506" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="40" y="518" font-size="13" fill="var(--d-muted)">법인단체 패키지 관리 서비스의 처리</text>
+<rect x="301" y="506" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="321" y="518" font-size="13" fill="var(--d-muted)">외부 대상</text>
+<rect x="407" y="506" width="14" height="14" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+<text x="427" y="518" font-size="13" fill="var(--d-muted)">실패</text>
+</svg>
         </div>
-        <p>상태를 먼저 기록하므로 서버가 호출 도중 중단되어도 진행 중 기록이 저장소에 유지된다. 진행 중 기록이 일정 시간을 초과하면 관리 서버는 새 가입 요청을 거부하고 담당자의 재시도 요청으로만 보험사를 다시 호출한다.</p>
-        <p>새 가입은 보험 기록을 새로 생성하고 재시도는 기존 기록을 다시 사용하므로, 응답을 받지 못한 호출이 있어도 여행자의 보험 기록이 늘어나지 않는다. 자동 재호출과 비교하면 담당자의 요청이 한 번 더 필요하지만, 결과를 알 수 없는 호출을 다시 보내는 시점은 담당자가 결정한다.</p>
+        <p>호출 전에 상태를 커밋하므로 서버가 호출 도중 중단되어도 진행 중 기록이 저장소에 유지된다. 재호출은 자동으로 실행되지 않아 담당자의 요청이 한 번 더 필요하지만 재호출 시점과 대상을 담당자가 결정한다.</p>
       </section>
 
       <section class="section">
         <h2 id="deposit">입금 매칭의 부분 성공</h2>
-        <p>고객사의 계좌 입금은 정산 시스템에 기록되고, 담당자는 입금 1건의 금액을 여러 출발그룹에 배분한다. 이 배분을 출발그룹의 결제에 연결하는 일이 입금 매칭이고, 정산 시스템은 배분 목록을 한 번에 받아 배분별 성공 여부를 반환한다.</p>
-        <p>일부 배분만 실패할 때 전체를 실패로 처리하면 정산 시스템에는 매칭이 있고 관리 서버에는 결제 기록이 없는 상태가 발생한다. 관리 서버는 성공한 배분만으로 결제 기록을 생성해 정산 시스템의 매칭과 결제 기록을 일치시키고, 실패한 출발그룹과 사유는 오류 응답으로 반환한다.</p>
+        <p>고객사의 계좌 입금 1건을 여러 출발그룹에 금액별로 배분해 결제로 연결하는 일이 입금 매칭이고, 정산 시스템은 배분 목록을 한 번에 받아 배분별 성공 여부를 반환한다. 일부 배분만 실패할 때 전체를 실패로 처리하면 정산 시스템의 매칭과 관리 서비스의 결제 기록이 어긋나므로, 관리 서비스는 성공한 배분만으로 결제 기록을 생성한다.</p>
         <div class="diagram-box">
-          <svg viewBox="0 0 860 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="매칭 요청을 저장하고 정산 시스템을 호출한 뒤 응답과 배분별 성공 여부에 따라 결제와 실패를 기록하는 흐름">
-            <defs><marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
-            <rect x="20" y="30" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="115" y="54" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">매칭 요청 저장</text>
-            <text x="115" y="75" text-anchor="middle" font-size="13" fill="var(--d-muted)">별도 트랜잭션으로 커밋</text>
-            <rect x="250" y="30" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="345" y="54" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">정산 시스템 호출</text>
-            <text x="345" y="75" text-anchor="middle" font-size="13" fill="var(--d-muted)">배분 전체를 한 번에</text>
-            <rect x="480" y="30" width="180" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="570" y="63" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">응답을 받았는가?</text>
-            <line x1="210" y1="58" x2="246" y2="58" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
-            <line x1="440" y1="58" x2="476" y2="58" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
-            <line x1="660" y1="58" x2="701" y2="58" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
-            <text x="682" y="50" text-anchor="middle" font-size="13" fill="var(--d-muted)">아니요</text>
-            <rect x="705" y="30" width="145" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-            <text x="777" y="54" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">요청 실패 기록</text>
-            <text x="777" y="75" text-anchor="middle" font-size="13" fill="var(--d-muted)">오류 응답 반환</text>
-            <line x1="570" y1="86" x2="570" y2="126" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
-            <text x="580" y="112" font-size="13" fill="var(--d-muted)">예</text>
-            <rect x="480" y="130" width="180" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="570" y="163" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">성공 배분이 있는가?</text>
-            <line x1="660" y1="158" x2="701" y2="158" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
-            <text x="682" y="150" text-anchor="middle" font-size="13" fill="var(--d-muted)">아니요</text>
-            <rect x="705" y="130" width="145" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-            <text x="777" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">전체 실패 기록</text>
-            <text x="777" y="175" text-anchor="middle" font-size="13" fill="var(--d-muted)">결제 생성 없음</text>
-            <path d="M 570 186 L 570 208 L 115 208 L 115 226" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
-            <text x="580" y="202" font-size="13" fill="var(--d-muted)">예</text>
-            <rect x="20" y="230" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="115" y="254" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">성공 배분만 결제 생성</text>
-            <text x="115" y="275" text-anchor="middle" font-size="13" fill="var(--d-muted)">별도 트랜잭션으로 커밋</text>
-            <rect x="250" y="230" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="345" y="254" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">성공 배분 완료 기록</text>
-            <text x="345" y="275" text-anchor="middle" font-size="13" fill="var(--d-muted)">별도 트랜잭션으로 커밋</text>
-            <rect x="480" y="230" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="575" y="263" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">실패 배분이 있는가?</text>
-            <line x1="210" y1="258" x2="246" y2="258" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
-            <line x1="440" y1="258" x2="476" y2="258" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
-            <line x1="670" y1="258" x2="701" y2="258" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
-            <text x="686" y="250" text-anchor="middle" font-size="13" fill="var(--d-muted)">예</text>
-            <rect x="705" y="230" width="145" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-            <text x="777" y="254" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">실패 배분 기록</text>
-            <text x="777" y="275" text-anchor="middle" font-size="13" fill="var(--d-muted)">출발그룹별 사유 반환</text>
-            <line x1="575" y1="286" x2="575" y2="326" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a4)"/>
-            <text x="585" y="312" font-size="13" fill="var(--d-muted)">아니요</text>
-            <rect x="480" y="330" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="575" y="363" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">결제 기록 반환</text>
-            <rect x="20" y="404" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="40" y="416" font-size="13" fill="var(--d-muted)">법인단체 패키지 관리 서비스의 처리</text>
-            <rect x="290" y="404" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="310" y="416" font-size="13" fill="var(--d-muted)">판단과 외부 시스템</text>
-            <rect x="450" y="404" width="14" height="14" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-            <text x="470" y="416" font-size="13" fill="var(--d-muted)">실패</text>
-          </svg>
+          <svg viewBox="0 0 860 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="매칭 요청을 저장하고 정산 시스템을 호출한 뒤 성공 배분만 결제를 생성하고 배분별 결과를 기록하는 흐름">
+<defs><marker id="a5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+<rect x="20" y="30" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="105" y="63" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">매칭 요청 저장</text>
+<line x1="190" y1="58" x2="216" y2="58" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a5)"/>
+<rect x="220" y="30" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="305" y="54" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">정산 시스템 호출</text>
+<text x="305" y="75" text-anchor="middle" font-size="13" fill="var(--d-muted)">배분 전체를 한 번에</text>
+<line x1="390" y1="58" x2="416" y2="58" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a5)"/>
+<polygon points="420,58 530,20 640,58 530,96" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="530" y="63" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">성공 배분이 있는가?</text>
+<line x1="640" y1="58" x2="676" y2="58" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a5)"/>
+<text x="658" y="48" text-anchor="middle" font-size="13" fill="var(--d-muted)">아니요</text>
+<rect x="680" y="30" width="160" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+<text x="760" y="54" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-warn)">전체 실패 기록</text>
+<text x="760" y="75" text-anchor="middle" font-size="13" fill="var(--d-muted)">결제 생성 없음</text>
+<line x1="530" y1="96" x2="530" y2="136" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a5)"/>
+<text x="540" y="120" font-size="13" fill="var(--d-muted)">예</text>
+<rect x="420" y="140" width="220" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="530" y="173" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">성공 배분만 결제 생성</text>
+<line x1="640" y1="168" x2="676" y2="168" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a5)"/>
+<rect x="680" y="140" width="160" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="760" y="173" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">배분별 결과 기록</text>
+<rect x="20" y="216" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="40" y="228" font-size="13" fill="var(--d-muted)">법인단체 패키지 관리 서비스의 처리</text>
+<rect x="301" y="216" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="321" y="228" font-size="13" fill="var(--d-muted)">외부 대상</text>
+<rect x="407" y="216" width="14" height="14" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+<text x="427" y="228" font-size="13" fill="var(--d-muted)">실패</text>
+</svg>
         </div>
-        <p>오류 응답을 반환하면 요청 처리 트랜잭션이 되돌아가므로, 매칭 요청과 결제와 결과는 각각 별도 트랜잭션으로 커밋해 유지한다. 이 구조에서는 오류 응답이 전체 실패를 뜻하지 않으므로, 담당자는 매칭 내역 화면에서 출발그룹별 성공과 실패를 확인해야 한다.</p>
+        <p>담당자는 매칭 내역 화면에서 출발그룹별 성공과 실패를 확인한다.</p>
       </section>
 
       <section class="section">
         <h2 id="lock">번호 발급과 행 잠금</h2>
-        <p>행사번호와 출발그룹번호에는 날짜별 일련번호가 포함되고, 보험사 1개사의 요청에는 서비스 전체에서 증가하는 일련번호가 포함된다. 보험 일련번호는 여행자별 병렬 작업이 동시에 요청하므로 같은 값의 중복 발급을 방지해야 한다.</p>
-        <p>관리 서버는 날짜별 번호와 보험 일련번호마다 키를 두고, 키의 행을 잠근 뒤 값을 증가시킨다.</p>
+        <p>행사번호와 출발그룹번호는 날짜별로 구분되고, 보험 일련번호는 여행자별 병렬 요청에서 같은 값이 중복되면 안 된다. 관리 서비스는 이 번호들을 MySQL 행에 저장하고 행을 잠근 뒤 값을 증가시킨다.</p>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>방식</th><th>동작</th><th>이 서비스에 적용할 때</th></tr></thead>
+            <thead><tr><th>방식</th><th>이 서비스에 적용할 때</th></tr></thead>
             <tbody>
-              <tr><td>자동 증가 컬럼</td><td>DB가 테이블 단위로 번호를 증가시킨다.</td><td>날짜별 번호와 키별 번호를 표현하지 못한다.</td></tr>
-              <tr><td>Redis 증가 연산</td><td>Redis가 키 단위로 번호를 증가시킨다.</td><td>Redis가 없는 구성에 번호 발급만을 위해 저장소를 추가해야 한다.</td></tr>
-              <tr><td>DB 행 잠금</td><td>키마다 행을 두고 잠근 뒤 값을 증가시킨다.</td><td>기존 MySQL만으로 동작한다.</td></tr>
+              <tr><td>자동 증가 컬럼</td><td>날짜별 번호 표현 불가</td></tr>
+              <tr><td>Redis 증가 연산</td><td>번호 발급만을 위해 Redis 추가</td></tr>
+              <tr><td>DB 행 잠금</td><td>기존 MySQL로 동작</td></tr>
             </tbody>
           </table>
         </div>
-        <p>보험 일련번호는 별도 트랜잭션으로 먼저 커밋한다. 그래서 보험사 응답을 기다리는 동안 잠금을 보유하지 않고, 병렬 호출은 번호 증가 구간에서만 순서대로 처리된다.</p>
         <div class="diagram-box">
-          <svg viewBox="0 20 860 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="행 잠금을 획득한 작업이 값을 증가시켜 커밋하고 잠금 없이 보험사를 호출하며 다른 작업은 앞선 작업의 커밋까지 대기하는 흐름">
-            <defs><marker id="a5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
-            <rect x="20" y="40" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="95" y="64" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">번호 요청</text>
-            <text x="95" y="85" text-anchor="middle" font-size="13" fill="var(--d-muted)">여행자별 병렬 작업</text>
-            <rect x="200" y="40" width="200" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="300" y="73" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">행 잠금을 획득했는가?</text>
-            <rect x="440" y="40" width="100" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="490" y="73" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">값 1 증가</text>
-            <rect x="570" y="40" width="110" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="625" y="64" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">별도 커밋</text>
-            <text x="625" y="85" text-anchor="middle" font-size="13" fill="var(--d-muted)">잠금 해제</text>
-            <rect x="710" y="40" width="130" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="775" y="64" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">보험사 호출</text>
-            <text x="775" y="85" text-anchor="middle" font-size="13" fill="var(--d-muted)">잠금 없는 구간</text>
-            <line x1="170" y1="68" x2="196" y2="68" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a5)"/>
-            <line x1="400" y1="68" x2="436" y2="68" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a5)"/>
-            <text x="418" y="60" text-anchor="middle" font-size="13" fill="var(--d-muted)">예</text>
-            <line x1="540" y1="68" x2="566" y2="68" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a5)"/>
-            <line x1="680" y1="68" x2="706" y2="68" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a5)"/>
-            <line x1="250" y1="96" x2="250" y2="146" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a5)"/>
-            <text x="200" y="126" font-size="13" fill="var(--d-muted)">아니요</text>
-            <rect x="190" y="150" width="220" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="300" y="183" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">앞선 작업의 커밋까지 대기</text>
-            <line x1="350" y1="150" x2="350" y2="100" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a5)"/>
-            <rect x="20" y="226" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="40" y="238" font-size="13" fill="var(--d-muted)">법인단체 패키지 관리 서비스의 처리</text>
-            <rect x="290" y="226" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="310" y="238" font-size="13" fill="var(--d-muted)">판단과 외부 시스템</text>
-          </svg>
-          <p class="diagram-caption">보험 일련번호 발급 경로를 기준으로 표시한다.</p>
+          <svg viewBox="0 0 860 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="보험 일련번호는 잠금을 획득해 값을 증가시켜 별도로 커밋한 뒤 잠금 없이 보험사를 호출하고, 행사번호와 출발그룹번호는 등록 트랜잭션에 참여해 등록과 함께 커밋하는 흐름">
+<defs><marker id="a6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+<rect x="20" y="30" width="180" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="110" y="54" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">보험 일련번호</text>
+<text x="110" y="75" text-anchor="middle" font-size="13" fill="var(--d-muted)">여행자별 병렬 요청</text>
+<rect x="225" y="30" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="310" y="54" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">행 잠금 획득</text>
+<text x="310" y="75" text-anchor="middle" font-size="13" fill="var(--d-muted)">다른 요청은 대기</text>
+<rect x="420" y="30" width="200" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="520" y="54" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">값 1 증가</text>
+<text x="520" y="75" text-anchor="middle" font-size="13" fill="var(--d-muted)">별도 트랜잭션으로 커밋</text>
+<rect x="645" y="30" width="195" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="742.5" y="54" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">보험사 호출</text>
+<text x="742.5" y="75" text-anchor="middle" font-size="13" fill="var(--d-muted)">잠금 없이 응답 대기</text>
+<line x1="200" y1="58" x2="221" y2="58" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a6)"/>
+<line x1="395" y1="58" x2="416" y2="58" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a6)"/>
+<line x1="620" y1="58" x2="641" y2="58" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a6)"/>
+<rect x="20" y="120" width="180" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="110" y="144" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">행사번호, 출발그룹번호</text>
+<text x="110" y="165" text-anchor="middle" font-size="13" fill="var(--d-muted)">날짜마다 별도 행</text>
+<rect x="225" y="120" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="310" y="144" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">행 잠금 획득</text>
+<text x="310" y="165" text-anchor="middle" font-size="13" fill="var(--d-muted)">같은 날짜 등록은 대기</text>
+<rect x="420" y="120" width="200" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="520" y="144" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">값 1 증가</text>
+<text x="520" y="165" text-anchor="middle" font-size="13" fill="var(--d-muted)">등록 트랜잭션에 참여</text>
+<rect x="645" y="120" width="195" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="742.5" y="144" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">등록 커밋</text>
+<text x="742.5" y="165" text-anchor="middle" font-size="13" fill="var(--d-muted)">실패하면 번호도 되돌림</text>
+<line x1="200" y1="148" x2="221" y2="148" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a6)"/>
+<line x1="395" y1="148" x2="416" y2="148" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a6)"/>
+<line x1="620" y1="148" x2="641" y2="148" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#a6)"/>
+<rect x="20" y="196" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+<text x="40" y="208" font-size="13" fill="var(--d-muted)">법인단체 패키지 관리 서비스의 처리</text>
+<rect x="301" y="196" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+<text x="321" y="208" font-size="13" fill="var(--d-muted)">외부 대상</text>
+</svg>
         </div>
-        <p>응답 대기 동안 잠금을 보유하는 방식과 비교하면, 보험사 호출이 실패할 때 일련번호에 빈 값이 생기는 대신 다른 여행자의 번호 발급이 보험사 응답을 기다리지 않는다.</p>
-        <p>행사번호와 출발그룹번호는 등록 트랜잭션에 참여하므로 등록이 실패하면 번호도 함께 되돌아가고, 등록이 끝날 때까지 같은 날짜의 다른 등록은 대기한다.</p>
+        <p>행사번호와 출발그룹번호는 등록 트랜잭션에 참여하므로 등록이 실패하면 번호도 되돌아가 빈 번호가 생기지 않는다. 보험 일련번호는 별도로 커밋해 잠금을 먼저 해제하므로 보험사 호출이 실패하면 빈 값이 남지만 다른 여행자의 번호 발급이 보험사 응답을 기다리지 않는다.</p>
       </section>
 
       <section class="section">
         <h2 id="scope">맡은 범위</h2>
-        <p>여러 개발자가 스프린트 단위로 작업을 나누어 개발하고 PR 리뷰로 함께 개선했다.</p>
-        <p>다음 항목을 직접 개발했다.</p>
+        <p>여러 개발자가 스프린트 단위로 작업을 나누어 개발하고 PR 리뷰로 함께 개선했다. 다음 항목을 직접 개발했다.</p>
         <ul class="rule-list">
-          <li>여행자 관리와 일괄 등록의 서버와 어드민 화면을 개발했다.</li>
-          <li>보험 가입과 취소와 재시도의 서버와 어드민 화면을 개발했다.</li>
+          <li>여행자 명단 관리와 일괄 등록의 서버와 어드민 화면을 개발했다.</li>
+          <li>보험 가입과 취소, 재시도의 서버와 어드민 화면을 개발했다.</li>
           <li>입금 매칭의 서버와 어드민 화면을 개발했다.</li>
-          <li>번호 발급의 행 잠금을 개발했다.</li>
-          <li>결제 통지 수신과 결제 기록 생성을 개발했다.</li>
-          <li>그룹 항공 이벤트 수신을 개발했다.</li>
-          <li>행사와 출발그룹 관리의 일부를 개발했다.</li>
+          <li>번호 발급의 행 잠금을 작성했다.</li>
         </ul>
         <p>다음 영역은 다른 개발자가 개발했다.</p>
         <ul class="rule-list">
-          <li>고객사 담당자의 이메일 인증</li>
           <li>메일과 알림톡 발송</li>
           <li>숙소 예약 동기화</li>
         </ul>

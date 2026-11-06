@@ -6,6 +6,7 @@
 const CATEGORY_LABELS = {
   'dynamic-package': '다이나믹 패키지',
   'new-package': '신규 패키지 시스템',
+  'cm-package': '법인단체 패키지',
   ai: 'AI·자동화',
   'old-package': '구패키지 시스템'
 };
