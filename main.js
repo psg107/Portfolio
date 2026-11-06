@@ -77,13 +77,19 @@ function renderProjects() {
       key: 'dynamic-package',
       title: '다이나믹 패키지',
       period: '2026.03 - 현재',
-      tagline: '항공·숙소 등 여러 여행 상품을 조합하는 신규 서비스'
+      tagline: '항공과 숙소를 조합해 한 번에 판매하는 서비스'
     },
     {
       key: 'new-package',
       title: '신규 패키지 시스템',
       period: '2023 - 2026',
-      tagline: 'Kotlin/Spring Boot 기반 패키지 여행 플랫폼 구축'
+      tagline: 'Kotlin/Spring Boot로 새로 개발한 패키지 여행 서비스'
+    },
+    {
+      key: 'cm-package',
+      title: '법인단체 패키지',
+      period: '2025 - 2026',
+      tagline: '기업과 단체의 맞춤 여행을 담당자가 관리하는 서비스'
     },
     {
       key: 'ai',
@@ -94,7 +100,7 @@ function renderProjects() {
       key: 'old-package',
       title: '구패키지 시스템',
       period: '2021 - 2023',
-      tagline: '20년 운영된 C# 시스템 운영·개선'
+      tagline: '2000년대부터 사용해 온 C# 시스템의 유지보수와 기능 개발'
     }
   ];
 
@@ -127,9 +133,10 @@ function renderProjects() {
           const statusBadge = project.status === 'in-progress'
             ? '<span class="project-status">진행중</span>'
             : '';
-          const periodText = project.period?.from
+          const periodRange = project.period?.from
             ? `${project.period.from} - ${project.period.to || '현재'}`
             : '';
+          const periodText = [periodRange, project.role].filter(Boolean).join(' · ');
           const periodHtml = periodText
             ? `<span class="project-period">${periodText}</span>`
             : '';

@@ -21,458 +21,501 @@
 
     <section class="section">
       <h2 id="what">다이나믹 패키지란</h2>
-      <p>항공권과 숙소를 따로 구매하는 고객은 결제를 각각 진행하고 가격과 취소 규정도 상품마다 확인한다.</p>
       <p>다이나믹 패키지는 고객이 선택한 항공과 숙소를 주문 하나로 묶어 한 번의 결제로 예약하는 여행 상품 서비스다. 고객은 추천 조합으로 시작하거나 항공과 숙소를 직접 교체하고, 화면은 합산 금액을 표시한다.</p>
-      <p>항공과 숙소는 공급 시스템이 서로 달라 가격과 재고가 따로 변한다. 따라서 변동하는 요금을 목록에 빠르게 표시하고, 고객이 선택한 상품을 예약 단계까지 같은 상품으로 식별해야 한다.</p>
+      <p>항공과 숙소는 공급 시스템이 서로 달라 가격과 재고가 따로 변한다. 따라서 변동하는 요금을 목록에 빠르게 표시하고 고객이 선택한 상품을 예약까지 같은 상품으로 식별해야 한다.</p>
       <p>서비스는 오픈 전이고 개발과 QA 단계이므로 아래 설계는 운영 트래픽으로 검증되지 않았다.</p>
     </section>
 
     <section class="section">
       <h2 id="layout">구성</h2>
-      <p>다이나믹 상품 서비스는 고객이 상품을 선택하는 단계를 처리하고 다이나믹 예약 서비스는 결제 이후를 처리한다. 도해의 화살표는 호출 방향이다.</p>
+      <p>다이나믹 상품 서비스는 고객이 상품을 선택하는 단계를 처리하고 다이나믹 예약 서비스는 결제 이후를 처리한다. 세션은 고객이 선택한 항공과 숙소를 저장한 문서다.</p>
       <div class="diagram-box">
-        <svg viewBox="0 0 860 528" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="고객 화면이 다이나믹 상품 서비스와 다이나믹 예약 서비스를 호출하고 두 서비스가 저장소와 연동 시스템을 호출하는 구성도">
-          <defs><marker id="dp-a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
-          <rect x="20" y="120" width="120" height="260" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-          <text x="80" y="255" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">고객 화면</text>
-          <line x1="140" y1="150" x2="188" y2="150" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
-          <line x1="140" y1="350" x2="188" y2="350" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
-          <rect x="190" y="120" width="650" height="60" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="515" y="146" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">다이나믹 상품 서비스</text>
-          <text x="515" y="166" text-anchor="middle" font-size="13" fill="var(--d-muted)">숙소와 항공 검색, 세션, 추천 판정</text>
-          <rect x="190" y="320" width="650" height="60" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="515" y="346" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">다이나믹 예약 서비스</text>
-          <text x="515" y="366" text-anchor="middle" font-size="13" fill="var(--d-muted)">주문, 결제, 항목별 예약과 취소</text>
-          <rect x="190" y="20" width="155" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-          <text x="267.5" y="46" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">MongoDB</text>
-          <text x="267.5" y="66" text-anchor="middle" font-size="13" fill="var(--d-muted)">세션 문서</text>
-          <line x1="267" y1="120" x2="267" y2="82" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
-          <rect x="355" y="20" width="155" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-          <text x="432.5" y="46" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">Redis</text>
-          <text x="432.5" y="66" text-anchor="middle" font-size="13" fill="var(--d-muted)">가격과 판정 캐시</text>
-          <line x1="432" y1="120" x2="432" y2="82" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
-          <rect x="520" y="20" width="155" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-          <text x="597.5" y="46" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">추천 서비스</text>
-          <text x="597.5" y="66" text-anchor="middle" font-size="13" fill="var(--d-muted)">추천 조합 목록</text>
-          <line x1="597" y1="120" x2="597" y2="82" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
-          <rect x="685" y="20" width="155" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-          <text x="762.5" y="46" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">숙소 검색 서비스</text>
-          <text x="762.5" y="66" text-anchor="middle" font-size="13" fill="var(--d-muted)">관련도순 후보</text>
-          <line x1="762" y1="120" x2="762" y2="82" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
-          <line x1="300" y1="320" x2="300" y2="182" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
-          <text x="310" y="254" text-anchor="start" font-size="13" fill="var(--d-muted)">주문 스냅샷 조회</text>
-          <rect x="450" y="220" width="185" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-          <text x="542.5" y="246" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">숙소 공급 시스템</text>
-          <text x="542.5" y="266" text-anchor="middle" font-size="13" fill="var(--d-muted)">요금, 재고, 예약</text>
-          <rect x="655" y="220" width="185" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-          <text x="747.5" y="246" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">항공 서비스</text>
-          <text x="747.5" y="266" text-anchor="middle" font-size="13" fill="var(--d-muted)">항공편, 운임, 예약</text>
-          <line x1="542" y1="180" x2="542" y2="218" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
-          <line x1="542" y1="320" x2="542" y2="282" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
-          <line x1="747" y1="180" x2="747" y2="218" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
-          <line x1="747" y1="320" x2="747" y2="282" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
-          <rect x="190" y="420" width="155" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-          <text x="267.5" y="446" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">MySQL</text>
-          <text x="267.5" y="466" text-anchor="middle" font-size="13" fill="var(--d-muted)">주문과 예약 기록</text>
-          <rect x="355" y="420" width="155" height="60" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-          <text x="432.5" y="446" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">결제 시스템</text>
-          <text x="432.5" y="466" text-anchor="middle" font-size="13" fill="var(--d-muted)">승인과 취소</text>
-          <line x1="267" y1="380" x2="267" y2="418" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
-          <line x1="432" y1="380" x2="432" y2="418" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
-          <rect x="20" y="492" width="16" height="16" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="44" y="505" font-size="13" fill="var(--d-muted)">다이나믹 패키지 서비스의 처리</text>
-          <rect x="270" y="492" width="16" height="16" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-          <text x="294" y="505" font-size="13" fill="var(--d-muted)">화면, 저장소, 연동 시스템</text>
-        </svg>
+          <svg viewBox="0 0 860 636" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="고객 화면이 다이나믹 상품 서비스와 다이나믹 예약 서비스를 호출하고 각 처리가 저장소와 연동 시스템을 호출하는 구성도">
+            <defs><marker id="dp-a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+            <rect x="190" y="20" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="265" y="43" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">MongoDB</text>
+            <text x="265" y="63" text-anchor="middle" font-size="13" fill="var(--d-muted)">세션 문서</text>
+            <rect x="355" y="20" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="430" y="43" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">숙소 검색 서비스</text>
+            <text x="430" y="63" text-anchor="middle" font-size="13" fill="var(--d-muted)">후보 순서</text>
+            <rect x="520" y="20" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="595" y="43" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">Redis</text>
+            <text x="595" y="63" text-anchor="middle" font-size="13" fill="var(--d-muted)">가격과 추천 결과</text>
+            <rect x="685" y="20" width="155" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="762.5" y="43" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">추천 서비스</text>
+            <text x="762.5" y="63" text-anchor="middle" font-size="13" fill="var(--d-muted)">추천 조합 목록</text>
+            <rect x="20" y="116" width="120" height="376" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="80" y="309" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">고객 화면</text>
+            <line x1="140" y1="176" x2="188" y2="176" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <line x1="140" y1="432" x2="188" y2="432" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <rect x="190" y="116" width="650" height="120" rx="4" fill="none" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <rect x="206" y="126" width="198" height="68" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="305" y="155" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">선택한 상품 저장</text>
+            <text x="305" y="175" text-anchor="middle" font-size="13" fill="var(--d-muted)">세션</text>
+            <rect x="416" y="126" width="198" height="68" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="515" y="165" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">숙소 목록과 가격 조회</text>
+            <rect x="626" y="126" width="198" height="68" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="725" y="165" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">추천 사유 표시</text>
+            <line x1="265" y1="126" x2="265" y2="78" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <line x1="460" y1="126" x2="460" y2="78" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <line x1="580" y1="126" x2="580" y2="78" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <line x1="650" y1="126" x2="650" y2="78" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <line x1="760" y1="126" x2="760" y2="78" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <text x="824" y="219" text-anchor="end" font-size="14" font-weight="600" fill="var(--d-accent)">다이나믹 상품 서비스</text>
+            <rect x="360" y="276" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="445" y="299" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">항공 서비스</text>
+            <text x="445" y="319" text-anchor="middle" font-size="13" fill="var(--d-muted)">항공편, 운임, 예약</text>
+            <rect x="545" y="276" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="630" y="299" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">숙소 공급 시스템</text>
+            <text x="630" y="319" text-anchor="middle" font-size="13" fill="var(--d-muted)">가격, 재고, 예약</text>
+            <line x1="385" y1="194" x2="385" y2="274" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <line x1="580" y1="194" x2="580" y2="274" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <line x1="470" y1="382" x2="470" y2="334" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <line x1="630" y1="382" x2="630" y2="334" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <line x1="235" y1="382" x2="235" y2="196" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <text x="243" y="298" text-anchor="start" font-size="13" fill="var(--d-muted)">주문 접수 시</text>
+            <text x="243" y="318" text-anchor="start" font-size="13" fill="var(--d-muted)">선택 내용 조회</text>
+            <rect x="190" y="372" width="650" height="120" rx="4" fill="none" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <rect x="206" y="382" width="198" height="68" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="305" y="421" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">결제 뒤 주문 저장</text>
+            <rect x="446" y="382" width="254" height="68" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="573" y="421" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">항목별 공급 예약</text>
+            <line x1="404" y1="416" x2="444" y2="416" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <text x="824" y="475" text-anchor="end" font-size="14" font-weight="600" fill="var(--d-accent)">다이나믹 예약 서비스</text>
+            <rect x="190" y="532" width="155" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="267.5" y="555" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">결제 시스템</text>
+            <text x="267.5" y="575" text-anchor="middle" font-size="13" fill="var(--d-muted)">승인과 취소</text>
+            <rect x="355" y="532" width="155" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="432.5" y="555" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">MySQL</text>
+            <text x="432.5" y="575" text-anchor="middle" font-size="13" fill="var(--d-muted)">주문과 예약 기록</text>
+            <line x1="267" y1="450" x2="267" y2="530" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <line x1="385" y1="450" x2="385" y2="530" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <line x1="480" y1="450" x2="480" y2="530" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a1)"/>
+            <rect x="20" y="604" width="16" height="16" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="44" y="617" text-anchor="start" font-size="13" fill="var(--d-muted)">다이나믹 패키지 서비스의 처리</text>
+            <rect x="270" y="604" width="16" height="16" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="294" y="617" text-anchor="start" font-size="13" fill="var(--d-muted)">외부 대상</text>
+          </svg>
       </div>
-      <p>세션은 고객이 선택한 항공과 숙소를 저장하는 문서다. 주문을 접수하면 다이나믹 예약 서비스가 다이나믹 상품 서비스에 스냅샷(주문 시점의 상품 사본)을 요청하고 응답을 주문으로 저장한다.</p>
-      <p>다이나믹 예약 서비스는 취소 위약금이 낮은 항목부터 순서대로 공급 시스템에 예약한다. 한 항목이라도 실패하면 항목 전체를 역순으로 취소 처리하고 결제를 환불한다.</p>
     </section>
 
     <section class="section">
       <h2 id="paging">숙소 목록 페이징</h2>
-      <p>숙소 검색 서비스는 관련도 순서의 후보만 응답하고 요금을 응답하지 않는다. 요금과 재고는 숙소 공급 시스템에 별도로 조회하므로 요금을 확인하지 못한 후보는 검색 결과를 받은 뒤에 탈락한다.</p>
-      <p>탈락 수를 미리 알 수 없어 페이지 번호로 위치를 계산하면 같은 숙소가 다시 표시된다. 화면의 금액도 항공을 포함한 합산 금액이므로 가격순 정렬을 숙소 검색 서비스에 위임할 수 없다.</p>
-      <p>그래서 응답은 다음 페이지의 시작 위치를 포함하고 화면은 이 값만 다음 요청에 전달한다. 정렬이나 필터가 변경되면 화면은 시작 위치를 0으로 초기화한다.</p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>페이징 대안</th><th>판단</th><th>이유</th></tr></thead>
-          <tbody>
-            <tr><td>기존 구현에 필터만 추가</td><td>제외</td><td>기존 구현의 시작 위치는 의미가 둘이어서, 필터를 추가하면 화면과 교환하는 값의 해석이 어긋날 위험이 커진다.</td></tr>
-            <tr><td>페이지 번호 방식</td><td>제외</td><td>필터 탈락을 반영하지 못해 숙소가 중복 표시된다.</td></tr>
-            <tr><td>가격순 전용 색인</td><td>보류</td><td>색인 소유와 일정이 정해지면 다시 검토한다.</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>숙소 목록은 정렬 기준별로 경로를 분리한다. 관련도순은 목표 개수를 채울 때까지 후보를 소량씩 조회하고 가격순은 관련도 상위 후보 집합의 요금을 모두 조회해 금액순으로 정렬한다.</p>
+      <p>숙소 검색 서비스는 조건에 맞는 후보의 순서만 응답하고 가격은 공급 시스템에 따로 조회하므로, 가격을 확인하지 못한 후보는 조회 뒤에 탈락한다. 탈락 수를 미리 알 수 없어 서버가 다음 시작 위치(오프셋)를 응답하고 화면은 이 값을 다음 요청에 그대로 전달한다.</p>
       <div class="diagram-box">
-        <svg viewBox="0 0 860 652" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="정렬 기준에 따라 관련도순과 가격순으로 나뉘는 숙소 목록 조회 흐름">
+        <svg viewBox="0 0 860 262" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="가격 확인 탈락이 있을 때 페이지 번호 방식은 숙소가 중복되고 다음 위치 방식은 중복되지 않는 예">
           <defs><marker id="dp-a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
-          <rect x="300" y="20" width="260" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="430" y="44" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">검색 조건과 시작 위치 수신</text>
-          <text x="430" y="64" text-anchor="middle" font-size="13" fill="var(--d-muted)">화면이 직전 응답의 위치를 전달</text>
-          <line x1="430" y1="76" x2="430" y2="100" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a2)"/>
-          <rect x="300" y="102" width="260" height="50" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="430" y="132" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">가격순 정렬을 요청했는가?</text>
-          <path d="M 300 127 H 235 V 170" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a2)"/>
-          <text x="250" y="120" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <path d="M 560 127 H 635 V 170" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a2)"/>
-          <text x="580" y="120" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <rect x="110" y="172" width="250" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="235" y="196" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">관련도순 후보 소량 조회</text>
-          <text x="235" y="216" text-anchor="middle" font-size="13" fill="var(--d-muted)">숙소 검색 서비스</text>
-          <line x1="235" y1="228" x2="235" y2="250" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a2)"/>
-          <rect x="110" y="252" width="250" height="44" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="235" y="279" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">교체 대상 숙소 제외</text>
-          <line x1="235" y1="296" x2="235" y2="318" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a2)"/>
-          <rect x="110" y="320" width="250" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="235" y="344" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">후보별 요금과 재고 조회</text>
-          <text x="235" y="364" text-anchor="middle" font-size="13" fill="var(--d-muted)">요금을 확인하지 못하면 탈락</text>
-          <line x1="235" y1="376" x2="235" y2="398" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a2)"/>
-          <rect x="110" y="400" width="250" height="64" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="235" y="427" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">목표 개수를 채웠거나</text>
-          <text x="235" y="447" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">후보가 소진되었는가?</text>
-          <path d="M 110 432 H 84 V 200 H 108" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a2)"/>
-          <text x="62" y="452" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <line x1="235" y1="464" x2="235" y2="486" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a2)"/>
-          <text x="243" y="480" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <rect x="110" y="488" width="250" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="235" y="512" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">다음 시작 위치 계산</text>
-          <text x="235" y="532" text-anchor="middle" font-size="13" fill="var(--d-muted)">마지막 채택 후보의 다음</text>
-          <rect x="500" y="172" width="270" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="635" y="196" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">관련도 상위 후보 집합 조회</text>
-          <text x="635" y="216" text-anchor="middle" font-size="13" fill="var(--d-muted)">교체 대상 숙소 제외</text>
-          <line x1="635" y1="228" x2="635" y2="250" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a2)"/>
-          <rect x="500" y="252" width="270" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="635" y="276" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">후보 전체 요금과 재고 조회</text>
-          <text x="635" y="296" text-anchor="middle" font-size="13" fill="var(--d-muted)">요금을 확인하지 못하면 탈락</text>
-          <line x1="635" y1="308" x2="635" y2="330" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a2)"/>
-          <rect x="500" y="332" width="270" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="635" y="356" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">금액순 정렬</text>
-          <text x="635" y="376" text-anchor="middle" font-size="13" fill="var(--d-muted)">세션 나머지 항목 합계와 요금의 합</text>
-          <line x1="635" y1="388" x2="635" y2="410" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a2)"/>
-          <rect x="500" y="412" width="270" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="635" y="436" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">시작 위치부터 목표 개수 선택</text>
-          <text x="635" y="456" text-anchor="middle" font-size="13" fill="var(--d-muted)">다음 위치는 선택 개수만큼 증가</text>
-          <rect x="300" y="576" width="260" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="430" y="609" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">숙소 목록과 다음 위치 응답</text>
-          <path d="M 235 544 V 604 H 298" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a2)"/>
-          <path d="M 635 468 V 604 H 562" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a2)"/>
+          <text x="20" y="36" text-anchor="start" font-size="13" fill="var(--d-muted)">후보 순서</text>
+          <text x="20" y="55" text-anchor="start" font-size="13" fill="var(--d-muted)">숙소 검색 서비스 응답</text>
+          <rect x="250" y="20" width="60" height="40" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+          <text x="280" y="45" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">1 탈락</text>
+          <rect x="318" y="20" width="60" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+          <text x="348" y="45" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">2</text>
+          <rect x="386" y="20" width="60" height="40" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+          <text x="416" y="45" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">3 탈락</text>
+          <rect x="454" y="20" width="60" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+          <text x="484" y="45" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">4</text>
+          <rect x="522" y="20" width="60" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+          <text x="552" y="45" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">5</text>
+          <rect x="590" y="20" width="60" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+          <text x="620" y="45" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">6</text>
+          <rect x="658" y="20" width="60" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+          <text x="688" y="45" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">7</text>
+          <rect x="726" y="20" width="60" height="40" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+          <text x="756" y="45" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">8</text>
+          <text x="20" y="98" text-anchor="start" font-size="13" fill="var(--d-muted)">첫 페이지 응답</text>
+          <text x="20" y="117" text-anchor="start" font-size="13" fill="var(--d-muted)">한 페이지 3건의 예</text>
+          <rect x="318" y="82" width="60" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="348" y="107" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">2</text>
+          <rect x="454" y="82" width="60" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="484" y="107" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">4</text>
+          <rect x="522" y="82" width="60" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="552" y="107" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">5</text>
+          <text x="20" y="160" text-anchor="start" font-size="13" fill="var(--d-muted)">페이지 번호 방식</text>
+          <text x="20" y="179" text-anchor="start" font-size="13" fill="var(--d-muted)">둘째 페이지는 4번부터</text>
+          <rect x="454" y="144" width="60" height="40" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+          <text x="484" y="169" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">4 중복</text>
+          <rect x="522" y="144" width="60" height="40" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+          <text x="552" y="169" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">5 중복</text>
+          <rect x="590" y="144" width="60" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="620" y="169" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">6</text>
+          <text x="20" y="222" text-anchor="start" font-size="13" fill="var(--d-muted)">다음 위치 방식</text>
+          <text x="20" y="241" text-anchor="start" font-size="13" fill="var(--d-muted)">둘째 페이지는 6번부터</text>
+          <rect x="590" y="206" width="60" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="620" y="231" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">6</text>
+          <rect x="658" y="206" width="60" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="688" y="231" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">7</text>
+          <rect x="726" y="206" width="60" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+          <text x="756" y="231" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">8</text>
         </svg>
       </div>
-      <p>관련도순 반복은 후보가 소진되거나 조회 횟수 상한에 도달하면 목표 개수를 채우지 못해도 종료한다. 초기 구조는 관련도순에서도 후보 집합 전체의 요금을 조회했으나 페이지 크기에 비해 요금 호출이 과다했다.</p>
-      <p>가격순은 후보 집합 안에서만 정렬하므로 전체 숙소의 금액 순서와 다를 수 있다. 숙소 검색 서비스가 요금을 보유하지 않아 전체 숙소의 요금 조회는 응답 시간 안에 완료되지 않으므로 정렬 범위를 제한한다.</p>
-      <p>응답은 전체 개수를 포함하지 않는다. 화면이 사용하지 않고 탈락 수를 미리 알 수 없기 때문이다.</p>
+      <p>정렬이나 필터가 변경되면 처음부터 다시 조회한다.</p>
+    </section>
+
+    <section class="section">
+      <h2 id="price-sort">가격순 정렬</h2>
+      <p>화면의 금액은 항공을 포함한 합산 금액이고 숙소 검색 서비스는 가격을 보유하지 않으므로 가격순 정렬을 위임할 수 없다.</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 860 592" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="정렬 기준에 따라 관련도순과 가격순으로 나뉘는 숙소 목록 조회 흐름">
+            <defs><marker id="dp-a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+            <rect x="290" y="20" width="280" height="44" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="430" y="47" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">검색 조건과 다음 위치 수신</text>
+            <line x1="430" y1="64" x2="430" y2="76" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
+            <polygon points="300,116 430,78 560,116 430,154" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="430" y="121" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">가격순 정렬을 요청했는가?</text>
+            <path d="M 300 116 H 235 V 168" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
+            <text x="250" y="108" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <path d="M 560 116 H 675 V 168" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
+            <text x="580" y="108" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <rect x="110" y="170" width="250" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="235" y="193" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">관련도순 후보를 소량 조회</text>
+            <text x="235" y="213" text-anchor="middle" font-size="13" fill="var(--d-muted)">숙소 검색 서비스</text>
+            <line x1="235" y1="226" x2="235" y2="246" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
+            <rect x="110" y="248" width="250" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="235" y="271" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">후보별 가격과 재고 조회</text>
+            <text x="235" y="291" text-anchor="middle" font-size="13" fill="var(--d-muted)">가격을 확인하지 못하면 탈락</text>
+            <line x1="235" y1="304" x2="235" y2="322" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
+            <polygon points="110,366 235,324 360,366 235,408" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="235" y="371" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">조회를 끝낼 조건인가?</text>
+            <text x="368" y="358" text-anchor="start" font-size="13" fill="var(--d-muted)">목표 개수 충족, 후보 소진,</text>
+            <text x="368" y="378" text-anchor="start" font-size="13" fill="var(--d-muted)">조회 상한이면 종료</text>
+            <path d="M 110 366 H 84 V 198 H 108" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
+            <text x="40" y="358" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <line x1="235" y1="408" x2="235" y2="428" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
+            <text x="243" y="423" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <rect x="110" y="430" width="250" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="235" y="453" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">다음 위치 계산</text>
+            <text x="235" y="473" text-anchor="middle" font-size="13" fill="var(--d-muted)">마지막 채택 후보의 다음</text>
+            <rect x="540" y="170" width="270" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="675" y="193" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">관련도 상위 후보 집합 조회</text>
+            <text x="675" y="213" text-anchor="middle" font-size="13" fill="var(--d-muted)">숙소 검색 서비스</text>
+            <line x1="675" y1="226" x2="675" y2="246" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
+            <rect x="540" y="248" width="270" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="675" y="271" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">후보 전체 가격과 재고 조회</text>
+            <text x="675" y="291" text-anchor="middle" font-size="13" fill="var(--d-muted)">가격을 확인하지 못하면 탈락</text>
+            <line x1="675" y1="304" x2="675" y2="324" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
+            <rect x="540" y="326" width="270" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="675" y="349" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">합산 금액순 정렬</text>
+            <text x="675" y="369" text-anchor="middle" font-size="13" fill="var(--d-muted)">항공과 숙소를 합한 금액</text>
+            <line x1="675" y1="382" x2="675" y2="402" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
+            <rect x="540" y="404" width="270" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="675" y="427" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">다음 위치부터 목표 개수 선택</text>
+            <text x="675" y="447" text-anchor="middle" font-size="13" fill="var(--d-muted)">다음 위치는 선택 개수만큼 증가</text>
+            <rect x="300" y="516" width="260" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="430" y="549" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">숙소 목록과 다음 위치 응답</text>
+            <path d="M 235 486 V 544 H 298" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
+            <path d="M 675 460 V 544 H 562" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
+          </svg>
+      </div>
+      <p>관련도순은 필요한 만큼만 조회한다. 초기 구조처럼 후보 집합 전체의 가격을 조회하면 페이지 크기에 비해 호출이 과다했기 때문이다.</p>
+      <p>가격순은 합산 금액을 비교해야 하므로 페이지마다 후보 집합 전체의 가격을 조회하고, 이 비용은 다음 절의 캐시가 줄인다.</p>
     </section>
 
     <section class="section">
       <h2 id="cache">숙소 가격 캐시</h2>
-      <p>목록 한 페이지는 후보 여러 건의 요금을 조회하므로 응답 시간이 공급 시스템 호출에 좌우된다. 로컬에서 단계별 소요 시간을 측정해 확인한 대기 원인은 아래 목록이다.</p>
-      <ul class="rule-list">
-        <li>캐시 적재가 키마다 Redis 왕복을 기다린다.</li>
-        <li>공급사와 후기 캐시가 값이 없는 숙소를 기록하지 않아 값이 채워진 뒤에도 요청마다 미스(캐시에 값이 없는 경우)가 발생한다.</li>
-        <li>가격순 정렬이 페이지마다 같은 후보 집합을 다시 조회한다.</li>
-      </ul>
-      <p>적재는 응답 경로 밖의 백그라운드에서 실행하고 값이 없는 숙소는 없음 표시로 기록한다. 숙소 검색 후보는 검색 조건별 캐시가 짧은 시간 고정해 재조회를 줄인다.</p>
-      <p>가격 캐시는 숙소와 투숙 조건과 필터를 키로 사용하고 여러 숙소를 한 번에 읽는다. 없음 표시는 판매할 요금을 확인하지 못한 숙소를 기록한 값이고 공급 시스템 재조회를 줄인다.</p>
+      <p>목록 한 페이지가 후보 여러 건의 가격을 공급 시스템에 조회하므로 응답 시간이 이 호출에 좌우된다. 숙소 가격 캐시는 이 조회를 줄인다.</p>
       <div class="diagram-box">
-        <svg viewBox="0 0 860 534" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="숙소 가격 캐시를 읽고 미스 숙소만 실시간 조회한 뒤 응답 밖에서 적재하는 흐름">
-          <defs><marker id="dp-a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
-          <rect x="300" y="20" width="260" height="44" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="430" y="47" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">숙소 여러 건을 일괄 읽기</text>
-          <line x1="430" y1="64" x2="430" y2="88" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
-          <rect x="300" y="90" width="260" height="50" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="430" y="120" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">Redis 읽기가 성공했는가?</text>
-          <path d="M 300 115 H 135 V 158" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
-          <text x="222" y="108" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <line x1="430" y1="140" x2="430" y2="168" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
-          <text x="438" y="159" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <rect x="20" y="160" width="230" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-          <text x="135" y="184" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">모든 숙소를 미스로 처리</text>
-          <text x="135" y="204" text-anchor="middle" font-size="13" fill="var(--d-muted)">검색은 계속 진행</text>
-          <line x1="135" y1="216" x2="135" y2="248" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
-          <rect x="300" y="170" width="260" height="50" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="430" y="200" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">정상 값이 있는가?</text>
-          <line x1="560" y1="195" x2="598" y2="195" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
-          <text x="570" y="188" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <line x1="430" y1="220" x2="430" y2="248" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
-          <text x="438" y="239" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <rect x="600" y="167" width="240" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="720" y="191" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">캐시 값 사용</text>
-          <text x="720" y="211" text-anchor="middle" font-size="13" fill="var(--d-muted)">응답에 바로 포함</text>
-          <line x1="720" y1="223" x2="720" y2="248" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
-          <rect x="600" y="250" width="240" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="720" y="274" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">응답 밖에서 재조회</text>
-          <text x="720" y="294" text-anchor="middle" font-size="13" fill="var(--d-muted)">정상 값만, 시도 간격 제한</text>
-          <rect x="300" y="250" width="260" height="50" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="430" y="280" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">없음 표시가 있는가?</text>
-          <line x1="300" y1="275" x2="252" y2="275" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
-          <text x="258" y="268" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <path d="M 560 275 H 580 V 458 H 562" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
-          <text x="565" y="268" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <rect x="20" y="250" width="230" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="135" y="274" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">미스 숙소만 실시간 조회</text>
-          <text x="135" y="294" text-anchor="middle" font-size="13" fill="var(--d-muted)">숙소 공급 시스템</text>
-          <line x1="135" y1="306" x2="135" y2="338" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
-          <rect x="20" y="340" width="230" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="135" y="373" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">판매할 요금이 있는가?</text>
-          <line x1="250" y1="368" x2="298" y2="368" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
-          <text x="255" y="361" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <line x1="135" y1="396" x2="135" y2="418" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
-          <text x="143" y="412" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <rect x="20" y="420" width="230" height="44" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="135" y="447" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">응답 밖에서 가격 적재</text>
-          <rect x="300" y="340" width="260" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="430" y="364" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">없음 표시를 짧게 저장</text>
-          <text x="430" y="384" text-anchor="middle" font-size="13" fill="var(--d-muted)">기존 값은 덮어쓰지 않음</text>
-          <line x1="430" y1="396" x2="430" y2="428" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a3)"/>
-          <rect x="300" y="430" width="260" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="430" y="454" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">후보에서 탈락</text>
-          <text x="430" y="474" text-anchor="middle" font-size="13" fill="var(--d-muted)">목록에 포함하지 않음</text>
-          <rect x="20" y="498" width="16" height="16" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="44" y="511" font-size="13" fill="var(--d-muted)">다이나믹 상품 서비스의 처리</text>
-          <rect x="250" y="498" width="16" height="16" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-          <text x="274" y="511" font-size="13" fill="var(--d-muted)">실패</text>
-        </svg>
+          <svg viewBox="0 0 860 192" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="단계별 측정으로 확인한 대기 원인과 각 원인의 처리">
+            <defs><marker id="dp-a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+            <text x="20" y="30" text-anchor="start" font-size="13" fill="var(--d-muted)">단계별 측정으로 확인한 대기 원인</text>
+            <text x="480" y="30" text-anchor="start" font-size="13" fill="var(--d-muted)">처리</text>
+            <rect x="20" y="44" width="380" height="58" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="210" y="68" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">캐시 저장이 응답을 지연</text>
+            <text x="210" y="88" text-anchor="middle" font-size="13" fill="var(--d-muted)">키마다 Redis 왕복 대기</text>
+            <rect x="480" y="44" width="360" height="58" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="660" y="68" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">응답 뒤 백그라운드에서 저장</text>
+            <text x="660" y="88" text-anchor="middle" font-size="13" fill="var(--d-muted)">실패는 다음 요청의 조회로 복구</text>
+            <line x1="400" y1="73" x2="478" y2="73" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a4)"/>
+            <rect x="20" y="114" width="380" height="58" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="210" y="138" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">가격순이 페이지마다 후보를 재검색</text>
+            <text x="210" y="158" text-anchor="middle" font-size="13" fill="var(--d-muted)">같은 후보 집합을 반복 조회</text>
+            <rect x="480" y="114" width="360" height="58" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="660" y="138" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">검색 조건별 후보 캐시</text>
+            <text x="660" y="158" text-anchor="middle" font-size="13" fill="var(--d-muted)">짧은 시간 같은 후보 재사용</text>
+            <line x1="400" y1="143" x2="478" y2="143" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a4)"/>
+          </svg>
       </div>
-      <p>캐시 장애는 검색 실패로 이어지지 않는다. Redis 읽기가 실패하면 모든 숙소를 미스로 처리하고 값 하나가 손상되면 해당 키만 미스로 처리한 뒤 백그라운드에서 삭제한다.</p>
-      <p>세션별 가격순 후보 캐시는 비용이 큰 요금 조회를 줄이지 못하고 검색 재조회만 줄이므로 적용하지 않는다. 측정에서 확인된 다음 페이지 단축은 공유 요금 캐시가 채워진 효과였다.</p>
-      <p>가격순은 페이지마다 다시 정렬하므로 페이지 사이에 금액이 변동하면 순서가 달라질 수 있고, 화면은 같은 숙소를 한 번만 표시한다.</p>
-      <p>적재를 응답 밖에서 실행하므로 응답 직후의 같은 요청에는 미스가 다시 발생할 수 있다. 캐시는 최적화 수단이고 적재 실패도 다음 요청의 미스로 복구되므로 응답이 적재 완료를 기다리지 않는다.</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 860 550" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="숙소 가격 캐시를 읽어 가격, 가격 없음 기록, 캐시 없음으로 나누어 처리하는 흐름">
+            <defs><marker id="dp-a5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+            <rect x="290" y="20" width="280" height="50" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="430" y="40" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">숙소 여러 건을 한 번에 읽기</text>
+            <text x="430" y="60" text-anchor="middle" font-size="13" fill="var(--d-muted)">숙소, 투숙 조건, 필터별 값</text>
+            <line x1="430" y1="70" x2="430" y2="84" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
+            <polygon points="300,124 430,86 560,124 430,162" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="430" y="129" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">Redis 읽기가 성공했는가?</text>
+            <line x1="300" y1="124" x2="252" y2="124" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
+            <text x="258" y="116" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <rect x="20" y="96" width="230" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+            <text x="135" y="119" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">모든 숙소를 캐시 없음으로 처리</text>
+            <text x="135" y="139" text-anchor="middle" font-size="13" fill="var(--d-muted)">검색은 계속 진행</text>
+            <line x1="110" y1="152" x2="110" y2="278" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
+            <line x1="430" y1="162" x2="430" y2="178" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
+            <text x="438" y="175" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <polygon points="300,218 430,180 560,218 430,256" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="430" y="223" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">캐시에 무엇이 있는가?</text>
+            <path d="M 300 218 H 170 V 278" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
+            <text x="195" y="210" text-anchor="start" font-size="13" fill="var(--d-muted)">캐시 없음</text>
+            <path d="M 560 218 H 720 V 278" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
+            <text x="580" y="210" text-anchor="start" font-size="13" fill="var(--d-muted)">가격</text>
+            <line x1="430" y1="256" x2="430" y2="278" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
+            <text x="438" y="272" text-anchor="start" font-size="13" fill="var(--d-muted)">가격 없음 기록</text>
+            <rect x="20" y="280" width="230" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="135" y="303" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">숙소 공급 시스템 조회</text>
+            <text x="135" y="323" text-anchor="middle" font-size="13" fill="var(--d-muted)">캐시 없는 숙소만</text>
+            <rect x="300" y="280" width="260" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="430" y="303" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">후보에서 탈락</text>
+            <text x="430" y="323" text-anchor="middle" font-size="13" fill="var(--d-muted)">공급 시스템 조회 없음</text>
+            <rect x="600" y="280" width="240" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="720" y="303" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">캐시 가격으로 응답</text>
+            <text x="720" y="323" text-anchor="middle" font-size="13" fill="var(--d-muted)">공급 시스템 조회 없음</text>
+            <line x1="135" y1="336" x2="135" y2="352" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
+            <polygon points="20,392 135,354 250,392 135,430" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="135" y="397" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">가격을 확인했는가?</text>
+            <line x1="250" y1="392" x2="298" y2="392" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
+            <text x="255" y="384" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <rect x="300" y="364" width="260" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="430" y="387" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">가격 없음을 짧게 기록</text>
+            <text x="430" y="407" text-anchor="middle" font-size="13" fill="var(--d-muted)">기존 값은 덮어쓰지 않음</text>
+            <line x1="430" y1="364" x2="430" y2="338" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
+            <line x1="720" y1="336" x2="720" y2="362" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
+            <rect x="600" y="364" width="240" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="720" y="387" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">응답 뒤 가격 재조회</text>
+            <text x="720" y="407" text-anchor="middle" font-size="13" fill="var(--d-muted)">시도 간격 제한</text>
+            <line x1="135" y1="430" x2="135" y2="448" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
+            <text x="143" y="444" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <rect x="20" y="450" width="230" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="135" y="473" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">조회한 가격으로 응답</text>
+            <text x="135" y="493" text-anchor="middle" font-size="13" fill="var(--d-muted)">저장은 응답 뒤 실행</text>
+            <rect x="20" y="518" width="16" height="16" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="44" y="531" text-anchor="start" font-size="13" fill="var(--d-muted)">다이나믹 패키지 서비스의 처리</text>
+            <rect x="270" y="518" width="16" height="16" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+            <text x="294" y="531" text-anchor="start" font-size="13" fill="var(--d-muted)">실패</text>
+          </svg>
+      </div>
+      <p>Redis 읽기 실패가 실시간 조회로 이어지므로 캐시 장애는 검색 실패가 되지 않는다. 값 하나가 손상된 경우에도 그 숙소만 실시간으로 조회한다.</p>
+      <p>캐시 가격을 먼저 응답하므로 목록 금액은 공급 시스템의 현재 가격과 다를 수 있다. 응답 뒤 재조회가 캐시를 갱신하고, 결제 금액은 다음 절의 예약 직전 대조가 확인한다.</p>
     </section>
 
     <section class="section">
       <h2 id="rate">요금제 키</h2>
-      <p>숙소 상품은 같은 객실이라도 요금제가 다르면 다른 상품이다. 초기 구조의 세션은 숙소와 객실만 저장했고 예약 단계가 그 객실의 요금 가운데 하나를 다시 선택했으므로 고객이 선택한 요금과 예약 요금이 달라질 수 있었다.</p>
-      <p>객실 목록과 세션과 주문과 예약은 같은 요금제 키로 상품을 식별한다. 요금제 키는 공급 시스템의 식별값 여러 개를 해시한 값이고 화면은 서버가 응답한 키를 그대로 전달한다.</p>
+      <p>같은 객실이라도 요금제가 다르면 다른 상품이지만 초기 구조의 세션은 숙소와 객실만 저장했다. 따라서 예약 단계가 객실의 요금을 다시 선택했고 고객이 선택한 요금과 달라질 수 있었다.</p>
+      <p>요금제 키는 고객이 선택한 요금을 객실 목록부터 예약까지 식별하는 값이고 화면과 서버 사이를 오간다.</p>
       <div class="diagram-box">
-        <svg viewBox="0 0 860 408" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="요금제 키를 생성해 주문까지 전달하고 예약 직전 키와 금액을 대조하는 흐름">
-          <defs><marker id="dp-a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
-          <rect x="20" y="20" width="185" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="112.5" y="44" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">요금제 키 생성</text>
-          <text x="112.5" y="64" text-anchor="middle" font-size="13" fill="var(--d-muted)">공급 식별값의 해시</text>
-          <line x1="205" y1="48" x2="223" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a4)"/>
-          <rect x="225" y="20" width="185" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="317.5" y="44" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">고객이 요금 선택</text>
-          <text x="317.5" y="64" text-anchor="middle" font-size="13" fill="var(--d-muted)">화면이 서버의 키를 전달</text>
-          <line x1="410" y1="48" x2="428" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a4)"/>
-          <rect x="430" y="20" width="185" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="522.5" y="44" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">세션에 키 저장</text>
-          <text x="522.5" y="64" text-anchor="middle" font-size="13" fill="var(--d-muted)">선택한 숙소 항목</text>
-          <line x1="615" y1="48" x2="633" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a4)"/>
-          <rect x="635" y="20" width="205" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="737.5" y="44" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">주문에 키 저장</text>
-          <text x="737.5" y="64" text-anchor="middle" font-size="13" fill="var(--d-muted)">주문 접수 시 스냅샷 조회</text>
-          <path d="M 737 76 V 103 H 98 V 128" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a4)"/>
-          <rect x="20" y="130" width="156" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="98" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">숙소 요금 재조회</text>
-          <text x="98" y="174" text-anchor="middle" font-size="13" fill="var(--d-muted)">예약 직전</text>
-          <line x1="176" y1="158" x2="214" y2="158" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a4)"/>
-          <rect x="216" y="130" width="214" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="323" y="153" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">같은 키의 예약 가능</text>
-          <text x="323" y="173" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">요금이 하나인가?</text>
-          <line x1="430" y1="158" x2="468" y2="158" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a4)"/>
-          <text x="442" y="151" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <rect x="470" y="130" width="212" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="576" y="163" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">금액이 결제액과 같은가?</text>
-          <line x1="682" y1="158" x2="720" y2="158" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a4)"/>
-          <text x="694" y="151" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <rect x="722" y="130" width="118" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="781" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">예약 요청</text>
-          <text x="781" y="174" text-anchor="middle" font-size="13" fill="var(--d-muted)">공급 시스템</text>
-          <line x1="323" y1="186" x2="323" y2="228" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a4)"/>
-          <text x="331" y="212" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <line x1="576" y1="186" x2="576" y2="228" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a4)"/>
-          <text x="584" y="212" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <rect x="216" y="230" width="214" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-          <text x="323" y="254" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">대체 없이 실패</text>
-          <text x="323" y="274" text-anchor="middle" font-size="13" fill="var(--d-muted)">다른 요금제를 선택하지 않음</text>
-          <rect x="470" y="230" width="212" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-          <text x="576" y="254" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">공급 예약 없이 실패</text>
-          <text x="576" y="274" text-anchor="middle" font-size="13" fill="var(--d-muted)">공급 시스템 호출 안 함</text>
-          <line x1="323" y1="286" x2="323" y2="314" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a4)"/>
-          <line x1="576" y1="286" x2="576" y2="314" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a4)"/>
-          <rect x="216" y="316" width="466" height="44" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-          <text x="449" y="343" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">항목 전체 취소 처리와 결제 환불</text>
-          <rect x="20" y="372" width="16" height="16" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="44" y="385" font-size="13" fill="var(--d-muted)">다이나믹 패키지 서비스의 처리</text>
-          <rect x="270" y="372" width="16" height="16" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-          <text x="294" y="385" font-size="13" fill="var(--d-muted)">실패</text>
-        </svg>
+        <svg viewBox="0 0 860 418" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="요금제 키를 생성해 주문까지 전달하고 예약 직전 키와 금액을 대조하는 흐름">
+            <defs><marker id="dp-a6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+            <rect x="20" y="20" width="185" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="112.5" y="43" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">요금제 키 생성</text>
+            <text x="112.5" y="63" text-anchor="middle" font-size="13" fill="var(--d-muted)">공급 식별값의 해시</text>
+            <line x1="205" y1="48" x2="223" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
+            <rect x="225" y="20" width="185" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="317.5" y="43" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">고객이 요금 선택</text>
+            <text x="317.5" y="63" text-anchor="middle" font-size="13" fill="var(--d-muted)">화면이 서버의 키를 전달</text>
+            <line x1="410" y1="48" x2="428" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
+            <rect x="430" y="20" width="185" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="522.5" y="43" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">세션에 키 저장</text>
+            <text x="522.5" y="63" text-anchor="middle" font-size="13" fill="var(--d-muted)">선택한 숙소 항목</text>
+            <line x1="615" y1="48" x2="633" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
+            <rect x="635" y="20" width="205" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="737.5" y="43" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">주문에 키 저장</text>
+            <text x="737.5" y="63" text-anchor="middle" font-size="13" fill="var(--d-muted)">주문 접수 시 세션에서 조회</text>
+            <path d="M 737 76 V 94 H 98 V 128" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
+            <rect x="20" y="130" width="156" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="98" y="153" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">숙소 요금 재조회</text>
+            <text x="98" y="173" text-anchor="middle" font-size="13" fill="var(--d-muted)">예약 직전</text>
+            <line x1="176" y1="158" x2="214" y2="158" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
+            <polygon points="216,158 323,112 430,158 323,204" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="323" y="153" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">같은 키의 요금이</text>
+            <text x="323" y="173" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">하나인가?</text>
+            <line x1="430" y1="158" x2="468" y2="158" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
+            <text x="442" y="151" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <polygon points="470,158 576,112 682,158 576,204" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="576" y="153" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">금액이 결제액과</text>
+            <text x="576" y="173" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">같은가?</text>
+            <line x1="682" y1="158" x2="720" y2="158" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
+            <text x="694" y="151" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <rect x="722" y="130" width="118" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="781" y="153" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">예약 요청</text>
+            <text x="781" y="173" text-anchor="middle" font-size="13" fill="var(--d-muted)">공급 시스템</text>
+            <line x1="323" y1="204" x2="323" y2="238" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
+            <text x="331" y="226" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <line x1="576" y1="204" x2="576" y2="238" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
+            <text x="584" y="226" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <rect x="216" y="240" width="214" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+            <text x="323" y="263" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">대체 없이 실패</text>
+            <text x="323" y="283" text-anchor="middle" font-size="13" fill="var(--d-muted)">다른 요금제를 선택하지 않음</text>
+            <rect x="470" y="240" width="212" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+            <text x="576" y="263" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">공급 예약 없이 실패</text>
+            <text x="576" y="283" text-anchor="middle" font-size="13" fill="var(--d-muted)">공급 시스템 호출 안 함</text>
+            <line x1="323" y1="296" x2="323" y2="324" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
+            <line x1="576" y1="296" x2="576" y2="324" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
+            <rect x="216" y="326" width="466" height="44" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+            <text x="449" y="353" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">항목 전체 취소 처리와 결제 환불</text>
+            <rect x="20" y="382" width="16" height="16" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="44" y="395" text-anchor="start" font-size="13" fill="var(--d-muted)">다이나믹 패키지 서비스의 처리</text>
+            <rect x="270" y="382" width="16" height="16" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+            <text x="294" y="395" text-anchor="start" font-size="13" fill="var(--d-muted)">실패</text>
+          </svg>
       </div>
-      <p>공급 시스템의 요금은 고객이 선택한 뒤에도 변동할 수 있으므로 다이나믹 예약 서비스는 예약 직전에 요금을 다시 조회한다. 재조회 금액이 결제 금액과 다르면 공급 예약을 요청하지 않는다.</p>
+      <p>같은 키의 요금이 없으면 다른 요금제로 대체하지 않는다. 다른 요금을 선택하면 고객이 확인하지 않은 상품을 판매하게 되므로, 결제 뒤 대조에서 실패하면 항목 전체를 취소 처리하고 결제를 환불한다.</p>
+      <p>일부 공급 시스템은 투숙 날짜가 변경되면 키도 달라지므로 고객이 객실을 다시 선택한다.</p>
+      <p>키는 공급 시스템의 식별값 여러 개를 해시한 값이다.</p>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>상품 식별 대안</th><th>제외 이유</th></tr></thead>
+          <thead><tr><th>식별 대안</th><th>제외 이유</th></tr></thead>
           <tbody>
             <tr><td>판매 코드를 키로 사용</td><td>같은 조건에서도 호출마다 값이 변경된다.</td></tr>
             <tr><td>식별값 연결 문자열</td><td>퍼센트 기호와 구분 문자가 쿼리 문자열에서 다시 해석될 수 있다.</td></tr>
-            <tr><td>식별값 없는 요금 제외</td><td>일부 공급사의 숙소가 모두 목록에서 탈락한다.</td></tr>
-            <tr><td>투숙 날짜 변경 시 재탐색</td><td>고객이 확인하지 않은 상품을 판매하게 된다.</td></tr>
+            <tr><td>식별값 없는 요금 제외</td><td>일부 공급 시스템의 숙소가 모두 목록에서 탈락한다.</td></tr>
           </tbody>
         </table>
       </div>
-      <p>일부 공급사는 투숙 날짜가 변경되면 요금제 값도 변경되므로 고객이 상품을 다시 선택해야 한다. 고객이 확인하지 않은 상품을 예약하는 위험과 비교하면 재선택의 불편이 더 작다.</p>
-      <p>숙소 요금 기준을 한 번에 변경한 첫 시도는 화면이 필수로 읽는 응답 필드를 삭제해 개발 환경 화면에 오류가 발생했고 변경 범위가 넓어 일부만 원복할 수 없었다. 요금제 키 전환은 작은 단위로 나누어 순서대로 배포했고 응답 필드는 화면이 사용을 중단할 때까지 호환 값으로 유지한다.</p>
     </section>
 
     <section class="section">
-      <h2 id="recommend">조회 시점 추천 판정</h2>
-      <p>고객이 선택한 조합이 추천 조합이면 화면은 추천 사유를 표시한다. 세션 생성 때 이 표시를 고정하면 숙소를 교체하거나 공유 링크로 진입해도 표시가 변경되지 않으므로, 다이나믹 상품 서비스는 조회 시점에 판정하고 기획 정책에 따라 하루 단위로 유지한다.</p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>판정 대안</th><th>제외 이유</th></tr></thead>
-          <tbody>
-            <tr><td>세션 고정값 유지</td><td>교체할 때 삭제해도 공유 진입과 재진입 정책을 충족하지 못한다.</td></tr>
-            <tr><td>추천 측 단건 판정 API</td><td>기존 추천 조회 결과로 판정이 가능하다.</td></tr>
-            <tr><td>조회마다 다시 판정</td><td>추천 결과가 갱신될 때마다 같은 조합의 표시가 하루에도 여러 번 변경된다.</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>다이나믹 상품 서비스는 세션의 검색 조건으로 기존 추천 결과를 조회한 뒤 현재 조합이 포함되는지 대조한다. 숙소는 식별자로 대조하고 항공은 가는 편과 오는 편의 출발 시각이 추천 시간대 안인지 대조한다.</p>
+      <h2 id="recommend">추천 사유 표시</h2>
+      <p>고객이 고른 조합이 추천 조합과 같으면 화면에 추천 사유를 표시하고, 표시 여부는 세션을 조회할 때 결정한다. 세션 생성 때 고정하면 고객이 숙소를 교체하거나 공유 링크로 진입해도 표시가 변경되지 않기 때문이다.</p>
+      <p>조회마다 새로 결정하면 추천 결과가 갱신될 때마다 같은 조합의 표시가 하루에도 여러 번 변경되므로, 기획 정책에 따라 결과를 그날 끝까지 보관한다.</p>
       <div class="diagram-box">
-        <svg viewBox="0 0 860 552" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="세션 조회 시 보관된 판정을 확인하고 추천 결과와 숙소, 출발 시각을 대조해 표시를 결정하는 흐름">
-          <defs><marker id="dp-a5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
-          <rect x="20" y="20" width="120" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="80" y="53" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">세션 조회</text>
-          <line x1="140" y1="48" x2="168" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
-          <rect x="170" y="20" width="238" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="289" y="53" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">항공 한 건과 숙소가 있는가?</text>
-          <line x1="408" y1="48" x2="450" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
-          <text x="420" y="41" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <rect x="452" y="20" width="212" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="558" y="53" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">오늘 판정을 보관 중인가?</text>
-          <line x1="664" y1="48" x2="702" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
-          <text x="676" y="41" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <rect x="704" y="20" width="136" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="772" y="53" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">보관값 사용</text>
-          <line x1="289" y1="76" x2="289" y2="128" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
-          <text x="297" y="108" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <rect x="209" y="130" width="160" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="289" y="163" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">추천 표시 없음</text>
-          <line x1="558" y1="76" x2="558" y2="128" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
-          <text x="566" y="108" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <rect x="452" y="130" width="212" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="558" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">기존 추천 결과 조회</text>
-          <text x="558" y="174" text-anchor="middle" font-size="13" fill="var(--d-muted)">세션의 검색 조건</text>
-          <line x1="558" y1="186" x2="558" y2="238" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
-          <rect x="452" y="240" width="212" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="558" y="273" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">조회가 성공했는가?</text>
-          <line x1="452" y1="268" x2="400" y2="268" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
-          <text x="406" y="261" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <rect x="170" y="240" width="228" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-          <text x="284" y="264" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">표시 없음을 짧게 보관</text>
-          <text x="284" y="284" text-anchor="middle" font-size="13" fill="var(--d-muted)">장애 중 호출 대기 방지</text>
-          <line x1="558" y1="296" x2="558" y2="348" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
-          <text x="566" y="328" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <rect x="452" y="350" width="212" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="558" y="383" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">숙소가 일치하는가?</text>
-          <line x1="452" y1="378" x2="400" y2="378" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
-          <text x="406" y="371" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <rect x="170" y="350" width="228" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="284" y="374" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">표시 없음 판정 보관</text>
-          <text x="284" y="394" text-anchor="middle" font-size="13" fill="var(--d-muted)">오늘 끝까지 유지</text>
-          <line x1="558" y1="406" x2="558" y2="458" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
-          <text x="566" y="438" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <rect x="452" y="460" width="212" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="558" y="493" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">출발 시각이 구간 안인가?</text>
-          <path d="M 452 488 H 284 V 408" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
-          <text x="380" y="481" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <line x1="664" y1="488" x2="702" y2="488" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a5)"/>
-          <text x="676" y="481" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <rect x="704" y="460" width="136" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="772" y="484" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">추천 표시</text>
-          <text x="772" y="504" text-anchor="middle" font-size="13" fill="var(--d-muted)">오늘 끝까지 보관</text>
-          <rect x="20" y="528" width="16" height="16" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="44" y="541" font-size="13" fill="var(--d-muted)">다이나믹 상품 서비스의 처리</text>
-          <rect x="250" y="528" width="16" height="16" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-          <text x="274" y="541" font-size="13" fill="var(--d-muted)">실패</text>
-        </svg>
+        <svg viewBox="0 0 860 446" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="세션 조회 시 보관된 결과를 확인하고 추천 조합과 대조해 추천 사유 표시를 결정하는 흐름">
+            <defs><marker id="dp-a7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+            <rect x="20" y="20" width="120" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="80" y="53" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">세션 조회</text>
+            <line x1="140" y1="48" x2="168" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a7)"/>
+            <polygon points="170,48 289,6 408,48 289,90" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="289" y="43" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">항공 한 건과</text>
+            <text x="289" y="63" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">숙소가 있는가?</text>
+            <line x1="408" y1="48" x2="450" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a7)"/>
+            <text x="420" y="41" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <polygon points="452,48 558,6 664,48 558,90" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="558" y="43" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">오늘 결과를</text>
+            <text x="558" y="63" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">보관 중인가?</text>
+            <line x1="664" y1="48" x2="698" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a7)"/>
+            <text x="672" y="41" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <rect x="700" y="20" width="140" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="770" y="53" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">보관한 결과 사용</text>
+            <line x1="289" y1="90" x2="289" y2="128" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a7)"/>
+            <text x="297" y="112" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <rect x="209" y="130" width="160" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="289" y="163" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">추천 사유 표시 없음</text>
+            <line x1="558" y1="90" x2="558" y2="128" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a7)"/>
+            <text x="566" y="112" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <rect x="452" y="130" width="212" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="558" y="153" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">기존 추천 결과 조회</text>
+            <text x="558" y="173" text-anchor="middle" font-size="13" fill="var(--d-muted)">세션의 검색 조건</text>
+            <line x1="558" y1="186" x2="558" y2="214" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a7)"/>
+            <polygon points="452,254 558,216 664,254 558,292" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="558" y="259" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">조회가 성공했는가?</text>
+            <line x1="452" y1="254" x2="400" y2="254" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a7)"/>
+            <text x="406" y="246" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <rect x="170" y="226" width="228" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+            <text x="284" y="249" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">표시 없음을 짧게 보관</text>
+            <text x="284" y="269" text-anchor="middle" font-size="13" fill="var(--d-muted)">장애 중 호출 대기 방지</text>
+            <line x1="558" y1="292" x2="558" y2="318" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a7)"/>
+            <text x="566" y="310" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <polygon points="452,358 558,320 664,358 558,396" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="558" y="363" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">추천 조합과 같은가?</text>
+            <line x1="452" y1="358" x2="400" y2="358" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a7)"/>
+            <text x="406" y="350" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <rect x="170" y="330" width="228" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="284" y="353" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">추천 사유 표시 없음</text>
+            <text x="284" y="373" text-anchor="middle" font-size="13" fill="var(--d-muted)">오늘 끝까지 보관</text>
+            <line x1="664" y1="358" x2="702" y2="358" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a7)"/>
+            <text x="676" y="350" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <rect x="704" y="330" width="136" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="772" y="353" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">추천 사유 표시</text>
+            <text x="772" y="373" text-anchor="middle" font-size="13" fill="var(--d-muted)">오늘 끝까지 보관</text>
+            <rect x="20" y="412" width="16" height="16" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="44" y="425" text-anchor="start" font-size="13" fill="var(--d-muted)">다이나믹 패키지 서비스의 처리</text>
+            <rect x="270" y="412" width="16" height="16" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+            <text x="294" y="425" text-anchor="start" font-size="13" fill="var(--d-muted)">실패</text>
+          </svg>
       </div>
-      <p>판정은 한국 시각 기준 날짜와 조합을 키로 그날 끝까지 보관한다. 추천 조회가 실패하면 표시 없음을 짧게 보관해 장애 중의 화면 조회가 추천 호출을 기다리지 않고, 같은 키에 값이 있으면 기존 판정을 유지한다.</p>
-      <p>추천 결과는 항공을 출발 시간대로 응답하므로 같은 시간대의 다른 항공편도 추천으로 표시한다. 새로운 API 없이 기존 조회 결과로 판정하는 범위에서 이 차이를 수용한다.</p>
-      <p>보관된 판정과 추천 결과 캐시가 모두 없는 조회는 추천 호출을 기다린다.</p>
+      <p>표시 여부는 새로운 API 없이 기존 추천 조회 결과로 결정한다.</p>
+      <p>보관된 결과와 추천 결과 캐시가 모두 없으면 화면 조회가 추천 호출을 기다린다. 따라서 추천 조회가 실패하면 표시 없음을 짧게 보관해 호출 대기를 반복하지 않고, 같은 조합에 이미 값이 있으면 덮어쓰지 않는다.</p>
     </section>
 
     <section class="section">
       <h2 id="gate">아키텍처 규칙 검사</h2>
-      <p>다이나믹 상품 서비스는 여러 개발자가 동시에 수정한다. 기존 이름 테스트는 지정한 패키지 안의 클래스만 검사했으므로 규칙 밖 패키지에 둔 파일은 검사를 통과했다.</p>
+      <p>다이나믹 상품 서비스는 여러 개발자가 동시에 수정하는데 기존 이름 테스트는 지정한 패키지 안의 클래스만 검사해 규칙 밖 패키지에 둔 파일을 통과시켰다. 그래서 구조 규칙을 구조 테스트 라이브러리 Konsist로 작성해 위반을 빌드 실패로 처리한다.</p>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>규칙 대안</th><th>제외 이유</th></tr></thead>
+          <thead><tr><th>규칙</th><th>대상</th><th>위반 예</th></tr></thead>
           <tbody>
-            <tr><td>허용 접미사 목록</td><td>목록 대부분에 지정된 패키지가 없어 어느 패키지에 있어도 통과한다.</td></tr>
-            <tr><td>모든 역할에 접미사 강제</td><td>서비스 클래스의 역할이 합의되어 있지 않아 접미사를 정할 근거가 부족하고 이름을 변경할 범위가 넓다.</td></tr>
+            <tr><td>패키지 배치</td><td>최상위 패키지</td><td>허용 목록 밖의 패키지 추가</td></tr>
+            <tr><td>순환 의존 금지</td><td>최상위 패키지</td><td>패키지 간 상호 참조</td></tr>
+            <tr><td>서비스 규모</td><td>서비스 클래스</td><td>줄 수 또는 생성자 파라미터 한도 초과</td></tr>
+            <tr><td>코루틴 스코프 생성 위치</td><td>설정 패키지 밖의 코드</td><td>서비스에서 스코프 직접 생성</td></tr>
           </tbody>
         </table>
       </div>
-      <p>구조 테스트 라이브러리 Konsist로 작성한 규칙이 위반을 빌드 실패로 처리하고 서비스의 레이어드 구조는 유지한다. 기존 위반은 기준선(도입 시점 위반과 측정 수치 목록)에 기록해 유예한다.</p>
+      <p>이미 있던 위반은 기준선(도입 시점의 위반 목록과 줄 수 같은 측정 수치)에 기록해 유예하고 새 위반만 차단한다.</p>
       <div class="diagram-box">
-        <svg viewBox="0 0 860 332" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="규칙 테스트가 대상 선택과 위반 여부와 기준선 일치 여부를 판정해 빌드 통과와 실패를 결정하는 흐름">
-          <defs><marker id="dp-a6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
-          <rect x="20" y="20" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="105" y="44" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">규칙 테스트 실행</text>
-          <text x="105" y="64" text-anchor="middle" font-size="13" fill="var(--d-muted)">빌드 단계</text>
-          <line x1="190" y1="48" x2="228" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
-          <rect x="230" y="20" width="210" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="335" y="53" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">규칙 대상을 찾았는가?</text>
-          <line x1="440" y1="48" x2="482" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
-          <text x="455" y="41" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <rect x="484" y="20" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="569" y="53" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">위반이 있는가?</text>
-          <line x1="654" y1="48" x2="738" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
-          <text x="680" y="41" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <rect x="740" y="20" width="100" height="166" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="790" y="108" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">빌드 통과</text>
-          <line x1="335" y1="76" x2="335" y2="128" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
-          <text x="343" y="108" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <rect x="235" y="130" width="200" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-          <text x="335" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">빌드 실패</text>
-          <text x="335" y="174" text-anchor="middle" font-size="13" fill="var(--d-muted)">대상 선택 오류</text>
-          <line x1="569" y1="76" x2="569" y2="128" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
-          <text x="577" y="108" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <rect x="450" y="130" width="238" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="569" y="163" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">기준선에 같은 수치가 있는가?</text>
-          <line x1="688" y1="158" x2="738" y2="158" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
-          <text x="704" y="151" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
-          <line x1="569" y1="186" x2="569" y2="238" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a6)"/>
-          <text x="577" y="218" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
-          <rect x="450" y="240" width="238" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-          <text x="569" y="264" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">빌드 실패</text>
-          <text x="569" y="284" text-anchor="middle" font-size="13" fill="var(--d-muted)">신규 위반 또는 수치 악화</text>
-          <rect x="20" y="308" width="16" height="16" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-          <text x="44" y="321" font-size="13" fill="var(--d-muted)">다이나믹 상품 서비스의 처리</text>
-          <rect x="250" y="308" width="16" height="16" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-          <text x="274" y="321" font-size="13" fill="var(--d-muted)">실패</text>
-        </svg>
+        <svg viewBox="0 0 860 332" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="규칙 테스트가 대상 수, 위반 여부, 기준선 일치 여부를 판단해 빌드 통과와 실패를 결정하는 흐름">
+            <defs><marker id="dp-a8" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+            <rect x="20" y="20" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="105" y="43" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">규칙 테스트 실행</text>
+            <text x="105" y="63" text-anchor="middle" font-size="13" fill="var(--d-muted)">빌드 단계</text>
+            <line x1="190" y1="48" x2="228" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a8)"/>
+            <polygon points="230,48 335,6 440,48 335,90" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="335" y="43" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">대상 수가</text>
+            <text x="335" y="63" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">하한 이상인가?</text>
+            <line x1="440" y1="48" x2="482" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a8)"/>
+            <text x="455" y="41" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <polygon points="484,48 569,6 654,48 569,90" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="569" y="53" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">위반이 있는가?</text>
+            <line x1="654" y1="48" x2="738" y2="48" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a8)"/>
+            <text x="680" y="41" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <rect x="740" y="20" width="100" height="166" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="790" y="108" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">빌드 통과</text>
+            <line x1="335" y1="90" x2="335" y2="128" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a8)"/>
+            <text x="343" y="112" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <rect x="235" y="130" width="200" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+            <text x="335" y="153" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">빌드 실패</text>
+            <text x="335" y="173" text-anchor="middle" font-size="13" fill="var(--d-muted)">대상 선택 오류</text>
+            <line x1="569" y1="90" x2="569" y2="114" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a8)"/>
+            <text x="577" y="106" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <polygon points="450,158 569,116 688,158 569,200" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="569" y="153" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">기준선에 같은</text>
+            <text x="569" y="173" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">항목이 있는가?</text>
+            <line x1="688" y1="158" x2="738" y2="158" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a8)"/>
+            <text x="704" y="151" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <line x1="569" y1="200" x2="569" y2="238" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#dp-a8)"/>
+            <text x="577" y="222" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <rect x="450" y="240" width="238" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+            <text x="569" y="263" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">빌드 실패</text>
+            <text x="569" y="283" text-anchor="middle" font-size="13" fill="var(--d-muted)">신규 위반 또는 수치 악화</text>
+            <rect x="20" y="308" width="16" height="16" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="44" y="321" text-anchor="start" font-size="13" fill="var(--d-muted)">다이나믹 패키지 서비스의 처리</text>
+            <rect x="270" y="308" width="16" height="16" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+            <text x="294" y="321" text-anchor="start" font-size="13" fill="var(--d-muted)">실패</text>
+          </svg>
       </div>
-      <p>기준선에 측정 수치가 포함되므로 유예 중인 위반도 수치가 악화되면 빌드가 실패한다. Konsist 검사는 대상이 0개이면 통과하므로 대상 수가 규칙의 하한에 미달해도 빌드 실패로 처리한다.</p>
-      <p>이름 규칙은 애노테이션이나 상위 타입이 역할을 드러내는 타입에만 접미사 하나와 패키지 하나를 지정한다. 서비스 클래스의 신규 이름 위반은 차단하지 못하지만 근거 없는 접미사를 강제하는 대규모 이름 변경의 회귀 위험과 비교해 이 범위를 수용한다.</p>
-      <p>컨트롤러에 업무 로직이 있는지처럼 의미 판단이 필요한 항목은 개발자가 코드 리뷰로 확인한다.</p>
+      <p>기준선은 측정 수치까지 비교하므로 유예 중인 위반도 수치가 악화되면 빌드가 실패한다. Konsist 검사는 대상이 0개이면 통과하므로 대상 수의 하한을 함께 검사한다.</p>
+      <p>클래스 이름의 접미사 규칙은 역할이 코드로 드러나는 타입에만 적용한다. 모든 역할에 접미사를 강제하면 역할이 합의되지 않은 서비스 클래스까지 대규모 이름 변경이 필요하기 때문이다.</p>
+      <p>그 결과 서비스 클래스의 새 이름 위반은 차단되지 않는다. 컨트롤러에 업무 로직이 있는지처럼 의미 판단이 필요한 항목도 개발자가 코드 리뷰로 확인한다.</p>
     </section>
 
     <section class="section">
       <h2 id="scope">맡은 범위</h2>
       <p>여러 개발자가 스프린트 단위로 작업을 나누어 개발하고 PR 리뷰로 함께 개선했다. 다음 항목을 직접 개발했다.</p>
       <ul class="rule-list">
-        <li>숙소 목록의 검색 연동과 페이징과 정렬과 필터를 개발했다.</li>
-        <li>숙소 가격 캐시와 검색 후보 캐시를 작성하고 단계별 측정으로 지연 원인을 분석했다.</li>
-        <li>요금제 키 전환을 단위별로 설계해 다이나믹 상품 서비스와 숙소 예약 요금 선택에 적용했다.</li>
-        <li>예약 직전 재조회 금액과 결제 금액을 비교해 다르면 공급 예약을 요청하지 않는 처리를 추가했다.</li>
-        <li>조회 시점 추천 판정을 개발했다.</li>
+        <li>숙소 검색 연동과 목록 페이징을 개발했다.</li>
+        <li>숙소 가격 캐시를 개발하고 단계별 측정으로 지연 원인을 분석했다.</li>
+        <li>요금제 키 전환을 설계해 상품 선택과 예약 요금 선택에 적용했다.</li>
+        <li>추천 사유 표시 여부의 조회 시점 결정을 개발했다.</li>
         <li>다이나믹 상품 서비스의 Konsist 규칙과 기준선을 작성하고 임시 위반 파일로 규칙 동작을 확인했다.</li>
       </ul>
       <p>다음 영역은 다른 개발자가 개발했다.</p>
       <ul class="rule-list">
         <li>항공 공급 연동과 조합 조립</li>
         <li>세션 저장 구조</li>
-        <li>주문과 결제와 항목별 예약 처리</li>
-        <li>취소 위약금 계산</li>
-        <li>배치와 CI 환경</li>
+        <li>주문과 결제 처리</li>
+        <li>항목별 예약 처리</li>
         <li>구조 테스트 라이브러리 도입</li>
-        <li>화면</li>
       </ul>
     </section>
+
     </main>
     <nav class="toc" aria-label="절 목록"></nav>
   </div>

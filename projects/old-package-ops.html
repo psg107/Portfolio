@@ -15,341 +15,302 @@
       <a class="doc-back" href="../index.html#projects">프로젝트 목록으로 이동</a>
       <header class="doc-header">
         <h1>구패키지 시스템 유지보수와 기능 개발</h1>
-        <p class="doc-meta">2021.06 - 2023.08 · 공동 개발</p>
+        <p class="doc-meta">2021.06 - 2023.08, 2024 일부 · 공동 개발</p>
         <div class="tech-tags"><span class="tech-tag">C#</span><span class="tech-tag">ASP.NET WebForms</span><span class="tech-tag">WCF</span><span class="tech-tag">Entity Framework</span><span class="tech-tag">MSSQL</span></div>
       </header>
 
       <section class="section">
         <h2 id="what">구패키지 시스템이란</h2>
-        <p>구패키지 시스템은 패키지 여행 상품을 등록해 판매하고 예약을 관리하는 C# 시스템이다. 상품은 일정을 정의한 기초상품과 출발일별 판매 단위인 출발상품으로 나뉘고, 담당자는 어드민에서 수기 예약과 금액 조정을 직접 수행한다.</p>
-        <p>구패키지 시스템은 2000년대부터 유지해 온 코드에 외부 판매 채널과 제휴 서비스를 계속 연결한다. 기존 화면과 저장 프로시저의 동작을 유지하면서 새 연동과 규칙 변경을 추가하는 것이 유지보수의 주된 과제다.</p>
-        <p>별도로 개발된 신규 패키지 시스템은 고객의 구매와 예약을 자동으로 처리하고, 구매 실적으로 산정하는 우수회원 등급을 위해 주문 데이터를 구패키지 DB로 전달한다.</p>
+        <p>구패키지 시스템은 패키지 여행 상품을 등록해 판매하고 예약을 관리하는 C# 시스템이다. 상품은 일정을 정의한 기초상품과 출발일별 판매 단위인 출발상품으로 나뉜다.</p>
+        <p>2000년대부터 유지해 온 코드에 판매 채널과 규칙 변경이 계속 추가되므로 변경 범위를 좁게 유지하는 것이 설계의 기준이다. 2023년부터는 고객의 구매와 예약을 자동으로 처리하는 Kotlin 신규 패키지 시스템이 별도로 개발되었다.</p>
       </section>
 
       <section class="section">
         <h2 id="layout">구성</h2>
         <div class="diagram-box">
-          <svg viewBox="0 0 860 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="구패키지 시스템의 화면과 API와 배치, 저장 프로시저, 외부 시스템의 관계">
+          <svg viewBox="0 0 860 434" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="구패키지 시스템의 화면, API 서버, DB와 네이버, 신규 패키지 시스템의 관계">
             <defs><marker id="op1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
-            <rect x="20" y="40" width="110" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="75" y="64" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">고객</text>
-            <text x="75" y="85" text-anchor="middle" font-size="13" fill="var(--d-muted)">상품 구매</text>
-            <rect x="20" y="140" width="110" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="75" y="164" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">담당자</text>
-            <text x="75" y="185" text-anchor="middle" font-size="13" fill="var(--d-muted)">수기 처리</text>
-            <rect x="170" y="40" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="265" y="64" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">고객 화면</text>
-            <text x="265" y="85" text-anchor="middle" font-size="13" fill="var(--d-muted)">상품 조회와 결제</text>
-            <rect x="170" y="140" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="265" y="164" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">어드민</text>
-            <text x="265" y="185" text-anchor="middle" font-size="13" fill="var(--d-muted)">상품과 예약 관리</text>
-            <rect x="430" y="40" width="180" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="520" y="64" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">API</text>
-            <text x="520" y="85" text-anchor="middle" font-size="13" fill="var(--d-muted)">청구할인 판정과 외부 전송</text>
-            <rect x="470" y="240" width="140" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="540" y="264" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">배치</text>
-            <text x="540" y="285" text-anchor="middle" font-size="13" fill="var(--d-muted)">상품 수집과 정산</text>
-            <rect x="170" y="340" width="440" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="390" y="364" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">MSSQL 저장 프로시저</text>
-            <text x="390" y="385" text-anchor="middle" font-size="13" fill="var(--d-muted)">상품과 예약과 결제의 데이터와 규칙</text>
-            <rect x="670" y="40" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="755" y="64" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">현대카드 제휴 포인트</text>
-            <text x="755" y="85" text-anchor="middle" font-size="13" fill="var(--d-muted)">포인트 서버로 잔액 조회</text>
-            <rect x="670" y="114" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="755" y="138" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">네이버</text>
-            <text x="755" y="159" text-anchor="middle" font-size="13" fill="var(--d-muted)">상품 판매 채널</text>
-            <rect x="670" y="188" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="755" y="212" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">모두투어</text>
-            <text x="755" y="233" text-anchor="middle" font-size="13" fill="var(--d-muted)">상품과 일정 제공</text>
-            <rect x="670" y="340" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="755" y="364" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">신규 패키지 시스템</text>
-            <text x="755" y="385" text-anchor="middle" font-size="13" fill="var(--d-muted)">주문 전달</text>
-            <line x1="130" y1="68" x2="166" y2="68" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
-            <line x1="130" y1="168" x2="166" y2="168" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
-            <line x1="360" y1="56" x2="426" y2="56" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
-            <path d="M 360 80 H 400 V 336" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
-            <line x1="360" y1="180" x2="400" y2="180" stroke="var(--d-line)" stroke-width="1.3"/>
-            <path d="M 360 156 H 445 V 100" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
-            <line x1="460" y1="96" x2="460" y2="336" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
-            <line x1="540" y1="296" x2="540" y2="336" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
-            <path d="M 265 40 V 18 H 755 V 36" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
-            <path d="M 610 60 H 650 V 138 H 666" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
-            <path d="M 610 80 H 630 V 206 H 666" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
-            <path d="M 610 268 H 650 V 232 H 666" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
-            <line x1="670" y1="368" x2="614" y2="368" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
-            <rect x="20" y="412" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="40" y="424" font-size="13" fill="var(--d-muted)">구패키지 시스템의 처리</text>
-            <rect x="230" y="412" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="250" y="424" font-size="13" fill="var(--d-muted)">사용자와 데이터와 외부 시스템</text>
+            <rect x="20" y="67" width="100" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="70" y="100" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">고객</text>
+            <rect x="20" y="186" width="100" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="70" y="219" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">담당자</text>
+            <rect x="160" y="44" width="160" height="102" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="240" y="90" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">상품과 예약 화면</text>
+            <text x="240" y="110" text-anchor="middle" font-size="13" fill="var(--d-muted)">결제 시 할인 안내</text>
+            <rect x="160" y="158" width="160" height="114" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="240" y="210" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">어드민</text>
+            <text x="240" y="230" text-anchor="middle" font-size="13" fill="var(--d-muted)">상품과 예약 관리</text>
+            <rect x="360" y="14" width="210" height="272" rx="4" fill="none" stroke="var(--d-border)" stroke-width="1.2"/>
+            <text x="465" y="34" text-anchor="middle" font-size="13" fill="var(--d-muted)">API 서버</text>
+            <rect x="375" y="44" width="180" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="465" y="67" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">청구할인 판정</text>
+            <text x="465" y="87" text-anchor="middle" font-size="13" fill="var(--d-muted)">카드 할인 대상 결정</text>
+            <rect x="375" y="116" width="180" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="465" y="139" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">상품과 예약 API</text>
+            <text x="465" y="159" text-anchor="middle" font-size="13" fill="var(--d-muted)">조회, 등록, 예약</text>
+            <rect x="375" y="216" width="180" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="465" y="239" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">네이버 상품 전송</text>
+            <text x="465" y="259" text-anchor="middle" font-size="13" fill="var(--d-muted)">변경된 상품 전달</text>
+            <rect x="640" y="216" width="200" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="740" y="239" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">네이버</text>
+            <text x="740" y="259" text-anchor="middle" font-size="13" fill="var(--d-muted)">외부 판매 채널</text>
+            <rect x="160" y="330" width="410" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="365" y="353" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">구패키지 DB</text>
+            <text x="365" y="373" text-anchor="middle" font-size="13" fill="var(--d-muted)">MSSQL 테이블과 저장 프로시저</text>
+            <rect x="640" y="330" width="200" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="740" y="353" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">신규 패키지 시스템</text>
+            <text x="740" y="373" text-anchor="middle" font-size="13" fill="var(--d-muted)">구매와 예약 자동 처리</text>
+            <line x1="120" y1="95" x2="158" y2="95" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
+            <line x1="120" y1="214" x2="158" y2="214" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
+            <line x1="320" y1="72" x2="373" y2="72" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
+            <line x1="320" y1="130" x2="373" y2="130" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
+            <line x1="320" y1="164" x2="373" y2="164" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
+            <line x1="320" y1="244" x2="373" y2="244" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
+            <line x1="555" y1="244" x2="638" y2="244" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
+            <line x1="240" y1="272" x2="240" y2="328" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
+            <line x1="465" y1="286" x2="465" y2="328" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
+            <line x1="640" y1="358" x2="572" y2="358" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op1)"/>
+            <text x="605" y="350" text-anchor="middle" font-size="13" fill="var(--d-muted)">주문 전달</text>
+            <rect x="160" y="404" width="16" height="16" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="184" y="417" text-anchor="start" font-size="13" fill="var(--d-muted)">구패키지 시스템의 처리</text>
+            <rect x="360" y="404" width="16" height="16" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="384" y="417" text-anchor="start" font-size="13" fill="var(--d-muted)">외부 대상</text>
           </svg>
-          <p class="diagram-caption">신규 패키지 시스템에서 저장 프로시저로 가는 경로는 2024년에 추가되었다.</p>
         </div>
-        <p>외부 연동은 네이버 상품 전송과 모두투어 상품 수집과 현대카드 제휴 포인트 조회다.</p>
       </section>
 
       <section class="section">
         <h2 id="naver">네이버 상품 전송</h2>
-        <p>네이버 해외패키지 고객은 2021년 변경 이후 네이버 안에서 예약과 결제까지 진행한다. 변경 당시 담당자는 여행 상품 단위인 모상품을 네이버 어드민에 등록했고, 구패키지 시스템은 네이버의 자상품 API로 모상품 아래의 출발일 단위 자상품을 전송한다.</p>
-        <p>기존 코드는 가격 변경과 마감처럼 변경 종류마다 전송 함수를 따로 두었으므로 이 구조를 유지하면 변경 종류가 늘어날 때마다 전송 함수와 네이버 값 변환 코드가 함께 증가한다. 구패키지 시스템은 변경 종류를 대상 출발상품을 찾는 데만 사용하고 전송 값은 DB의 현재 상태에서 읽는다.</p>
-        <p>전송 경로는 판매 정보 갱신과 전시 종료(자상품을 예약 마감 상태로 전송하는 처리)로 제한된다. 같은 출발상품을 가리키는 요청이 여러 건이어도 전송 값은 처리 시점의 DB 상태다.</p>
+        <p>네이버 고객은 네이버 안에서 예약과 결제까지 진행하므로 구패키지 시스템은 네이버에 등록된 여행 상품 아래로 출발상품을 API로 전송한다. 기존 코드처럼 변경 종류마다 전송 함수를 두면 종류가 늘 때마다 전송 코드와 값 변환 코드가 함께 증가한다.</p>
+        <p>그래서 변경 종류는 전송 대상을 찾는 데만 사용하고 전송 값은 DB의 현재 가격과 전시 상태(판매 화면 표시 여부)에서 읽는다. 전시 종료 요청만 DB 값과 무관하게 마감으로 전송한다.</p>
+        <p>현재 상태 전체를 전송하므로 기초상품 하나의 변경이 소속 출발상품 전체의 전송으로 이어지는 대신, 변경 종류가 늘어도 전송 코드는 증가하지 않는다.</p>
         <div class="diagram-box">
-          <svg viewBox="0 0 860 518" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="상품 변경부터 네이버 전송과 결과 기록까지의 흐름">
+          <svg viewBox="0 0 860 526" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="변경 요청부터 네이버 전송과 결과 기록까지의 흐름">
             <defs><marker id="op2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
-            <rect x="20" y="24" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="115" y="48" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">상품 변경</text>
-            <text x="115" y="69" text-anchor="middle" font-size="13" fill="var(--d-muted)">담당자가 어드민에서</text>
-            <rect x="230" y="24" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="325" y="48" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">변경 요청 기록</text>
-            <text x="325" y="69" text-anchor="middle" font-size="13" fill="var(--d-muted)">대기 테이블에 행 추가</text>
-            <rect x="440" y="24" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="535" y="48" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">대상 출발상품 확정</text>
-            <text x="535" y="69" text-anchor="middle" font-size="13" fill="var(--d-muted)">요청 종류별로 조회</text>
-            <rect x="650" y="24" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="745" y="48" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">현재 상태 조회</text>
-            <text x="745" y="69" text-anchor="middle" font-size="13" fill="var(--d-muted)">가격과 전시 상태</text>
-            <line x1="210" y1="52" x2="226" y2="52" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-            <line x1="420" y1="52" x2="436" y2="52" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-            <line x1="630" y1="52" x2="646" y2="52" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-            <path d="M 745 80 V 102 H 115 V 122" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-
-            <rect x="20" y="126" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="115" y="159" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">전시 종료 요청인가?</text>
-            <rect x="240" y="126" width="180" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="330" y="150" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">상태를 마감으로 고정</text>
-            <text x="330" y="171" text-anchor="middle" font-size="13" fill="var(--d-muted)">DB의 전시 상태 무시</text>
-            <rect x="440" y="126" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="535" y="150" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">네이버 코드로 변환</text>
-            <text x="535" y="171" text-anchor="middle" font-size="13" fill="var(--d-muted)">상품과 항공편과 박일수</text>
-            <rect x="650" y="126" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="745" y="150" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">모상품별로 분류</text>
-            <text x="745" y="171" text-anchor="middle" font-size="13" fill="var(--d-muted)">전송 수 제한으로 분할</text>
-            <line x1="210" y1="154" x2="236" y2="154" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-            <text x="218" y="146" font-size="13" fill="var(--d-muted)">예</text>
-            <line x1="420" y1="154" x2="436" y2="154" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-            <line x1="630" y1="154" x2="646" y2="154" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-            <path d="M 115 182 V 206 H 535 V 186" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-            <text x="122" y="200" font-size="13" fill="var(--d-muted)">아니요</text>
-            <path d="M 745 182 V 222 H 110 V 238" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-
-            <rect x="20" y="242" width="180" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="110" y="266" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">마감 상품 먼저 전송</text>
-            <text x="110" y="287" text-anchor="middle" font-size="13" fill="var(--d-muted)">전시가 마지막에 도착</text>
-            <rect x="220" y="242" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="305" y="266" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">전시 상품 전송</text>
-            <text x="305" y="287" text-anchor="middle" font-size="13" fill="var(--d-muted)">네이버 자상품 API</text>
-            <rect x="410" y="242" width="210" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="515" y="275" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">모든 호출이 성공했는가?</text>
-            <rect x="650" y="242" width="190" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="745" y="275" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">응답 수가 일치하는가?</text>
-            <line x1="200" y1="270" x2="216" y2="270" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-            <line x1="390" y1="270" x2="406" y2="270" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-            <line x1="620" y1="270" x2="646" y2="270" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-            <text x="626" y="262" font-size="13" fill="var(--d-muted)">예</text>
-
-            <rect x="400" y="346" width="170" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-            <text x="485" y="370" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">실패로 기록</text>
-            <text x="485" y="391" text-anchor="middle" font-size="13" fill="var(--d-muted)">요청 전체를 실패 처리</text>
-            <rect x="640" y="346" width="200" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="740" y="379" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">자상품이 모두 성공했는가?</text>
-            <line x1="450" y1="298" x2="450" y2="342" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-            <text x="457" y="324" font-size="13" fill="var(--d-muted)">아니요</text>
-            <path d="M 690 298 V 320 H 530 V 342" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-            <text x="600" y="315" font-size="13" fill="var(--d-muted)">아니요</text>
-            <line x1="790" y1="298" x2="790" y2="342" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-            <text x="797" y="324" font-size="13" fill="var(--d-muted)">예</text>
-            <line x1="640" y1="374" x2="574" y2="374" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-            <text x="588" y="366" font-size="13" fill="var(--d-muted)">아니요</text>
-
-            <rect x="650" y="442" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="745" y="466" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">완료로 기록</text>
-            <text x="745" y="487" text-anchor="middle" font-size="13" fill="var(--d-muted)">대기 테이블 상태 갱신</text>
-            <line x1="745" y1="402" x2="745" y2="438" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
-            <text x="752" y="424" font-size="13" fill="var(--d-muted)">예</text>
-
-            <rect x="20" y="430" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="40" y="442" font-size="13" fill="var(--d-muted)">구패키지 시스템의 처리</text>
-            <rect x="20" y="454" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="40" y="466" font-size="13" fill="var(--d-muted)">기존 구성 요소와 판단</text>
-            <rect x="20" y="478" width="14" height="14" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-            <text x="40" y="490" font-size="13" fill="var(--d-muted)">실패</text>
+            <text x="20" y="18" text-anchor="start" font-size="13" fill="var(--d-muted)">대기 테이블의 변경 요청</text>
+            <rect x="20" y="28" width="150" height="34" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="95" y="50" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">가격 변경</text>
+            <rect x="20" y="70" width="150" height="34" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="95" y="92" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">전시 상태 변경</text>
+            <rect x="20" y="112" width="150" height="34" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="95" y="134" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">기초상품 변경</text>
+            <rect x="20" y="154" width="150" height="34" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="95" y="176" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">전시 종료</text>
+            <line x1="170" y1="45" x2="195" y2="45" stroke="var(--d-line)" stroke-width="1.3"/>
+            <line x1="170" y1="87" x2="195" y2="87" stroke="var(--d-line)" stroke-width="1.3"/>
+            <line x1="170" y1="129" x2="195" y2="129" stroke="var(--d-line)" stroke-width="1.3"/>
+            <line x1="170" y1="171" x2="195" y2="171" stroke="var(--d-line)" stroke-width="1.3"/>
+            <line x1="195" y1="45" x2="195" y2="171" stroke="var(--d-line)" stroke-width="1.3"/>
+            <line x1="195" y1="100" x2="228" y2="100" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
+            <rect x="230" y="72" width="210" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="335" y="95" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">전송할 출발상품 찾기</text>
+            <text x="335" y="115" text-anchor="middle" font-size="13" fill="var(--d-muted)">변경 종류별로 조회</text>
+            <line x1="440" y1="100" x2="478" y2="100" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
+            <rect x="480" y="72" width="200" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="580" y="95" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">현재 상태 읽기</text>
+            <text x="580" y="115" text-anchor="middle" font-size="13" fill="var(--d-muted)">DB의 가격과 전시 상태</text>
+            <path d="M 680 100 H 710 V 196 H 115 V 204" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
+            <polygon points="20,248 115,206 210,248 115,290" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="115" y="253" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">전시 종료 요청인가?</text>
+            <line x1="210" y1="248" x2="253" y2="248" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
+            <text x="228" y="240" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <rect x="255" y="220" width="185" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="347.5" y="243" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">상태를 마감으로 고정</text>
+            <text x="347.5" y="263" text-anchor="middle" font-size="13" fill="var(--d-muted)">DB의 전시 상태 무시</text>
+            <line x1="440" y1="248" x2="478" y2="248" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
+            <rect x="480" y="220" width="200" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="580" y="243" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">네이버 상품 코드로 변환</text>
+            <text x="580" y="263" text-anchor="middle" font-size="13" fill="var(--d-muted)">기초상품, 항공편, 박일수</text>
+            <path d="M 115 290 V 304 H 580 V 278" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
+            <text x="122" y="301" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <path d="M 680 248 H 710 V 320 H 115 V 340" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
+            <rect x="20" y="342" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="115" y="365" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">네이버 상품별로 분할</text>
+            <text x="115" y="385" text-anchor="middle" font-size="13" fill="var(--d-muted)">전송 수 제한 준수</text>
+            <line x1="210" y1="370" x2="248" y2="370" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
+            <rect x="250" y="342" width="190" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="345" y="365" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">마감 상품 먼저 전송</text>
+            <text x="345" y="385" text-anchor="middle" font-size="13" fill="var(--d-muted)">같은 코드면 먼저 도착</text>
+            <line x1="440" y1="370" x2="478" y2="370" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
+            <rect x="480" y="342" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="565" y="365" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">전시 상품 전송</text>
+            <text x="565" y="385" text-anchor="middle" font-size="13" fill="var(--d-muted)">마감 다음에 도착</text>
+            <line x1="650" y1="370" x2="688" y2="370" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
+            <rect x="690" y="342" width="150" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="765" y="375" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">네이버 API</text>
+            <path d="M 765 398 V 416 H 115 V 432" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op2)"/>
+            <text x="772" y="411" text-anchor="start" font-size="13" fill="var(--d-muted)">응답</text>
+            <rect x="20" y="434" width="190" height="44" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="115" y="461" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">결과 기록</text>
+            <rect x="20" y="496" width="16" height="16" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="44" y="509" text-anchor="start" font-size="13" fill="var(--d-muted)">구패키지 시스템의 처리</text>
+            <rect x="230" y="496" width="16" height="16" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="254" y="509" text-anchor="start" font-size="13" fill="var(--d-muted)">외부 대상</text>
           </svg>
         </div>
-        <p>자상품 코드는 기초상품 코드와 항공편과 박일수와 출발일의 조합이다. 이 조합이 같은 출발상품 중 하나가 마감이고 다른 하나가 전시이면 두 상품은 같은 자상품 코드로 전송되므로, 마감 상품을 먼저 전송하고 전시 상품을 나중에 전송한다.</p>
-        <p>호출이 성공해도 일부 자상품이 실패할 수 있으므로 완료 판정은 호출 결과와 응답 자상품 수와 자상품별 결과를 모두 확인한다. 완료 판정이 요청 단위이므로 일부 자상품만 실패해도 요청 전체를 실패로 기록한다.</p>
-        <p>현재 상태 전체를 전송하면 기초상품 변경 요청이 소속 출발상품 전체의 전송으로 이어져 전송량이 증가한다. 모상품별로 요청을 분할해 전송 수 제한을 지키고, 변경 종류가 늘어도 전송 코드가 증가하지 않으므로 이 전송량을 수용한다.</p>
+        <p>네이버 상품 코드는 출발일까지 포함해도 출발상품마다 고유하지 않다. 같은 기초상품과 출발일에 항공편과 박일수까지 같은 출발상품이 있기 때문이다.</p>
+        <p>이때 마감 상품과 전시 상품이 같은 코드로 전송될 수 있으므로 마감 상품을 먼저 전송해 전시 상태가 마지막에 도착하게 한다.</p>
       </section>
 
       <section class="section">
         <h2 id="card-benefit">청구할인 판정</h2>
-        <p>청구할인은 특정 카드로 결제하면 카드사 청구 금액을 할인하는 행사다. 담당자는 행사마다 적용 범위와 제외 범위를 상품 유형과 지역과 상품 코드 단위로 등록하고, 결제 화면은 범위를 판정해 할인 안내를 표시한다.</p>
-        <p>기존 판정 코드는 예약 결제와 추가 결제와 분할 결제 화면에 복제되어 있었고 값 비교 방식과 제외 범위 확인 순서가 화면마다 달라 같은 행사의 표시 결과도 달라질 수 있었다. 이 구조에서 등록한 범위대로 할인이 표시되지 않는다는 조건 수정 요청이 접수되었다.</p>
-        <p>수정 방식에 따라 이후 규칙을 변경할 때 배포하는 대상이 달라진다.</p>
-        <ul class="rule-list">
-          <li>화면별로 수정하면 변경량이 가장 적지만 복제된 규칙이 유지되어 차이가 다시 생길 수 있다.</li>
-          <li>공용 라이브러리로 이동하면 DLL 파일을 화면 저장소마다 교체해 반영하므로 규칙 변경마다 화면 서버를 함께 배포한다.</li>
-          <li>API로 이동하면 PC 결제 화면은 API의 판정 결과만 사용하고 규칙 변경은 API 배포로 반영된다.</li>
-        </ul>
-        <p>PC 결제 화면은 판정을 API에 요청한다. 판정 순서는 적용 범위와 제외 범위와 예산 순서로 고정되고, 제외 범위에 해당하는 행사는 적용 범위에 해당해도 목록에서 제외된다.</p>
+        <p>청구할인은 특정 카드로 결제하면 카드사 청구 금액을 할인하는 행사이고, 결제 화면은 담당자가 등록한 적용 범위와 제외 범위로 행사를 판정해 안내를 표시한다. 결제 화면마다 판정 코드가 복제되어 있었고 비교 방식이 서로 달라 같은 행사의 표시도 달라질 수 있었다.</p>
+        <p>할인 조건을 수정해 달라는 요청을 화면별로 반영하면 복제가 유지되고, 공용 라이브러리로 이동하면 DLL을 화면 저장소마다 교체해 규칙 변경마다 화면 서버를 배포해야 한다. 판정을 API 서버의 C# 코드에 두면 결제 화면은 결과만 사용하고 규칙을 수정할 때 저장 프로시저 변경 없이 API만 배포한다.</p>
         <div class="diagram-box">
-          <svg viewBox="0 0 860 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="결제 화면 3개가 호출하는 청구할인 판정 API의 판정 순서와 조회 실패 처리">
+          <svg viewBox="0 0 860 584" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="화면별 복제 판정과 API 판정의 비교, API의 행사별 판정 순서와 조회 실패 처리">
             <defs><marker id="op3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
-            <rect x="20" y="24" width="170" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="105" y="51" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">예약 결제 화면</text>
-            <rect x="210" y="24" width="170" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="295" y="51" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">추가 결제 화면</text>
-            <rect x="400" y="24" width="170" height="44" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="485" y="51" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">분할 결제 화면</text>
-            <line x1="105" y1="68" x2="105" y2="84" stroke="var(--d-line)" stroke-width="1.3"/>
-            <line x1="295" y1="68" x2="295" y2="84" stroke="var(--d-line)" stroke-width="1.3"/>
-            <line x1="485" y1="68" x2="485" y2="84" stroke="var(--d-line)" stroke-width="1.3"/>
-            <line x1="105" y1="84" x2="485" y2="84" stroke="var(--d-line)" stroke-width="1.3"/>
-            <line x1="130" y1="84" x2="130" y2="100" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
-            <text x="500" y="89" font-size="13" fill="var(--d-muted)">판정 API 호출</text>
-
-            <rect x="20" y="104" width="220" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="130" y="137" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">적용 범위에 해당하는가?</text>
-            <rect x="290" y="104" width="220" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="400" y="137" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">제외 범위에 해당하는가?</text>
-            <rect x="560" y="104" width="280" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="700" y="137" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">예산 종료 조건에 해당하는가?</text>
-            <line x1="240" y1="132" x2="286" y2="132" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
-            <text x="258" y="124" font-size="13" fill="var(--d-muted)">예</text>
-            <line x1="510" y1="132" x2="556" y2="132" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
-            <text x="515" y="124" font-size="13" fill="var(--d-muted)">아니요</text>
-
-            <rect x="20" y="204" width="590" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="315" y="237" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">할인 목록에서 제외</text>
-            <rect x="640" y="204" width="200" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="740" y="228" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">할인 목록에 포함</text>
-            <text x="740" y="249" text-anchor="middle" font-size="13" fill="var(--d-muted)">API가 화면에 반환</text>
-            <line x1="130" y1="160" x2="130" y2="200" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
-            <text x="137" y="186" font-size="13" fill="var(--d-muted)">아니요</text>
-            <line x1="400" y1="160" x2="400" y2="200" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
-            <text x="407" y="186" font-size="13" fill="var(--d-muted)">예</text>
-            <line x1="590" y1="160" x2="590" y2="200" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
-            <text x="597" y="186" font-size="13" fill="var(--d-muted)">예</text>
-            <line x1="740" y1="160" x2="740" y2="200" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
-            <text x="747" y="186" font-size="13" fill="var(--d-muted)">아니요</text>
-
-            <rect x="20" y="304" width="250" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="145" y="337" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">화면이 API 응답을 받았는가?</text>
-            <rect x="330" y="304" width="200" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="430" y="328" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">받은 목록으로 표시</text>
-            <text x="430" y="349" text-anchor="middle" font-size="13" fill="var(--d-muted)">카드별 할인 안내</text>
-            <path d="M 740 260 V 282 H 145 V 300" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
-            <line x1="270" y1="332" x2="326" y2="332" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
-            <text x="291" y="324" font-size="13" fill="var(--d-muted)">예</text>
-
-            <rect x="50" y="404" width="190" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-            <text x="145" y="428" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">빈 목록으로 처리</text>
-            <text x="145" y="449" text-anchor="middle" font-size="13" fill="var(--d-muted)">안내 없이 결제 진행</text>
-            <line x1="145" y1="360" x2="145" y2="400" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
-            <text x="152" y="386" font-size="13" fill="var(--d-muted)">아니요</text>
-
-            <rect x="330" y="400" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="350" y="412" font-size="13" fill="var(--d-muted)">구패키지 시스템의 처리</text>
-            <rect x="330" y="422" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="350" y="434" font-size="13" fill="var(--d-muted)">결제 화면과 판단</text>
-            <rect x="330" y="444" width="14" height="14" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-            <text x="350" y="456" font-size="13" fill="var(--d-muted)">실패</text>
+            <text x="20" y="18" text-anchor="start" font-size="13" fill="var(--d-muted)">변경 전</text>
+            <rect x="20" y="28" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="105" y="51" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">예약 결제 화면</text>
+            <text x="105" y="71" text-anchor="middle" font-size="13" fill="var(--d-muted)">자체 판정 코드</text>
+            <rect x="210" y="28" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="295" y="51" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">추가 결제 화면</text>
+            <text x="295" y="71" text-anchor="middle" font-size="13" fill="var(--d-muted)">자체 판정 코드</text>
+            <rect x="400" y="28" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="485" y="51" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">분할 결제 화면</text>
+            <text x="485" y="71" text-anchor="middle" font-size="13" fill="var(--d-muted)">자체 판정 코드</text>
+            <line x1="570" y1="56" x2="638" y2="56" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
+            <rect x="640" y="28" width="200" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="740" y="51" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">행사 등록 데이터</text>
+            <text x="740" y="71" text-anchor="middle" font-size="13" fill="var(--d-muted)">적용 범위와 제외 범위</text>
+            <path d="M 105 84 V 100 H 740 V 86" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
+            <line x1="295" y1="84" x2="295" y2="100" stroke="var(--d-line)" stroke-width="1.3"/>
+            <line x1="20" y1="122" x2="840" y2="122" stroke="var(--d-border)" stroke-width="1"/>
+            <text x="20" y="146" text-anchor="start" font-size="13" fill="var(--d-muted)">변경 후</text>
+            <rect x="20" y="156" width="170" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="105" y="181" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">예약 결제 화면</text>
+            <rect x="210" y="156" width="170" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="295" y="181" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">추가 결제 화면</text>
+            <rect x="400" y="156" width="170" height="40" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="485" y="181" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">분할 결제 화면</text>
+            <line x1="105" y1="196" x2="105" y2="212" stroke="var(--d-line)" stroke-width="1.3"/>
+            <line x1="295" y1="196" x2="295" y2="212" stroke="var(--d-line)" stroke-width="1.3"/>
+            <line x1="485" y1="196" x2="485" y2="212" stroke="var(--d-line)" stroke-width="1.3"/>
+            <line x1="105" y1="212" x2="485" y2="212" stroke="var(--d-line)" stroke-width="1.3"/>
+            <line x1="295" y1="212" x2="295" y2="250" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
+            <text x="303" y="236" text-anchor="start" font-size="13" fill="var(--d-muted)">판정 API 호출</text>
+            <rect x="20" y="252" width="820" height="184" rx="4" fill="none" stroke="var(--d-border)" stroke-width="1.2"/>
+            <text x="36" y="271" text-anchor="start" font-size="13" fill="var(--d-muted)">API 서버, 행사마다 반복</text>
+            <polygon points="36,318 151,280 266,318 151,356" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="151" y="313" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">적용 범위에</text>
+            <text x="151" y="333" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">해당하는가?</text>
+            <line x1="266" y1="318" x2="314" y2="318" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
+            <text x="284" y="310" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <polygon points="316,318 431,280 546,318 431,356" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="431" y="313" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">제외 범위에</text>
+            <text x="431" y="333" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">해당하는가?</text>
+            <line x1="546" y1="318" x2="594" y2="318" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
+            <text x="552" y="310" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <rect x="596" y="290" width="228" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="710" y="323" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">할인 목록에 포함</text>
+            <rect x="36" y="376" width="510" height="44" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="291" y="403" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">할인 목록에서 제외</text>
+            <line x1="151" y1="356" x2="151" y2="374" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
+            <text x="158" y="370" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <line x1="431" y1="356" x2="431" y2="374" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
+            <text x="438" y="370" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <rect x="596" y="376" width="228" height="44" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="710" y="403" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">목록 반환</text>
+            <line x1="710" y1="346" x2="710" y2="374" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
+            <line x1="546" y1="398" x2="594" y2="398" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
+            <path d="M 710 420 V 446 H 435 V 458" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
+            <polygon points="300,498 435,460 570,498 435,536" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="435" y="503" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">화면이 API 응답을 받았는가?</text>
+            <line x1="570" y1="498" x2="610" y2="498" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
+            <text x="584" y="490" text-anchor="start" font-size="13" fill="var(--d-muted)">예</text>
+            <rect x="612" y="470" width="228" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="726" y="493" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">받은 목록으로 표시</text>
+            <text x="726" y="513" text-anchor="middle" font-size="13" fill="var(--d-muted)">카드별 할인 안내</text>
+            <line x1="300" y1="498" x2="250" y2="498" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op3)"/>
+            <text x="258" y="490" text-anchor="start" font-size="13" fill="var(--d-muted)">아니요</text>
+            <rect x="20" y="470" width="228" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+            <text x="134" y="493" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">빈 목록으로 처리</text>
+            <text x="134" y="513" text-anchor="middle" font-size="13" fill="var(--d-muted)">안내 없이 결제 진행</text>
+            <rect x="20" y="552" width="16" height="16" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="44" y="565" text-anchor="start" font-size="13" fill="var(--d-muted)">구패키지 시스템의 처리</text>
+            <rect x="230" y="552" width="16" height="16" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="254" y="565" text-anchor="start" font-size="13" fill="var(--d-muted)">외부 대상</text>
+            <rect x="380" y="552" width="16" height="16" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+            <text x="404" y="565" text-anchor="start" font-size="13" fill="var(--d-muted)">실패</text>
           </svg>
         </div>
-        <p>판정을 API로 이동하면 결제 화면이 API 응답에 의존한다. 할인 안내 조회의 실패가 결제 진행에 영향을 주지 않도록 조회 실패를 할인 없음으로 처리한다.</p>
-      </section>
-
-      <section class="section">
-        <h2 id="card-structure">판정 API의 코드 구조</h2>
-        <p>API 서버의 기존 코드는 서비스 클래스가 저장 프로시저를 호출한다. 판정 API는 같은 서버의 별도 프로젝트에 위치하고 유스케이스와 포트와 어댑터로 코드를 나누며, 저장 프로시저 대신 Entity Framework로 데이터를 읽는다.</p>
-        <p>기존 방식과 비교하면 판정 규칙이 유스케이스 클래스 하나에 C# 코드로 위치하므로 규칙을 수정할 때 저장 프로시저를 변경하지 않고 API 서버만 배포한다.</p>
-        <p>같은 API 서버에 기존 구조와 새 구조가 함께 유지되므로 서버를 수정하는 개발자는 프로젝트별 방식을 구분해야 한다. 기존 API까지 이동하면 청구할인 수정을 넘어서는 변경이 되므로 기존 코드는 유지된다.</p>
+        <p>결제 화면이 API 응답에 의존하게 되므로, 할인 안내 조회의 실패가 결제 진행에 영향을 주지 않게 조회 실패를 할인 없음으로 처리한다.</p>
       </section>
 
       <section class="section">
         <h2 id="order-link">신규 패키지 주문 전달</h2>
-        <p>신규 패키지 시스템의 예약은 MongoDB에 저장되고, 우수회원 등급 산정에 사용하는 주문 집계는 구패키지 DB의 저장 프로시저가 수행한다. 신규 패키지 고객의 구매 실적을 등급에 반영하려면 두 저장소를 연결해야 하므로 이 전달 경로는 2024년에 추가되었다.</p>
-        <p>연결 방식에 따라 양쪽 시스템의 변경 범위가 달라진다.</p>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>연결 방식</th><th>신규 패키지 시스템</th><th>구패키지 시스템</th></tr></thead>
-            <tbody>
-              <tr><td>집계 테이블 직접 입력</td><td>구패키지 DB에 접속하고 집계 대상 기간의 판정 규칙을 복제한다.</td><td>변경이 없다.</td></tr>
-              <tr><td>구패키지 API 경유</td><td>API만 호출하고 구패키지 DB에 접속하지 않는다.</td><td>적재 API와 저장 경로를 추가하고 C# 서버를 배포한다.</td></tr>
-              <tr><td>전용 적재 테이블</td><td>구패키지 DB에 접속하고 적재 프로시저를 호출한다.</td><td>테이블과 프로시저를 추가하고 기존 집계 프로시저의 읽는 대상을 확장한다.</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p>신규 패키지 주문은 전용 적재 테이블을 거쳐 집계된다. 기존 집계 프로시저의 변경이 읽는 대상 추가로 제한되므로 다른 사업의 주문 처리는 변경되지 않는다.</p>
+        <p>우수회원 등급은 구매 실적으로 산정하고 집계 프로시저는 구패키지 DB에 있다. 신규 패키지 예약은 MongoDB에 저장되므로 그대로는 집계에 반영되지 않는다.</p>
+        <p>2024년에 추가한 주문 전달 배치가 신규 패키지 예약을 구패키지 DB의 전용 적재 테이블에 저장하고, 기존 집계 프로시저는 이 테이블을 읽는 대상으로 추가한다. 기존 프로시저의 변경이 읽는 대상 추가로 제한되어 다른 사업의 주문 처리는 변경되지 않는다.</p>
+        <p>대신 신규 패키지 시스템이 구패키지 DB에 접속하며, 이 경로의 의존은 호출 클래스 하나로 제한된다.</p>
         <div class="diagram-box">
-          <svg viewBox="0 0 860 308" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="신규 패키지 예약이 구패키지 DB의 우수회원 집계로 전달되는 흐름">
-            <defs><marker id="op4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
+          <svg viewBox="0 0 860 412" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="신규 패키지 예약이 구패키지 DB의 우수회원 집계로 전달되는 흐름과 실패 시 재전송">
+            <defs><marker id="op5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 8 5 L 0 9 z" fill="var(--d-line)"/></marker></defs>
             <rect x="20" y="24" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
             <text x="105" y="48" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">대상 예약 조회</text>
             <text x="105" y="69" text-anchor="middle" font-size="13" fill="var(--d-muted)">도착 후 일정 기간</text>
-            <rect x="240" y="24" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="325" y="48" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">주문 데이터 생성</text>
-            <text x="325" y="69" text-anchor="middle" font-size="13" fill="var(--d-muted)">예약 단위 금액 계산</text>
-            <rect x="460" y="24" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="545" y="48" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">적재 프로시저 호출</text>
-            <text x="545" y="69" text-anchor="middle" font-size="13" fill="var(--d-muted)">구패키지 DB로 전송</text>
-            <rect x="680" y="24" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="765" y="57" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">호출이 실패했는가?</text>
-            <line x1="190" y1="52" x2="236" y2="52" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op4)"/>
-            <line x1="410" y1="52" x2="456" y2="52" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op4)"/>
-            <line x1="630" y1="52" x2="676" y2="52" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op4)"/>
+            <line x1="190" y1="52" x2="226" y2="52" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op5)"/>
+            <rect x="230" y="24" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="315" y="48" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">주문 데이터 생성</text>
+            <text x="315" y="69" text-anchor="middle" font-size="13" fill="var(--d-muted)">예약 단위 금액 계산</text>
+            <line x1="400" y1="52" x2="436" y2="52" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op5)"/>
+            <rect x="440" y="24" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="525" y="48" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">적재 프로시저 호출</text>
+            <text x="525" y="69" text-anchor="middle" font-size="13" fill="var(--d-muted)">구패키지 DB로 전송</text>
+            <line x1="610" y1="52" x2="646" y2="52" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op5)"/>
+            <polygon points="650,52 735,10 820,52 735,94" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="735" y="57" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">호출이 실패했는가?</text>
 
-            <rect x="20" y="128" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="105" y="152" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">전용 적재 테이블</text>
-            <text x="105" y="173" text-anchor="middle" font-size="13" fill="var(--d-muted)">신규 패키지 주문 전용</text>
-            <rect x="240" y="128" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="325" y="152" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">기존 집계 프로시저</text>
-            <text x="325" y="173" text-anchor="middle" font-size="13" fill="var(--d-muted)">사업별 주문 합산</text>
-            <rect x="460" y="128" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="545" y="152" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">우수회원 집계 테이블</text>
-            <text x="545" y="173" text-anchor="middle" font-size="13" fill="var(--d-muted)">회원 등급 산정 입력</text>
-            <rect x="680" y="128" width="170" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-            <text x="765" y="152" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">Slack으로 실패 통지</text>
-            <text x="765" y="173" text-anchor="middle" font-size="13" fill="var(--d-muted)">어드민 API로 재전송</text>
-            <line x1="190" y1="156" x2="236" y2="156" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op4)"/>
-            <line x1="410" y1="156" x2="456" y2="156" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op4)"/>
-            <line x1="800" y1="80" x2="800" y2="124" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op4)"/>
-            <text x="807" y="106" font-size="13" fill="var(--d-muted)">예</text>
-            <path d="M 700 80 V 102 H 105 V 124" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op4)"/>
-            <text x="707" y="97" font-size="13" fill="var(--d-muted)">아니요</text>
+            <line x1="735" y1="94" x2="735" y2="126" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op5)"/>
+            <text x="742" y="106" font-size="13" fill="var(--d-muted)">예</text>
+            <rect x="650" y="128" width="170" height="56" rx="4" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+            <text x="735" y="161" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">Slack으로 실패 통지</text>
+            <line x1="650" y1="156" x2="614" y2="156" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op5)"/>
+            <rect x="440" y="128" width="170" height="56" rx="4" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="525" y="151" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">담당자가</text>
+            <text x="525" y="171" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-accent)">어드민 API로 재전송</text>
+            <line x1="525" y1="128" x2="525" y2="84" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op5)"/>
+            <path d="M 820 52 H 840 V 210 H 105 V 236" fill="none" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op5)"/>
+            <text x="770" y="204" font-size="13" fill="var(--d-muted)">아니요</text>
 
-            <rect x="240" y="232" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="325" y="256" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">다른 사업 주문</text>
-            <text x="325" y="277" text-anchor="middle" font-size="13" fill="var(--d-muted)">항공과 숙소 등</text>
-            <line x1="325" y1="232" x2="325" y2="188" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op4)"/>
+            <rect x="20" y="240" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="105" y="264" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">전용 적재 테이블</text>
+            <text x="105" y="285" text-anchor="middle" font-size="13" fill="var(--d-muted)">신규 패키지 주문</text>
+            <line x1="190" y1="268" x2="226" y2="268" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op5)"/>
+            <rect x="230" y="240" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="315" y="264" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">기존 집계 프로시저</text>
+            <text x="315" y="285" text-anchor="middle" font-size="13" fill="var(--d-muted)">사업별 주문 합산</text>
+            <line x1="400" y1="268" x2="436" y2="268" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op5)"/>
+            <rect x="440" y="240" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="525" y="264" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">우수회원 집계 테이블</text>
+            <text x="525" y="285" text-anchor="middle" font-size="13" fill="var(--d-muted)">등급 산정 입력</text>
+            <rect x="230" y="336" width="170" height="56" rx="4" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="315" y="360" text-anchor="middle" font-size="14" font-weight="600" fill="var(--d-ink)">다른 사업 주문</text>
+            <text x="315" y="381" text-anchor="middle" font-size="13" fill="var(--d-muted)">변경 없음</text>
+            <line x1="315" y1="336" x2="315" y2="300" stroke="var(--d-line)" stroke-width="1.3" marker-end="url(#op5)"/>
 
-            <rect x="460" y="222" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
-            <text x="480" y="234" font-size="13" fill="var(--d-muted)">주문 전달의 처리</text>
-            <rect x="460" y="246" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
-            <text x="480" y="258" font-size="13" fill="var(--d-muted)">기존 구성 요소와 판단</text>
-            <rect x="460" y="270" width="14" height="14" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
-            <text x="480" y="282" font-size="13" fill="var(--d-muted)">실패</text>
+            <rect x="440" y="326" width="14" height="14" rx="2" fill="var(--d-accent-tint)" stroke="var(--d-accent)" stroke-width="1.2"/>
+            <text x="460" y="338" font-size="13" fill="var(--d-muted)">신규 패키지 시스템의 처리</text>
+            <rect x="440" y="350" width="14" height="14" rx="2" fill="var(--d-surface)" stroke="var(--d-muted)" stroke-width="1.2"/>
+            <text x="460" y="362" font-size="13" fill="var(--d-muted)">외부 대상</text>
+            <rect x="440" y="374" width="14" height="14" rx="2" fill="var(--d-warn-tint)" stroke="var(--d-warn)" stroke-width="1.2"/>
+            <text x="460" y="386" font-size="13" fill="var(--d-muted)">실패</text>
           </svg>
           <p class="diagram-caption">전송 배치는 기존 집계 프로시저가 같은 예약을 읽는 날보다 먼저 실행되므로 실패 건을 재전송할 시간이 있다.</p>
         </div>
-        <p>전용 적재 테이블을 사용하면 신규 패키지 시스템의 예약 서비스가 구패키지 DB에 의존한다. 이 경로의 DB 호출은 호출 클래스 하나로 제한되고, 전송 단위를 예약 단위로 수정한 2025년 변경도 Kotlin 코드 수정만으로 반영되었다.</p>
       </section>
 
       <section class="section">
         <h2 id="scope">맡은 범위</h2>
         <p>여러 개발자가 작업을 나누어 유지보수와 기능 개발을 진행했다. 다음 항목을 직접 개발했다.</p>
         <ul class="rule-list">
-          <li>네이버 자상품 전송 서비스와 변경 종류 분기와 완료 판정을 개발했고, 이후 자상품 코드 규칙 변경과 마감 상품 우선 전송을 추가했다.</li>
+          <li>네이버 출발상품 전송을 개발하고 이후 상품 코드 규칙 변경과 마감 상품 우선 전송을 추가했다.</li>
           <li>청구할인 조건 수정 요청을 받아 판정을 API로 이동하고 PC 결제 화면의 복제 코드를 삭제했다.</li>
-          <li>포트와 어댑터 구조의 프로젝트를 먼저 API 서버에 추가했고 판정 API를 이 프로젝트에 작성했다.</li>
-          <li>신규 패키지 시스템 개발 기간인 2024년에 주문 전달 배치와 호출 코드와 적재 프로시저를 작성하고 기존 집계 프로시저에 신규 패키지 주문을 추가했다.</li>
-          <li>현대카드 제휴 포인트의 PC 결제 화면과 추가 결제 화면을 개발했다.</li>
-          <li>모두투어 연동을 재개하고 상품 파일 수집의 통신 실패 재시도를 추가했다.</li>
+          <li>2024년에 주문 전달 배치와 적재 프로시저를 개발하고 기존 집계 프로시저에 신규 패키지 주문을 추가했다.</li>
         </ul>
         <p>다음 영역은 다른 개발자가 개발했다.</p>
         <ul class="rule-list">
-          <li>네이버 변경 대기 테이블과 2023년 이후의 모상품 연동</li>
-          <li>현대카드 연동 라이브러리의 초기 작업과 간편결제 API 변경</li>
-          <li>모두투어 수집 배치와 정산 배치</li>
-          <li>주문 전달의 전체 취소 제외 규칙</li>
+          <li>네이버 변경 요청을 기록하는 대기 테이블</li>
+          <li>네이버 여행 상품 등록 연동</li>
         </ul>
       </section>
     </main>

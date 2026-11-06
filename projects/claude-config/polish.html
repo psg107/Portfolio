@@ -423,7 +423,7 @@
       <p>V1을 최종 형식으로 수정한 결과는 다음과 같다. 클래스 이름은 일반화했다.</p>
       <div class="doc-excerpt">
         <div class="doc-excerpt-header">수정 전</div>
-        <pre>- main 기준 프로덕션 곳곳에서 LocalDateTime.now() 와 UUID.randomUUID() 를 직접 호출한다. 예: EntityA 만료 시각 기본값, ForkSupport fork 시각·새 식별자, ServiceA 생성, ServiceB 목록 기준 시각, ClientA 추적 식별자, DisplayerA·CacheA 캐시 시각, ServiceC 추천 키, AuditCallback·DbConfig 감사 시각.
+        <pre>- main 기준 프로덕션 곳곳에서 LocalDateTime.now() 와 UUID.randomUUID() 를 직접 호출한다. 예: EntityA 만료 시각 기본값, ServiceD fork 시각·새 식별자, ServiceA 생성, ServiceB 목록 기준 시각, ClientA 추적 식별자, DisplayerA·CacheA 캐시 시각, ServiceC 추천 키, ConfigA, ConfigB 감사 시각.
 - ServiceD 는 ServiceA 를 @Lazy 로 받아 조립 순환을 숨긴다.
 - 위 값들을 코드가 스스로 만들면 단위 테스트에서 시각·식별자를 고정하기 어렵고, 같은 패턴의 신규 코드가 계속 쌓여도 막을 규칙이 없다.</pre>
       </div>
